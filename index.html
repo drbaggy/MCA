@@ -1,0 +1,115 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-US">
+  <head>
+    <title>Malaria Cell Atlas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <meta name="description" content="The Malaria Cell Atlas is an active project led by the Lawniczak lab to provide an interactive data resource of single cell transcriptomic data across the full lifecycle of malaria parasites.">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@sangerinstitute">
+    <meta name="twitter:creator" content="www-core (Sanger webteam)">
+    <meta name="twitter:title" content="Malaria Cell Atlas - Wellcome Sanger Institute">
+    <meta name="twitter:description" content="The Malaria Cell Atlas is an active project led by the Lawniczak lab to provide an interactive data resource of single cell transcriptomic data across the full lifecycle of malaria parasites.">
+    <meta name="twitter:image" content="https://www.sanger.ac.uk/wp-content/themes/www_sanger/dist/assets/gfx/og-sanger-logo.png">
+
+    <meta property="og:url" content="https://www.sanger.ac.uk/tool/mca/">
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Malaria Cell Atlas - Wellcome Sanger Institute" />
+    <meta property="og:description" content="The Malaria Cell Atlas is an active project led by the Lawniczak lab to provide an interactive data resource of single cell transcriptomic data across the full lifecycle of malaria parasites.">
+    <meta property="og:image" content="https://www.sanger.ac.uk/wp-content/themes/www_sanger/dist/assets/gfx/og-sanger-logo.png">
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:profile_id" content="sangerinstitute" />
+    <link rel="stylesheet" href="/mca/css/mca.css">
+    <link rel="stylesheet" href="/mca/css/cookies.css">
+  </head>
+  <body id="body">
+    <header>
+      <div>
+        <div><img height=128 width=128 alt="* Malaria Cell Atlas Logo" src="/mca/images/logo.png"></div>
+        <h1><strong>M</strong>alaria <strong>C</strong>ell <strong>A</strong>tlas</h1>
+      </div>
+    </header>
+    <main>
+      <section class="data active" id="pf">
+        <h2><i>Plasmodium falciparum</i></h2>
+      <nav>
+        <div>
+          <h3>Filters</h3>
+          <div>
+            <h3>Filter by stage:</h3>
+            <ul>
+              <li><span>Trophozoites:</span>
+                  <label><input checked="checked" type="checkbox" name="stage" value="early trophozoites"><span>Early</span></label>
+                  <label><input checked="checked" type="checkbox" name="stage" value="mid trophozoites"><span>Mid</span></label>
+                  <label><input checked="checked" type="checkbox" name="stage" value="late trophozoites"><span>Late</span></label></li>
+              <li><span>Gametocytes:</span>
+                  <label><input checked="checked" type="checkbox" name="stage" value="early gametocytes"><span>Early</span></label>
+                  <label><input checked="checked" type="checkbox" name="stage" value="late gametocytes"><span>Late</span></label></li>
+              <li><span>Schizonts:</span>
+                  <label><input checked="checked" type="checkbox" name="stage" value="early schizonts"><span>Early</span></label>
+                  <label><input checked="checked" type="checkbox" name="stage" value="late schizonts"><span>Late</span></label></li>
+              <li><span>Rings:</span>
+                  <label><input checked="checked" type="checkbox" name="stage" value="rings"><span>Rings</span></label></li>
+            </ul>
+            <h3>Filter by day:</h3>
+            <ul class="narrow"><span>
+              <li><label><input checked="checked" type="checkbox" name="day" value="D1"><span>1</span></label>
+                  <label><input checked="checked" type="checkbox" name="day" value="D2"><span>2</span></label>
+                  <label><input checked="checked" type="checkbox" name="day" value="D3"><span>3</span></label>
+                  <label><input checked="checked" type="checkbox" name="day" value="D4"><span>4</span></label>
+                  <label><input checked="checked" type="checkbox" name="day" value="D6"><span>6</span></label>
+                  <label><input checked="checked" type="checkbox" name="day" value="D8"><span>8</span></label>
+                  <label><input checked="checked" type="checkbox" name="day" value="D10"><span>10</span></label></li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <h3>Colour by:</h3>
+          <ul><li>
+            <label><input checked="checked" type="radio" value="stage" name="filter"><span>Stage</span></label>
+            <label><input type="radio" value="day"   name="filter"><span>Day</span></label>
+            <label><input type="radio" value="gene"  name="filter"><span>Gene</span></label>
+          </li></ul>
+          <div>
+            <h3>Gene expression</h3>
+            <div><input type="text" id="pf-new-gene" value="PF3D7-0935900"></div>
+          </div>
+        </div>
+      </nav>
+<!--
+{"filters":{"strains":["NF54","7G8"],"days":["D1","D2","D3","D4","D6","D8","D10"],"stage":["Gam","ring","schizont","troph"],"cluster":[0,1,2,3,4,5,6,7,8,9,10,11]},
+ "columns":{"pca":["PC_1","PC_2","PC_3"],"umap":["UMAP_1","UMAP_2","UMAP_3"]} -->
+        <section id="pf-new"
+                 data-directory="pf/new"
+                 data-plots="{&quot;pca&quot;:{&quot;columns&quot;:[&quot;PC_1&quot;,&quot;PC_2&quot;,&quot;PC_3&quot;]},&quot;umap&quot;:{&quot;columns&quot;:[&quot;UDMA_1&quot;,&quot;UDMA_2&quot;,&quot;UDMA_3&quot;]}}"
+                 data-config="{&quot;filters&quot;:{&quot;strains&quot;:[&quot;NF54&quot;,&quot;7G8&quot;],&quot;days&quot;:[&quot;D1&quot;,&quot;D2&quot;,&quot;D3&quot;,&quot;D4&quot;,&quot;D6&quot;,&quot;D8&quot;,&quot;D10&quot;],&quot;stage&quot;:[&quot;Gam&quot;,&quot;ring&quot;,&quot;schizont&quot;,&quot;troph&quot;],&quot;cluster&quot;:[0,1,2,3,4,5,6,7,8,9,10,11]},&quot;columns&quot;:{&quot;pca&quot;:[&quot;PC_1&quot;,&quot;PC_2&quot;,&quot;PC_3&quot;],&quot;umap&quot;:[&quot;UMAP_1&quot;,&quot;UMAP_2&quot;,&quot;UMAP_3&quot;]}}" class="active" data-fred="[1,2,3]">
+          <h3>New Chromium 10x data: <a href="#pf-new-pca">PCA</a> <a href="#pf-new-umap">UMAP</a></h3>
+          <div id="pf-new-pca"><h4>Principal Component Analysis</h4>
+            <p>Prinicipal Component Analysis view of single-cell transcriptomes based on highly variable genes</p>
+            <div class="graph-wrapper">
+              <div id="pf-new-pca-graph" class="graph" data-view="PCA" data-dimensions="3" data-filter="Strain" data-filter-values=""></div>
+            </div>
+          </div>
+          <div id="pf-new-umap" class="active"><h4>UMAP clustering of cells</h4>
+            <p>UMAP visualisation of single-cell transcriptomes from across asexual and transmission stages of the parasite</p>
+            <div class="graph-wrapper">
+              <div id="pf-new-umap-graph" class="graph" data-view="UMAP" data-dimensions="3"></div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+      <p>This site is hosted by the <a href="https://www.sanger.ac.uk/">Wellcome Sanger Institute</a></p>
+      <p><a href="#cookies">Cookies policy</a> | <a href="#terms">Terms and Conditions</a></p>
+      </div>
+    </footer>
+    <script src="/mca/js/plotly-latest.min.js"></script>
+    <script src="/mca/js/mca.js"></script>
+    <script src="/mca/js/cookies.js"></script>
+  </body>
+</html>
