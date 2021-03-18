@@ -76,6 +76,10 @@ div.card > div p:first-of-type { margin-top: 1em }
 .data nav label { text-align: center; flex: 1 1 20%; padding: 0.25em; display: block; cursor: pointer }
 .data nav label span { display: block; background-color: #eee; padding: 0.25em }
 .data nav label input:checked + span { background-color: #333; color: #fff }
+.data nav .input { position: relative }
+.data nav .input ul { position: absolute; margin-top: 0; left: 0; right: 0}
+.data nav .input ul li { padding: 2px; background-color: #ccc; margin-bottom: 2px; display: block }
+.data nav .input input { display: block; box-sizing: border-box; width:100%; padding: 2px; font-weight: bold; font-size: 1rem; }
 .data nav .narrow label { flex: 1 1 15%; }
 .data nav label input { display: none }
 .data section > div { display: none }

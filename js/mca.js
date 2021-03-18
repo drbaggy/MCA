@@ -88,7 +88,8 @@ days.forEach(   _ => colours.days[ _[0]] = _[2] );
 load_data('#pf-new');
 
 var configuration = {
-  marker_size: 2
+  marker_size: 2,
+  marker_size_orig: 3
 };
 var settings = {
   filters: { stage:{}, days:{} },
@@ -97,7 +98,6 @@ var settings = {
 }
 stages.forEach( _ => settings.filters.stage[_[0]] = true );
 days.forEach(   _ => settings.filters.days[ _[0]] = true );
-console.log( settings );
 
 function load_data( id ) {
   var path = '/mca/data/' + (qs(id).dataset.directory) + '/samples.json';
@@ -110,19 +110,24 @@ function load_data( id ) {
     var colours_gene  = 'red';
     var size_filters  = plotdata.STAGE_HR.map( a => 1                        );
     var current_gene  = '';
+    var last_value    = '';
+    var current_colouring = 'stage';
     var size_colours  = plotdata.STAGE_HR.map( a => configuration.marker_size );
+    var gene_ids = {};
+    var dd = aqs('.input ul li');
+    dd.forEach( _ => gene_ids[_.innerText]=1 );
     var points_PC = [{
       x:plotdata.PC_1, y: plotdata.PC_2, z:plotdata.PC_3,
       mode: 'markers',
       text: plotdata.CELL_ID,
-      marker: { size: configuration.marker_size, color: colours_stage, line: {width:0} },
+      marker: { size: configuration.marker_size_orig, color: colours_stage, line: {width:0} },
       type: 'scatter3d'
     }];
     var points_UMAP = [{
       x:plotdata.UMAP_1, y: plotdata.UMAP_2, z:plotdata.UMAP_3,
       mode: 'markers',
       text: plotdata.CELL_ID,
-      marker: { size: configuration.marker_size, color: colours_stage, line: {width:0} },
+      marker: { size: configuration.marker_size_orig, color: colours_stage, line: {width:0} },
       type: 'scatter3d'
     }];
     Plotly.newPlot('pf-new-pca-graph', points_PC, {
@@ -150,36 +155,80 @@ function load_data( id ) {
       var x = 55; var nx = 255-x;
       return 'rgb('+(nx+x*a/mx)+','+(nx*(mx-a)/mx)+','+(nx*(mx-a)/mx)+')';
     }
-    function changeGene( n ) { n.onchange = function(e) {
+    function changeGene( n ) { n.onkeyup = n.onchange = function(e) {
       var new_gene = qs( nav, '#pf-new-gene' ).value;
+      // Check to see if it is a valid gene name...
+      if( ! ( new_gene in gene_ids ) ) {
+        if( last_value == new_gene ) {
+          return;
+        }
+        _m(qs('.input ul'),'li[style*=block]',function(_){_.style.display='none';});
+        last_value = new_gene;
+        var c = 0;
+        var nn = dd.length;
+        var last;
+        for(var i = 0; i < nn; i++ ) {
+          var _ = dd[i];
+          if( _.innerText.includes(new_gene) ) {
+            last = _;
+            _.style.display="block";
+            c++;
+          }
+          if(c>9) {
+            break;
+          }
+        }
+        if(c == 1 ) {
+          last.style.display="none";
+          qs(nav,'#pf-new-gene').value = new_gene = last.innerText;
+        } else {
+          return;
+        }
+      }
+      _m(qs('.input ul'),'li[style*=block]',function(_){_.style.display='none';});
+
       if( current_gene == new_gene ) {
-        Plotly.restyle( 'pf-new-umap-graph', { 'marker.color': [colours_gene] } );
-        Plotly.restyle( 'pf-new-pca-graph',  { 'marker.color': [colours_gene] } );
+        if( current_colouring == 'gene' ) {
+          Plotly.restyle( 'pf-new-umap-graph', { 'marker.color': [colours_gene] } );
+          Plotly.restyle( 'pf-new-pca-graph',  { 'marker.color': [colours_gene] } );
+        }
       } else {
         Plotly.d3.json( '/mca/data/' + (qs(id).dataset.directory) + '/expression/'+new_gene+'.json', function(err,expdata) {
+          current_gene = new_gene;
           var max_exp  = expdata.max;
           var counter  = 0;
           colours_gene = expdata.data.map( a => exp_colour(a,max_exp)                   );
           size_colours = expdata.data.map( a => configuration.marker_size + a/max_exp*9 );
-          var size     = size_colours.map( a => size_filters[counter++] * a              );
-          Plotly.restyle( 'pf-new-umap-graph', { 'marker.color': [colours_gene], 'marker.size':[size] } );
-          Plotly.restyle( 'pf-new-pca-graph',  { 'marker.color': [colours_gene], 'marker.size':[size] } );
+          var size     = size_colours.map( a => size_filters[counter++] * a             );
+          if( current_colouring == 'gene' ) {
+            Plotly.restyle( 'pf-new-umap-graph', { 'marker.color': [colours_gene], 'marker.size':[size] } );
+            Plotly.restyle( 'pf-new-pca-graph',  { 'marker.color': [colours_gene], 'marker.size':[size] } );
+          } else {
+            Plotly.restyle( 'pf-new-umap-graph', { 'marker.size':[size] } );
+            Plotly.restyle( 'pf-new-pca-graph',  { 'marker.size':[size] } );
+          }
         });
       }
     }};
     function changeColour( n ) { n.onchange = function(e) {
       if( qs(nav, 'input[type="radio"][value="day"]').checked ) {
-        Plotly.restyle( 'pf-new-umap-graph',  { 'marker.color':  [colours_day]   } );
+        current_colouring = 'day';
+        Plotly.restyle( 'pf-new-umap-graph',  { 'marker.color': [colours_day]   } );
         Plotly.restyle( 'pf-new-pca-graph',   { 'marker.color': [colours_day]   } );
       } else if( qs(nav, 'input[type="radio"][value="stage"]').checked ) {
-        Plotly.restyle( 'pf-new-umap-graph',  { 'marker.color':  [colours_stage] } );
+        current_colouring = 'stage';
+        Plotly.restyle( 'pf-new-umap-graph',  { 'marker.color': [colours_stage] } );
         Plotly.restyle( 'pf-new-pca-graph',   { 'marker.color': [colours_stage] } );
       } else {
-        var new_gene = qs( nav, '#pf-new-gene' ).value;
+        current_colouring = 'gene';
+        _m( nav,'input[type="text"]', function( _ ) { _.onchange(); } );
+        return;
         if( current_gene == new_gene ) {
+          // Only need to change colour as the last time we loaded the data in - it was the same colour
           Plotly.restyle( 'pf-new-umap-graph', { 'marker.color': [colours_gene] } );
           Plotly.restyle( 'pf-new-pca-graph',  { 'marker.color': [colours_gene] } );
         } else {
+          return;
           Plotly.d3.json( '/mca/data/' + (qs(id).dataset.directory) + '/expression/'+new_gene+'.json', function(err,expdata) {
             var max_exp  = expdata.max;
             var counter  = 0;
@@ -194,12 +243,10 @@ function load_data( id ) {
     }};
     function changeFilter( n ) { n.onchange = function(e) {
       var filter_set={};
-      console.log( aqs('input[type="checkbox"]') );
       _m(nav,'input[type="checkbox"]',function(a){
         filter_set[a.value] = a.checked ? 1: 0;
       });
       var counter = 0;
-      console.log(plotdata.DAY);
       size_filters = plotdata.STAGE_HR.map( function(a) { return filter_set[a] * filter_set[plotdata.DAY[counter++]]; } );
       counter = 0;
       var size     = size_colours.map( a => size_filters[counter++] * a              );
