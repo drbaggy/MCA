@@ -39,21 +39,21 @@
           <div>
             <h3>Filter by stage:</h3>
             <ul>
+              <li><span>Rings:</span>
+                  <label><input checked="checked" type="checkbox" name="stage" value="rings"><span>Rings</span></label></li>
               <li><span>Trophozoites:</span>
                   <label><input checked="checked" type="checkbox" name="stage" value="early trophozoites"><span>Early</span></label>
                   <label><input checked="checked" type="checkbox" name="stage" value="mid trophozoites"><span>Mid</span></label>
                   <label><input checked="checked" type="checkbox" name="stage" value="late trophozoites"><span>Late</span></label></li>
-              <li><span>Gametocytes:</span>
-                  <label><input checked="checked" type="checkbox" name="stage" value="early gametocytes"><span>Early</span></label>
-                  <label><input checked="checked" type="checkbox" name="stage" value="late gametocytes"><span>Late</span></label></li>
               <li><span>Schizonts:</span>
                   <label><input checked="checked" type="checkbox" name="stage" value="early schizonts"><span>Early</span></label>
                   <label><input checked="checked" type="checkbox" name="stage" value="late schizonts"><span>Late</span></label></li>
-              <li><span>Rings:</span>
-                  <label><input checked="checked" type="checkbox" name="stage" value="rings"><span>Rings</span></label></li>
+              <li><span>Gametocytes:</span>
+                  <label><input checked="checked" type="checkbox" name="stage" value="early gametocytes"><span>Early</span></label>
+                  <label><input checked="checked" type="checkbox" name="stage" value="late gametocytes"><span>Late</span></label></li>
             </ul>
             <h3>Filter by day:</h3>
-            <ul class="narrow"><span>
+            <ul class="narrow">
               <li><label><input checked="checked" type="checkbox" name="day" value="D1"><span>1</span></label>
                   <label><input checked="checked" type="checkbox" name="day" value="D2"><span>2</span></label>
                   <label><input checked="checked" type="checkbox" name="day" value="D3"><span>3</span></label>
@@ -71,9 +71,35 @@
             <label><input type="radio" value="day"   name="filter"><span>Day</span></label>
             <label><input type="radio" value="gene"  name="filter"><span>Gene</span></label>
           </li></ul>
-          <div>
+          <div class="legend" id="legend-stage">
+            <ul><li><span style="background-color:#78C679">&nbsp;</span>Rings</li>
+                <li><span style="background-color:#feb24c">&nbsp;</span>Early trophozoites</li>
+                <li><span style="background-color:#f4cf63">&nbsp;</span>Mid trophozoites</li>
+                <li><span style="background-color:#feeeaa">&nbsp;</span>Late trophozoites</li>
+                <li><span style="background-color:#85b1d3">&nbsp;</span>Early schizonts</li>
+                <li><span style="background-color:#c9e8f1">&nbsp;</span>Late schizonts</li>
+                <li><span style="background-color:#c1b2d6">&nbsp;</span>Early gametocytes</li>
+                <li><span style="background-color:#6a3d9a">&nbsp;</span>Late gametocytes</li>
+            </ul>
+          </div>
+
+          <div class="legend" id="legend-day" style="display:none">
+            <ul><li><span style="background-color:#D73027">&nbsp;</span>Day 1</li>
+                <li><span style="background-color:#F46D43">&nbsp;</span>Day 2</li>
+                <li><span style="background-color:#FDAE61">&nbsp;</span>Day 3</li>
+                <li><span style="background-color:#FEE090">&nbsp;</span>Day 4</li>
+                <li><span style="background-color:#E0F3F8">&nbsp;</span>Day 6</li>
+                <li><span style="background-color:#ABD9E9">&nbsp;</span>Day 8</li>
+                <li><span style="background-color:#74ADD1">&nbsp;</span>Day 10</li>
+            </ul>
+          </div>
+          <div class="genebox">
             <h3>Gene expression</h3>
-            <div class="input"><input type="text" id="pf-new-gene" value="" />
+            <div class="input">
+              <div>
+              <label for="pf-new-gene">Gene ID:</label>
+              <input type="text" id="pf-new-gene" value="" />
+              </div>
             <ul>
 <li style="display:none">PF3D7_0100100</li>
 <li style="display:none">PF3D7_0100200</li>
@@ -5437,7 +5463,13 @@
 <li style="display:none">PF3D7_1479800</li>
 <li style="display:none">PF3D7_1479900</li>
 <li style="display:none">PF3D7_1480000</li>
-            </ul></div>
+            </ul>
+          <div id="legend-gene" class="gradient" style="display:none">
+            <span id="exp-min">-</span>
+            <span id="exp-max">-</span>
+            <div><div>&nbsp;</div></div>
+          </div>
+            </div>
           </div>
         </div>
       </nav>
@@ -5449,15 +5481,17 @@
                  data-plots="{&quot;pca&quot;:{&quot;columns&quot;:[&quot;PC_1&quot;,&quot;PC_2&quot;,&quot;PC_3&quot;]},&quot;umap&quot;:{&quot;columns&quot;:[&quot;UDMA_1&quot;,&quot;UDMA_2&quot;,&quot;UDMA_3&quot;]}}"
                  data-config="{&quot;filters&quot;:{&quot;strains&quot;:[&quot;NF54&quot;,&quot;7G8&quot;],&quot;days&quot;:[&quot;D1&quot;,&quot;D2&quot;,&quot;D3&quot;,&quot;D4&quot;,&quot;D6&quot;,&quot;D8&quot;,&quot;D10&quot;],&quot;stage&quot;:[&quot;Gam&quot;,&quot;ring&quot;,&quot;schizont&quot;,&quot;troph&quot;],&quot;cluster&quot;:[0,1,2,3,4,5,6,7,8,9,10,11]},&quot;columns&quot;:{&quot;pca&quot;:[&quot;PC_1&quot;,&quot;PC_2&quot;,&quot;PC_3&quot;],&quot;umap&quot;:[&quot;UMAP_1&quot;,&quot;UMAP_2&quot;,&quot;UMAP_3&quot;]}}" class="active" data-fred="[1,2,3]">
           <h3>New Chromium 10x data: <a href="#pf-new-pca">PCA</a> <a href="#pf-new-umap">UMAP</a></h3>
-          <div id="pf-new-pca"><h4>Principal Component Analysis</h4>
+          <div id="pf-new-pca"><h4>Principal Component Analysis<span class="pf-extra-title"></span></h4>
             <p>Prinicipal Component Analysis view of single-cell transcriptomes based on highly variable genes</p>
             <div class="graph-wrapper">
+              <div class="loading">LOADING CHROMIUM 10x DATA</div>
               <div id="pf-new-pca-graph" class="graph" data-view="PCA" data-dimensions="3" data-filter="Strain" data-filter-values=""></div>
             </div>
           </div>
-          <div id="pf-new-umap" class="active"><h4>UMAP clustering of cells</h4>
+          <div id="pf-new-umap" class="active"><h4>UMAP clustering of cells<span class="pf-extra-title"></span></h4>
             <p>UMAP visualisation of single-cell transcriptomes from across asexual and transmission stages of the parasite</p>
             <div class="graph-wrapper">
+              <div class="loading">LOADING CHROMIUM 10x DATA</div>
               <div id="pf-new-umap-graph" class="graph" data-view="UMAP" data-dimensions="3"></div>
             </div>
           </div>
@@ -5471,7 +5505,7 @@
       <p><a href="#cookies">Cookies policy</a> | <a href="#terms">Terms and Conditions</a></p>
       </div>
     </footer>
-    <script src="/mca/js/plotly-latest.min.js"></script>
+    <script src="/mca/js/plotly-gl3d-latest.min.js"></script>
     <script src="/mca/js/mca.js"></script>
     <script src="/mca/js/cookies.js"></script>
   </body>

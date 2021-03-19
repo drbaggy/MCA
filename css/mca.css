@@ -77,10 +77,13 @@ div.card > div p:first-of-type { margin-top: 1em }
 .data nav label span { display: block; background-color: #eee; padding: 0.25em }
 .data nav label input:checked + span { background-color: #333; color: #fff }
 .data nav .input { position: relative }
-.data nav .input ul { position: absolute; margin-top: 0; left: 0; right: 0}
+.data nav .input ul { position: absolute; margin-top: 0; left: 0; right: 0;background-color:#fff; cursor: pointer}
 .data nav .input ul li { padding: 2px; background-color: #ccc; margin-bottom: 2px; display: block }
 .data nav .input input { display: block; box-sizing: border-box; width:100%; padding: 2px; font-weight: bold; font-size: 1rem; }
 .data nav .narrow label { flex: 1 1 15%; }
+.data .input div { display: flex; flex-flow: row wrap; white-space: nowrap}
+.data .input div label { text-align: left; flex: 1 1 20%; font-weight: bold }
+.data .input div input { flex: 1 1 70%; }
 .data nav label input { display: none }
 .data section > div { display: none }
 .data section > div.active { display: block }
@@ -92,8 +95,9 @@ header nav li a:hover, #species div > p:last-of-type a:hover { color: #666 }
 .pub .title { font-style: italic }
 .pub .volume { font-weight: 700 }
 
-.graph-wrapper { width: 100%; height: 0; padding-bottom: 60%; position: relative }
-.graph { position:absolute; height: 100%; width: 100% }
+.graph-wrapper { width: 100%; height: 0; padding-bottom: 75%; position: relative }
+.loading, .graph { position:absolute; height: 100%; width: 100%; }
+.loading { opacity: 0.2; z-index: 20; background-color: #999; padding-top: 35%; font-weight: bold; font-size: 2em; text-align: center; color: #000; box-sizing: border-box; overflow: hidden }
 section.data h2 { font-style: italic; flex: 0 0 100% }
 section.data { display: none }
 section.data.active { display: flex; flex-flow: row wrap; justify-content: space-between; align-content: space-between }
@@ -122,3 +126,11 @@ section section section div { width: 100% }
 h3 a { float: right; display: block; margin-left: 1em; padding: 5px 1em; font-size: 60%; background-color: #ccc; border-radius: 3px }
 
 .graph > * > *, .graph > * { position: absolute; width:100%;height:100%; top:0; left: 0 }
+
+nav .legend li { display: block; padding-left: 2em }
+nav .legend li span { display: inline-block; overflow: hidden; height:0.5em; width: 0.5em; border-radius: 0.25em; margin-right: 1em }
+
+.gradient { display:flex;flex-flow: row wrap; justify-content: space-between; }
+.gradient span { flex: 0 0 2em; text-align: center }
+.gradient div { flex: 0 0 100%; padding: 0.25em 1em 0.25em; box-sizing: border-box }
+.gradient div div { height: 1em; background-image: linear-gradient(to right, #440154, #472D7B 12.5%, #3B528B 25%, #2C728E 37.5%, #21908C 50%, #27AD81 62.5%, #5DC863 75%, #AADC32 87.5%, #FDE725); }
