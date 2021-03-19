@@ -84,16 +84,18 @@ var days = [
   ["D8",  5,"#ABD9E9"],
   ["D10", 6,"#74ADD1"],
 ];
-var colours = { stage: {}, days: {} };
-stages.forEach( _ => colours.stage[_[0]] = _[2] );
-days.forEach(   _ => colours.days[ _[0]] = _[2] );
-load_data('#pf-new');
-
 var configuration = {
   marker_size: 5,
   marker_size_orig: 5,
   marker_size_factor: 0
 };
+var HOVER_TEMPLATE = '<b>%{text}</b><br>Stage: %{customdata[0]}<br>Day: %{customdata[1]}<br><br>Co-ord: (%{x},%{y},%{z})<extra></extra>';
+var HOVER_TEMPLATE_GENE = '<b>%{text}</b><br>Stage: %{customdata[0]}<br>Day: %{customdata[1]}<br>Expr.: %{customdata[2]}<br><br>Co-ord: (%{x},%{y},%{z})<extra></extra>';
+var colours = { stage: {}, days: {} };
+stages.forEach( _ => colours.stage[_[0]] = _[2] );
+days.forEach(   _ => colours.days[ _[0]] = _[2] );
+load_data('#pf-new');
+
 /*
 var settings = {
   filters: { stage:{}, days:{} },
@@ -124,6 +126,9 @@ function load_data( id ) {
     var active_gene   = 'PF3D7-0935900';
     var colours_day   = plotdata.DAY.map(      function(a) { return colours.days[a]; } );
     var colours_stage = plotdata.STAGE_HR.map( function(a) { return colours.stage[a]; } );
+    var c=0;
+    var custom = plotdata.DAY.map( _ => [plotdata.STAGE_HR[c++],_] );
+    var custom_expression;
     var colours_gene  = 'red';
     var size_filters  = plotdata.STAGE_HR.map( a => 1                        );
     var current_gene  = undefined;
@@ -138,6 +143,8 @@ function load_data( id ) {
       mode: 'markers',
       text: plotdata.CELL_ID,
       marker: { size: [size_colours], color: colours_stage, line: {width:0} },
+      customdata: custom,
+      hovertemplate: HOVER_TEMPLATE,
       type: 'scatter3d'
     }];
     var points_UMAP = [{
@@ -145,6 +152,8 @@ function load_data( id ) {
       mode: 'markers',
       text: plotdata.CELL_ID,
       marker: { size: [size_colours], color: colours_stage, line: {width:0} },
+      customdata: custom,
+      hovertemplate: HOVER_TEMPLATE,
       type: 'scatter3d'
     }];
     Plotly.newPlot('pf-new-pca-graph', points_PC, {
@@ -217,11 +226,11 @@ function load_data( id ) {
         var size_empty  = size_colours.map(   a => size_filters[counter++] * configuration.marker_size_orig          );
         _m('.gradient span',_ => _.innerText = '-');
         if( current_colouring == 'gene' ) {
-          Plotly.restyle( 'pf-new-umap-graph', { 'text': [plotdata.CELL_ID], 'marker.color': [colours_gene], 'marker.size':[size_empty] } );
-          Plotly.restyle( 'pf-new-pca-graph',  { 'text': [plotdata.CELL_ID], 'marker.color': [colours_gene], 'marker.size':[size_empty] } );
+          Plotly.restyle( 'pf-new-umap-graph', { 'marker.color': [colours_gene], 'marker.size':[size_empty], 'customdata': [custom],  'hovertemplate': HOVER_TEMPLATE } );
+          Plotly.restyle( 'pf-new-pca-graph',  { 'marker.color': [colours_gene], 'marker.size':[size_empty], 'customdata': [custom],  'hovertemplate': HOVER_TEMPLATE } );
         } else {
-          Plotly.restyle( 'pf-new-umap-graph', { 'text': [plotdata.CELL_ID], 'marker.size':[size_empty] } );
-          Plotly.restyle( 'pf-new-pca-graph',  { 'text': [plotdata.CELL_ID], 'marker.size':[size_empty] } );
+          Plotly.restyle( 'pf-new-umap-graph', { 'marker.size':[size_empty], 'customdata': [custom],  'hovertemplate': HOVER_TEMPLATE } );
+          Plotly.restyle( 'pf-new-pca-graph',  { 'marker.size':[size_empty], 'customdata': [custom],  'hovertemplate': HOVER_TEMPLATE } );
         }
         return;
       }
@@ -237,20 +246,20 @@ function load_data( id ) {
           _m('.gradient span',_ => _.innerText = '-');
         } else {
           colours_gene = expdata.data.map( a => exp_colour(a,max_exp)                   );
-console.log(colours_gene);
           size_colours = expdata.data.map( a => configuration.marker_size + a/max_exp*configuration.marker_size_factor );
           _1('.gradient span:first-of-type',_ => _.innerText = '0.0');
           _1('.gradient span:last-of-type', _ => _.innerText = Number.parseFloat(max_exp).toPrecision(2));
         }
+
         var size     = size_colours.map( a => size_filters[counter++] * a             );
         counter = 0;
-        var text_labels = plotdata.CELL_ID.map( _ => _+' : '+(expdata.data[counter++]) );
+        custom_expression = [custom.map( _ => [_[0],_[1],expdata.data[counter++]] )];
         if( current_colouring == 'gene' ) {
-          Plotly.restyle( 'pf-new-umap-graph', { 'text': [text_labels], 'marker.color': [colours_gene], 'marker.size':[size] } );
-          Plotly.restyle( 'pf-new-pca-graph',  { 'text': [text_labels], 'marker.color': [colours_gene], 'marker.size':[size] } );
+          Plotly.restyle( 'pf-new-umap-graph', { 'marker.color': [colours_gene], 'marker.size':[size], 'customdata': custom_expression, 'hovertemplate': HOVER_TEMPLATE_GENE } );
+          Plotly.restyle( 'pf-new-pca-graph',  { 'marker.color': [colours_gene], 'marker.size':[size], 'customdata': custom_expression, 'hovertemplate': HOVER_TEMPLATE_GENE } );
         } else {
-          Plotly.restyle( 'pf-new-umap-graph', { 'text': [text_labels], 'marker.size':[size] } );
-          Plotly.restyle( 'pf-new-pca-graph',  { 'text': [text_labels], 'marker.size':[size] } );
+          Plotly.restyle( 'pf-new-umap-graph', { 'marker.size':[size], 'customdata': custom_expression, 'hovertemplate': HOVER_TEMPLATE_GENE } );
+          Plotly.restyle( 'pf-new-pca-graph',  { 'marker.size':[size], 'customdata': custom_expression, 'hovertemplate': HOVER_TEMPLATE_GENE } );
         }
         _m('.loading',_ => _.style.display = 'none');
       });
