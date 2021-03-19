@@ -118,7 +118,7 @@ function exp_colour(a,mx) {
 }
 
 function load_data( id ) {
-  var path = '/mca/data/' + (qs(id).dataset.directory) + '/samples.json';
+  var path = 'data/' + (qs(id).dataset.directory) + '/samples.json';
   var plotdata;
   _m('.loading',_ => _.style.display = 'block');
   Plotly.d3.json(path, function(err, plotdata) {
@@ -235,7 +235,7 @@ function load_data( id ) {
         return;
       }
       _m('.loading', function(_) { _.innerText = 'LOADING DATA FOR '+new_gene; _.style.display = 'block'; } );
-      Plotly.d3.json( '/mca/data/' + (qs(id).dataset.directory) + '/expression/'+new_gene+'.json', function(err,expdata) {
+      Plotly.d3.json( 'data/' + (qs(id).dataset.directory) + '/expression/'+new_gene+'.json', function(err,expdata) {
         current_gene = new_gene;
         _m('.pf-extra-title',function(_) { _.innerText = ' - showing expression for gene: '+new_gene; });
         var max_exp  = expdata.max;
