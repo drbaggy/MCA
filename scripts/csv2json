@@ -1,0 +1,82 @@
+use strict;
+open my $fh, '<', 'samples.csv';
+$_ = <$fh>;
+my %x;
+chomp;
+my @headers = split /,/;
+my $T = '%0.4f';
+my $config = {
+  ## Expressed as RGB...
+  'expression_colours' => [[68,1,84],[71,45,123],[59,82,139],[44,114,142],[33,144,140],[39,173,129],[93,200,99],[170,220,50],[170,220,50]],
+  ## Colours can be RGB or hex...
+  'default_expression' => '#cccccc',
+  'ranges' => {
+    'PC'   => [ [-10,25],[-12,29],[-23,12] ],
+    'UMAP' => [ [ -5, 6],[ -3, 4],[ -6, 3] ],
+  },
+  'dimensions' => {qw(PC 3 UMAP 3)},
+  'columns' => [
+    { 'name' => 'Stage',
+      'marker_size' => 5,
+      'colours' => [
+        ['rings',               '#78C679','Rings'],
+        ['early trophozoites',  '#FEB24C','Trophozoites'],
+        ['mid trophozoites',    '#F4CF63','Trophozoites'],
+        ['late trophozoites',   '#FEEEAA','Trophozoites'],
+        ['early schizonts',     '#85B1D3','Schizonts'],
+        ['late schizonts',      '#C9E8F1','Schizonts'],
+        ['early gametocytes',   '#CAB2D6','Gametocytes'],
+        ['late gametocytes',    '#6A3D9A','Gametocytes'],
+      ],
+    },
+    { 'name' => 'Day',
+      'colours' => [
+        ['D1',  '#D73027'],
+        ['D2',  '#F46D43'],
+        ['D3',  '#FDAE61'],
+        ['D4',  '#FEE090'],
+        ['D6',  '#E0F3F8'],
+        ['D8',  '#ABD9E9'],
+        ['D10', '#74ADD1'],
+      ],
+    },
+  ],
+};
+my $c=0;
+my %map_9 = map {  $_->[0] => $c++ }  @{$config->{'columns'}[0]{'colours'}};
+$c= 0;
+my %map_12 = map { $_->[0] => $c++ }  @{$config->{'columns'}[1]{'colours'}};
+warn "FETCHING";
+while(<$fh>) {
+  chomp;
+  my @v = split /,/;
+  push @{$x{'PC'}[0]},       1*sprintf $T,$v[1];
+  push @{$x{'PC'}[1]},       1*sprintf $T,$v[2];
+  push @{$x{'PC'}[2]},       1*sprintf $T,$v[3];
+  push @{$x{'UMAP'}[0]},     1*sprintf $T,$v[4];
+  push @{$x{'UMAP'}[1]},     1*sprintf $T,$v[5];
+  push @{$x{'UMAP'}[2]},     1*sprintf $T,$v[6];
+  push @{$x{'CUSTOMDATA'}}, [ $map_9{$v[9]},$map_12{$v[12]} ];
+}
+close $fh;
+warn "getting genes\n";
+open my $fh, q(<), 'genes.txt';
+my @genes = map { chomp;$_ } <$fh>;
+close $fh;
+
+my $data = {
+  'config' => $config,
+  'genes' => \@genes,
+  'data'  => \%x
+};
+use JSON qw(encode_json);
+use YAML qw(Dump);
+warn "YAML";
+open $fh, '>', 'x_samples.yaml';
+print {$fh} Dump($data);
+close $fh;
+warn "JSON";
+open $fh, '>', 'x_samples.json';
+print {$fh} encode_json($data);
+close $fh;
+
