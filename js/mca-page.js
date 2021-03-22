@@ -22,10 +22,10 @@
   _.m( 'ul.datatabs a', function(n) {
     n.onclick = function( e ) {
       e.preventDefault();
-      if( ! _.1(n.hash, isactive ) ) {
+      if( ! _.s(n.hash, isactive ) ) {
         var r = n.hash.split('-');
         _.m(r[0]+' > div > section', dis );   // Hide all sections in this species..
-        _.1(n.hash,act);
+        _.s(n.hash,act);
         find_active_graph();
       }
     }
@@ -36,10 +36,10 @@
   _.m('.data section h3 a',function(n){
     n.onclick = function (e) {
       e.preventDefault();
-      if( ! _.1(n.hash, isactive ) ) {
+      if( ! _.s(n.hash, isactive ) ) {
         var r = n.hash.split('-');
         _.m(r[0]+'-'+r[1]+' div', dis );
-        _.1(n.hash,act);
+        _.s(n.hash,act);
         find_active_graph();
       }
     }
