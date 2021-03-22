@@ -97,20 +97,21 @@
               </ul>
             </div>
             <!-- gene input box and gradient legend -->
-            <div id="legend-gene" class="gradient" style="display:none">
-              <div class="genebox">
-                <div class="input">
-                  <div>
-                    <label for="pf-new-gene">Gene ID:</label>
-                    <input type="text" id="pf-new-gene" value="" />
-                  </div>
+            <div id="legend-gene" class="legend" style="display:none">
+              <div class="input">
+                <div>
+                  <label for="pf-new-gene">Gene ID:</label>
+                  <input type="text" id="pf-new-gene" value="" />
                 </div>
                 <ul>
                 </ul>
+                <div><label>Expression:</label></div>
               </div>
-              <span id="exp-min">-</span>
-              <span id="exp-max">-</span>
-              <div><div>&nbsp;</div></div>
+              <div class="gradient">
+                <span id="exp-min">-</span>
+                <span id="exp-max">-</span>
+                <div><div>&nbsp;</div></div>
+              </div>
             </div>
           </div>
         </nav>
@@ -126,7 +127,6 @@
             </div>
           </div>
           <!-- Graph 2 -->
-          <h3>New Chromium 10x data: <a href="#pf-new-pca">PCA</a> <a href="#pf-new-umap">UMAP</a></h3>
           <div id="pf-new-umap" class="active"><h4>UMAP clustering of cells<span class="pf-extra-title"></span></h4>
             <p>UMAP visualisation of single-cell transcriptomes from across asexual and transmission stages of the parasite</p>
             <div class="graph-wrapper">
@@ -146,6 +146,7 @@
     </footer>
     <script src="js/plotly-gl3d-latest.min.js"></script>
     <script src="js/mca-core.js"></script>
+    <script src="js/mca-page.js"></script>
     <script src="js/mca-graph.js"></script>
     <script src="js/cookies-gcc.js"></script>
   </body>

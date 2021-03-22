@@ -6,13 +6,18 @@ use POSIX qw(floor ceil);
 use JSON qw(encode_json);
 use YAML qw(Dump);
 
-my %graph_data;
-my @headers = split /,/;
 my $T_COORD = '%0.4f';
 my $T_EXPR  = '%0.6f';
+
+my $expr_flag = @ARGV ? 1 : 0;
 my $config = {
   ## Expressed as RGB...
-  'expression_colours'  => [[68,1,84],[71,45,123],[59,82,139],[44,114,142],[33,144,140],[39,173,129],[93,200,99],[170,220,50],[170,220,50]],
+  'expression_colours'  => [
+    [68,1,84],[71,45,123],[59,82,139],
+    [44,114,142],[33,144,140],[39,173,129],
+    [93,200,99],[170,220,50],[253,231,37],
+    [253,231,37],
+  ],
   ## Colours can be RGB or hex...
   'expression_default'  => '#cccccc',
   'ranges'              => {},
@@ -51,6 +56,7 @@ $map[12] = {map { $_->[0] => $c++ }  @{$config->{'columns'}[1]{'colours'}}};
 
 my @max;
 my @min;
+my %graph_data;
 open my $fh,   '<', 'samples.csv';
 $_ = <$fh>; ## Remove header...
 while(<$fh>) {
@@ -77,19 +83,20 @@ $config->{'ranges'} = {
 ## this to the data...
 
 open $fh, q(<), 'expression.csv';
-$_ = <$fh>;
+$_ = <$fh>; ## remove header!
 my @genes;
 while(<$fh>) {
   chomp;
   my $max = 0;
   my($name,@values) = split m{,};
+  $name=~s{"}{}g;
+  $name=~s{-}{_}g;
+  push @genes, $name;
+  next unless $expr_flag;
   @values = map { 1*sprintf $T_EXPR, $_ } @values;
   foreach(@values) {
     $max = $_ if $max < $_;
   }
-  $name=~s{"}{}g;
-  $name=~s{-}{_}g;
-  push @genes,$name;
   open my $oh, q(>), "expression/$name.json";
   say {$oh} '{"max":',$max,',"data":[',(join q(,),@values), ']}';
   close $oh;
