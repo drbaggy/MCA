@@ -10,7 +10,8 @@ my $T_COORD = '%0.4f';
 my $T_EXPR  = '%0.6f';
 
 my $expr_flag = @ARGV ? 1 : 0;
-my $config = {
+
+my $graph = {
   ## Expressed as RGB...
   'expression_colours'  => [
     [68,1,84],[71,45,123],[59,82,139],
@@ -50,9 +51,9 @@ my $config = {
 };
 my @map;
 my $c=0;
-$map[9]  = {map { $_->[0] => $c++ }  @{$config->{'columns'}[0]{'colours'}}};
+$map[9]  = {map { $_->[0] => $c++ }  @{$graph->{'columns'}[0]{'colours'}}};
 $c= 0;
-$map[12] = {map { $_->[0] => $c++ }  @{$config->{'columns'}[1]{'colours'}}};
+$map[12] = {map { $_->[0] => $c++ }  @{$graph->{'columns'}[1]{'colours'}}};
 
 my @max;
 my @min;
@@ -73,7 +74,7 @@ while(<$fh>) {
 close $fh;
 
 ## Update configuration with ranges of the co-ord systems
-$config->{'ranges'} = {
+$graph->{'ranges'} = {
   'PC'   => [ map {[floor($min[$_]),ceil $max[$_]]} 1..3 ],
   'UMAP' => [ map {[floor($min[$_]),ceil $max[$_]]} 4..6 ],
 };
@@ -97,6 +98,7 @@ while(<$fh>) {
   foreach(@values) {
     $max = $_ if $max < $_;
   }
+
   open my $oh, q(>), "expression/$name.json";
   say {$oh} '{"max":',$max,',"data":[',(join q(,),@values), ']}';
   close $oh;
@@ -104,17 +106,14 @@ while(<$fh>) {
 
 close $fh;
 
-my $data = {
-  'config' => $config,
-  'genes' => \@genes,
-  'data'  => \%graph_data
-};
+$graph->{'genes'} = \@genes;
+$graph->{'data'}  = \%graph_data;
 
 open $fh, q(>), 'x_samples.yaml';
-print {$fh} Dump($data);
+print {$fh} Dump($graph);
 close $fh;
 
 open $fh, q(>), 'x_samples.json';
-print {$fh} encode_json($data);
+print {$fh} encode_json($graph);
 close $fh;
 
