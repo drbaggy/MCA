@@ -46,7 +46,7 @@
   });
 
   function find_active_graph() {    
-    var a = _.q( '.active .active .active .graph' )
+    var a = _.qs( '.active .active .active .graph' )
     Plotly.relayout( a.id,{width:a.offsetWidth,height:a.offsetHeight});
   }
 }());
