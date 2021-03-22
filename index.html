@@ -21,7 +21,7 @@
     <meta property="og:image" content="https://www.sanger.ac.uk/wp-content/themes/www_sanger/dist/assets/gfx/og-sanger-logo.png">
     <meta property="og:locale" content="en_GB" />
     <meta property="og:profile_id" content="sangerinstitute" />
-    <link rel="stylesheet" href="css/mca-min.css">
+    <link rel="stylesheet" href="css/mca.css">
     <link rel="stylesheet" href="css/cookies-min.css">
   </head>
   <body id="body">
@@ -73,7 +73,7 @@
               <label><input                   type="radio" value="day"   name="filter"><span>Day</span></label>
               <label><input                   type="radio" value="gene"  name="filter"><span>Gene</span></label>
             </li></ul>
-            <-- Stage legend -->
+            <!-- Stage legend -->
             <div class="legend" id="legend-stage">
               <ul><li><span style="background-color:#78C679">&nbsp;</span>Rings</li>
                   <li><span style="background-color:#feb24c">&nbsp;</span>Early trophozoites</li>
@@ -85,7 +85,7 @@
                   <li><span style="background-color:#6a3d9a">&nbsp;</span>Late gametocytes</li>
               </ul>
             </div>
-            <-- Day legend -->
+            <!-- Day legend -->
             <div class="legend" id="legend-day" style="display:none">
               <ul><li><span style="background-color:#D73027">&nbsp;</span>Day 1</li>
                   <li><span style="background-color:#F46D43">&nbsp;</span>Day 2</li>
@@ -145,7 +145,8 @@
       </div>
     </footer>
     <script src="js/plotly-gl3d-latest.min.js"></script>
-    <script src="js/mca.js"></script>
+    <script src="js/mca-core.js"></script>
+    <script src="js/mca-graph.js"></script>
     <script src="js/cookies-gcc.js"></script>
   </body>
 </html>
