@@ -77,13 +77,14 @@ div.card > div p:first-of-type { margin-top: 1em }
 .data nav label span { display: block; background-color: #eee; padding: 0.25em }
 .data nav label input:checked + span { background-color: #333; color: #fff }
 .data nav .input { position: relative }
-.data nav .input ul { position: absolute; margin-top: 0; left: 0; right: 0;background-color:#fff; cursor: pointer}
-.data nav .input ul li { padding: 2px; background-color: #ccc; margin-bottom: 2px; display: block }
+.data nav .input ul { position: absolute; margin-top: 0; left: 0; right: 0; top: 100%; background-color:#fff; cursor: pointer}
+.data nav .input ul li { padding: 2px; background-color: #ccc; border: 2px solid #fff; border-top: 0px; display: block }
+.data nav .input ul li:first-of-type { border-top: 2px solid #fff;}
 .data nav .input input { display: block; box-sizing: border-box; width:100%; padding: 2px; font-weight: bold; font-size: 1rem; }
 .data nav .narrow label { flex: 1 1 15%; }
 .data .input div { display: flex; flex-flow: row wrap; white-space: nowrap}
 .data .input div label { text-align: left; flex: 1 1 20%; font-weight: bold }
-.data .input div input { flex: 1 1 70%; }
+.data .input div div { flex: 1 1 70%; position: relative }
 .data nav label input { display: none }
 .data section > div { display: none }
 .data section > div.active { display: block }
@@ -132,5 +133,10 @@ nav .legend li span { display: inline-block; overflow: hidden; height:0.5em; wid
 
 .gradient { display:flex;flex-flow: row wrap; justify-content: space-between; }
 .gradient span { flex: 0 0 2em; text-align: center }
-.gradient div { flex: 0 0 100%; padding: 0.25em 1em 0.25em; box-sizing: border-box }
+.gradient div { flex: 0 0 100%; padding: 0.25em 1em 0.25em; box-sizing: border-box; }
+.gradient div p   { height: 0.2em; padding: 0; margin: 0; background-image: linear-gradient(to right, #000 1%, #fff 1%, #fff 49.5%, #000 49.5%, #000 50.5%, #fff 50.5%, #fff 99%, #000 99%) }
 .gradient div div { height: 1em; background-image: linear-gradient(to right, #440154, #472D7B 12.5%, #3B528B 25%, #2C728E 37.5%, #21908C 50%, #27AD81 62.5%, #5DC863 75%, #AADC32 87.5%, #FDE725); }
+
+.points { display: flex }
+.data .points label { flex: 0 0 10% }
+.data .points label span { background-color:#000; height: 0; width: 0; display: block; border: 1px solid red; padding: 0 }

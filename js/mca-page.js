@@ -14,7 +14,7 @@
         _.s(n.hash+'-menu', _.act );                                          // Show new menu if it exists!
         find_active_graph();
       }
-    }
+    };
   });
 //----------------------------------------------------------------------
 // Secondary navigation level - select dataset [secondary header nav]
@@ -28,7 +28,7 @@
         _.s(n.hash,_.act);
         find_active_graph();
       }
-    }
+    };
   });
 //----------------------------------------------------------------------
 // Ternary navigation level - select view [ data set panel nav ]
@@ -42,7 +42,7 @@
         _.s(n.hash,_.act);
         find_active_graph();
       }
-    }
+    };
   });
 
   function find_active_graph() {

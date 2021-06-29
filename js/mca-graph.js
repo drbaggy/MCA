@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 (function () {
   'use strict';
   var FILE_NAME = 'x_samples.json',
@@ -8,25 +10,22 @@
 
   function load_data( id ) {
     _.m('.loading', a => a.style.display = 'block');
-    var graph, counter, current_gene;
+    var graph, counter, current_gene, time = Date.now();
     Plotly.d3.json( 'data/' + (_.qs(id).dataset.directory) + '/' + FILE_NAME, function(err, graph) {
 // Create the hover templates...
+      var fetched_time = Date.now() - time;
       counter = 0;
       graph.hover_template      = graph.columns.map( a => a.name+': %{customdata['+(counter++)+']}' ).join('<br>');
-      graph.hover_template_expr = graph.hover_template + '<br>Expr.: %{text}<extra></extra>';
+      graph.hover_template_expr = graph.hover_template + '<br>Expression: %{text}<extra></extra>';
       graph.hover_template     += '<extra></extra>';
       graph.genes_length        = graph.genes.length;
 // Process the data to get the unmapped customdata and gene colours (by stage/day);
-      graph.default_text = data.CUSTOMDATA.map( a => '-' );
-      graph.visible      = data.CUSTOMDATA.map( a => graph.marker_size );
-      graph.customdata   = data.CUSTOMDATA.map( function(a) { counter = 0; return a.map( b => graph.columns[counter++].colours[b][0] ); } );
+      graph.default_text = graph.data.CUSTOMDATA.map( a => '-' );
+      graph.visible      = graph.data.CUSTOMDATA.map( a => graph.marker_size );
+      graph.customdata   = graph.data.CUSTOMDATA.map( function(a) { counter = 0; return a.map( b => graph.columns[counter++].colours[b][0] ); } );
       graph.colours      = { gene: graph.customdata.map( a => graph.expression_default ) };
       counter = 0;
-      graph.columns.forEach( function(a) {
-        graph.colours[ a.name.toLowerCase() ] = data.CUSTOMDATA.map( b => graph.columns[counter].colours[b[counter]][1] );
-        counter++;
-      });
-
+      graph.columns.forEach( function(a) { graph.colours[ a.name.toLowerCase() ] = graph.data.CUSTOMDATA.map( b => graph.columns[counter].colours[b[counter]][1] ); counter++; });
       function exp_colour(a,mx) {
         var i = Math.floor(a/mx*8);
         var o = a/mx - i/8;
@@ -39,13 +38,14 @@
 // Draw graph
       var def = graph.columns[0].name.toLowerCase();
       var points = {
-        PC:   [{ x: data.PC[0], y: data.PC[1], z:data.PC[2], mode: 'markers', text: graph.default_text,
+        PC:   [{ x: graph.data.PC[0], y: graph.data.PC[1], z:graph.data.PC[2], mode: 'markers', text: graph.default_text,
                  marker: { size: graph.visible, color: graph.colours[def], line: {width:0} },
                  customdata: graph.customdata, hovertemplate: graph.hover_template, type: 'scatter3d' }],
-        UMAP: [{ x: data.UMAP[0], y: data.UMAP[1], z:data.UMAP[2], mode: 'markers', text: graph.default_text,
+        UMAP: [{ x: graph.data.UMAP[0], y: graph.data.UMAP[1], z:graph.data.UMAP[2], mode: 'markers', text: graph.default_text,
                  marker: { size: graph.visible, color: graph.colours[def], line: {width:0} },
                  customdata: graph.customdata, hovertemplate: graph.hover_template, type: 'scatter3d' }]
       };
+      var process_time = Date.now() - time - fetched_time;
       Plotly.newPlot('pf-new-pca-graph', points.PC, { autosize: true, margin: MARGIN,
         scene: { xaxis: { range: graph.ranges.PC[0], title: 'PC 1' },
                  yaxis: { range: graph.ranges.PC[1], title: 'PC 2' },
@@ -54,6 +54,7 @@
         scene: { xaxis: { range: graph.ranges.UMAP[0], title: 'UMAP 1' },
                  yaxis: { range: graph.ranges.UMAP[1], title: 'UMAP 2' },
                  zaxis: { range: graph.ranges.UMAP[2], title: 'UMAP 3' }, }}, OPTIONS );
+      var rendered_time = Date.now() - time - fetched_time - process_time;
 
       var nav   = _.qs('#pf nav');
       var navdd = _.qs(nav,'.input ul');
@@ -65,7 +66,7 @@
         graph.visible = graph.customdata.map( a => graph.marker_size * filter_set[a[0]] * filter_set[a[1]] );
         Plotly.restyle( 'pf-new-umap-graph', { 'marker.size':[graph.visible] } );
         Plotly.restyle( 'pf-new-pca-graph',  { 'marker.size':[graph.visible] } );
-      }};
+      };}
       _.m(nav,'input[type="checkbox"]', changeFilter);
 // Now add actions on change colour set
       function changeColour( n ) { n.onchange = function(e) {
@@ -76,7 +77,9 @@
         Plotly.restyle( 'pf-new-umap-graph',  { 'marker.color': [graph.colours[tab_name]] } );
         Plotly.restyle( 'pf-new-pca-graph',   { 'marker.color': [graph.colours[tab_name]] } );
         return;
-      }};
+      };}
+
+// Now add actions on change gene...
       _.m(nav,'input[type="radio"]',    changeColour);
       function changeGene( n ) { n.onkeyup = function(e) {
         var new_gene = _.qs( nav, '#pf-new-gene' ).value;
@@ -100,42 +103,54 @@
         if( new_gene === '' ) {
           _.m('.pf-extra-title', a => _.innerText = '');
           current_gene = new_gene;
-          graph.colours.gene = graph.data.CUSTOMDATA.map( a => graph.default_expression ); // reset colours
-          _.m('.gradient span',a => a.innerText = '-');
+          graph.colours.gene = graph.data.CUSTOMDATA.map( a => graph.expression_default ); // reset colours
+          _.m(nav,'.gradient span',a => a.innerText = '-');
+          _.s(nav,'.gradient span.exp-ave', a => a.innerText = '' );
           Plotly.restyle( 'pf-new-umap-graph', { 'marker.color': [graph.colours.gene], 'hovertemplate': graph.hover_template } );
           Plotly.restyle( 'pf-new-pca-graph',  { 'marker.color': [graph.colours.gene], 'hovertemplate': graph.hover_template } );
           return;
         }
         // Here we now have to do another fetch this time of the expression data....
         _.m('.loading', function(a) { a.innerText = 'LOADING DATA FOR '+new_gene; a.style.display = 'block';} );
+        var t = Date.now();
         Plotly.d3.json( 'data/' + (_.qs(id).dataset.directory) + '/expression/'+new_gene+'.json', function(err,expdata) {
+          var ft = Date.now() - t;
           current_gene = new_gene;
           _.m('.pf-extra-title', a => a.innerText = ' - showing expression for gene: '+new_gene );
           var max_exp  = expdata.max;
           if( max_exp == 0 ) {
-            graph.colours.gene = expdata.data.map( a => graph.default_expression );
-            _.m('.gradient span', a => a.innerText = '-');
+            graph.colours.gene = expdata.data.map( a => graph.expression_default );
+            _.m(nav,'.gradient span', a => a.innerText = '-');
+            _.s(nav,'.gradient span.exp-ave', a => a.innerText = '' );
           } else {
             graph.colours.gene = expdata.data.map( a => exp_colour(a,max_exp) );
-            _.s('.gradient span:first-of-type', a => a.innerText = '0.00');
-            _.s('.gradient span:last-of-type',  a => a.innerText = Number.parseFloat(max_exp).toFixed(2) );
+            _.s(nav,'.gradient span:first-of-type',  a => a.innerText = '0.00');
+            _.s(nav,'.gradient span:nth-of-type(2)', a => a.innerText = Number.parseFloat(max_exp/2).toFixed(2) );
+            _.s(nav,'.gradient span:last-of-type',   a => a.innerText = Number.parseFloat(max_exp).toFixed(2) );
           }
+          var pt = Date.now() - t;
           Plotly.restyle( 'pf-new-umap-graph', { 'marker.color': [graph.colours.gene], 'text': [expdata.data], 'hovertemplate': graph.hover_template_expr } );
           Plotly.restyle( 'pf-new-pca-graph',  { 'marker.color': [graph.colours.gene], 'text': [expdata.data], 'hovertemplate': graph.hover_template_expr } );
           _.m('.loading',a => a.style.display = 'none');
+          var rt = Date.now() - t - ft - pt;
+          console.log( 'Fetch: '+(ft/1000)+' sec; Process: '+(pt/1000)+' sec; Render: '+(rt/1000)+' sec; Total: '+((Date.now()-t)/1000)+' sec.' );
         });
-      }};
+      };}
       _.m( nav,'input[type="text"]', changeGene );
+
       function ddClick( n ) { n.onclick = function(e) {
         _.s(nav,'input[type="text"]', function( a ) {
           a.value = e.target.innerText;
           _.s(navdd,'', b => b.innerHTML='');
           a.onkeyup();
         } );
-      }};
+      };}
       _.s( navdd, '', ddClick);
-// Now add actions on change gene...
+
+// Finally remove "shim" over graph...
       _.m('.loading',_ => _.style.display = 'none');
+      var post_time = Date.now() - time - fetched_time - rendered_time - process_time;
+      console.log( 'Fetch: '+(fetched_time/1000)+' sec; Process: '+(process_time/1000)+' sec; Render: '+(rendered_time/1000)+' sec; Post: '+(post_time/1000)+' sec; Total: '+((Date.now()-time)/1000)+' sec.' );
     });
   }
 }());

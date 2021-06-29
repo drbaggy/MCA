@@ -64,9 +64,8 @@
               </ul>
             </div>
           </div>
-          <!-- Colour panel -->
+
           <div>
-            <!-- selector -->
             <h3>Colour by:</h3>
             <ul><li>
               <label><input checked="checked" type="radio" value="stage" name="filter"><span>Stage</span></label>
@@ -101,16 +100,19 @@
               <div class="input">
                 <div>
                   <label for="pf-new-gene">Gene ID:</label>
-                  <input type="text" id="pf-new-gene" value="" />
+                  <div>
+                    <input type="text" id="pf-new-gene" value="" />
+                    <ul>
+                    </ul>
+                  </div>
                 </div>
-                <ul>
-                </ul>
                 <div><label>Expression:</label></div>
               </div>
               <div class="gradient">
-                <span id="exp-min">-</span>
-                <span id="exp-max">-</span>
-                <div><div>&nbsp;</div></div>
+                <span class="exp-min">-</span>
+                <span class="exp-ave"></span>
+                <span class="exp-max">-</span>
+                <div><p></p><div></div><p></p></div>
               </div>
             </div>
           </div>
@@ -145,9 +147,8 @@
       </div>
     </footer>
     <script src="js/plotly-gl3d-latest.min.js"></script>
-    <script src="js/mca-core.js"></script>
-    <script src="js/mca-page.js"></script>
-    <script src="js/mca-graph.js"></script>
+    <script src="js/mca-core.js"></script> <script src="js/mca-page.js"></script><script src="js/mca-graph.js"></script>
+    <!-- script src="js/mca-gcc.js"></script -->
     <script src="js/cookies-gcc.js"></script>
   </body>
 </html>
