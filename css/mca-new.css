@@ -18,7 +18,7 @@ strong, h1, h2, h3, h4 { font-weight: 700 }
 footer > div, header > div, main { margin: 0 auto; max-width: 1440px; padding: 0 10px; display: block }
 /* Set footer and headers and add "margin-busters" to the divs */
 footer { border-top: 1px solid #666; font-size: 0.8em; font-weight: 700 }
-header { height: 8rem; border-bottom: 1px #666 solid }
+header { border-bottom: 1px #666 solid }
 nav:after, footer:after, header:after { content: ""; clear: both; display: table; }
 header:before, footer:before { content: ""; display: table; }
 
@@ -27,18 +27,18 @@ h3 strong, h1 strong { color: #c00; background-color: #fff }
 
 /* Configuring the header using a grid layout... */
 header>div { display: -ms-grid; display: grid; grid-template-columns: 8.5rem auto auto; -ms-grid-columns: 8.5rem 1fr 1fr;
-grid-template-rows: 1fr 1fr; -ms-grid-columns: 4rem 4em }
+                                               grid-template-rows: 4rem 4rem; -ms-grid-columns: 4rem 4em }
 /* Logo */
-header div div { grid-column-start: 1; grid-column-end: 1; grid-row-start: 1; grid-row-end: 2; box-sizing: border-box;
-  -ms-grid-row:1; -ms-grid-column:1 }
-header img { width: 8rem; height: 8rem }
+header div div {
+  grid-column-start: 1; grid-column-end: 1; grid-row-start: 1; grid-row-end: 2; box-sizing: border-box; -ms-grid-row:1; -ms-grid-column:1
+}
 /* Title */
 header h1  {  margin: 0; padding: 0.5rem; line-height: 1em; grid-column-start: 2; grid-column-end: 2; grid-row-start: 1; grid-row-end: 1; height: 4rem; box-sizing: border-box; font-size: 3em; -ms-grid-row:1; -ms-grid-column:2  }
 /* Navigation */
-#top  { grid-column-start: 3; grid-column-end: 3; grid-row-start: 1; grid-row-end: 1; -ms-grid-row:1; -ms-grid-column:3 }
-#int  { grid-column-start: 3; grid-column-end: 3; grid-row-start: 2; grid-row-end: 2; -ms-grid-row:2; -ms-grid-column:3 }
-header nav a { display: inline-block; vertical-align: top; margin: 4px 0 4px 0.5em; padding: 4px; border-radius: 4px; background-color: #eee; font-weight: 700; font-size: 0.8rem; color: #000; text-decoration: none; border-left: 1px solid black; }
-header nav a:first-of-type { border-left: 0 }
+#top  { grid-column-start: 3; grid-column-end: 3; grid-row-start: 1; grid-row-end: 1; -ms-grid-row:1; -ms-grid-column:3; text-align: right; font-size: 1.2em }
+#int  { grid-column-start: 3; grid-column-end: 3; grid-row-start: 2; grid-row-end: 2; -ms-grid-row:2; -ms-grid-column:3; text-align: right; align-self: end }
+#int p { margin: 0.5em 0; font-weight: bold; }
+#int a { display: inline-block; background-color: #ccc; border-radius: 3px; padding: 3px; margin-left: 1em; padding: 2px 0.5em; }
 header h2 { margin: 0; padding: 0.5rem; line-height: 1em; grid-column-start: 2; grid-column-end: 2; grid-row-start: 2; grid-row-end: 2; box-sizing: border-box; font-size: 2em; -ms-grid-row:2; -ms-grid-column:2  }
 section { padding: 0.5em 1em; display: none }
 /*section section { display: block }*/
@@ -64,25 +64,6 @@ div.card > div .logo { display: block; margin: 1em auto; width: 50%; height: aut
 div.card > div h4 { margin-bottom: 0.5rem }
 div.card > div p:first-of-type { margin-top: 1em }
 
-.data section { flex: 1 1 70% }
-.data nav ul { padding:0; list-style: none }
-.data nav li { display: flex; flex-wrap: wrap }
-.data nav li > span { display: block; text-align: center; font-weight:bold; flex: 0 0 100% }
-.data nav label { text-align: center; flex: 1 1 20%; padding: 0.25em; display: block; cursor: pointer }
-.data nav label span { display: block; background-color: #eee; padding: 0.25em }
-.data nav label input:checked + span { background-color: #333; color: #fff }
-.data nav .input { position: relative }
-.data nav .input ul { position: absolute; margin-top: 0; left: 0; right: 0; top: 100%; background-color:#fff; cursor: pointer}
-.data nav .input ul li { padding: 2px; background-color: #ccc; border: 2px solid #fff; border-top: 0px; display: block }
-.data nav .input ul li:first-of-type { border-top: 2px solid #fff;}
-.data nav .input input { display: block; box-sizing: border-box; width:100%; padding: 2px; font-weight: bold; font-size: 1rem; }
-.data nav .narrow label { flex: 1 1 15%; }
-.data .input div { display: flex; flex-flow: row wrap; white-space: nowrap}
-.data .input div label { text-align: left; flex: 1 1 20%; font-weight: bold }
-.data .input div div { flex: 1 1 70%; position: relative }
-.data nav label input { display: none }
-.data section > div { display: none }
-.data section > div.active { display: block }
 #species div > p:last-of-type { text-align: right }
 #species div > p:last-of-type a { display: inline-block; text-decoration: none; padding: 0.5em; border-radius: 0.5em; background-color: #cfc; color: #000; font-weight: 700 }
 header nav li a:hover, #species div > p:last-of-type a:hover { color: #666 }
@@ -118,20 +99,3 @@ section.data nav { flex: 0 0 20% }
   header div { grid-template-columns: 4.5rem auto; grid-template-rows: 4rem auto }
 }
 .data h3 { width:100%}
-section section section div { width: 100% }
-h3 a { float: right; display: block; margin-left: 1em; padding: 5px 1em; font-size: 60%; background-color: #ccc; border-radius: 3px }
-
-.graph > * > *, .graph > * { position: absolute; width:100%;height:100%; top:0; left: 0 }
-
-nav .legend li { display: block; padding-left: 2em }
-nav .legend li span { display: inline-block; overflow: hidden; height:0.5em; width: 0.5em; border-radius: 0.25em; margin-right: 1em }
-
-.gradient { display:flex;flex-flow: row wrap; justify-content: space-between; }
-.gradient span { flex: 0 0 2em; text-align: center }
-.gradient div { flex: 0 0 100%; padding: 0.25em 1em 0.25em; box-sizing: border-box; }
-.gradient div p   { height: 0.2em; padding: 0; margin: 0; background-image: linear-gradient(to right, #000 1%, #fff 1%, #fff 49.5%, #000 49.5%, #000 50.5%, #fff 50.5%, #fff 99%, #000 99%) }
-.gradient div div { height: 1em; background-image: linear-gradient(to right, #440154, #472D7B 12.5%, #3B528B 25%, #2C728E 37.5%, #21908C 50%, #27AD81 62.5%, #5DC863 75%, #AADC32 87.5%, #FDE725); }
-
-.points { display: flex }
-.data .points label { flex: 0 0 10% }
-.data .points label span { background-color:#000; height: 0; width: 0; display: block; border: 1px solid red; padding: 0 }

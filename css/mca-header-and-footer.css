@@ -1,0 +1,59 @@
+/* Font definitions */
+@font-face { font-family: 'Roboto'; font-style: italic; font-weight: 400; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu51xGIzIFKw.woff2) format('woff2'); unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Roboto'; font-style: italic; font-weight: 400; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v20/KFOkCnqEu92Fr1Mu51xIIzI.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Roboto'; font-style: italic; font-weight: 700; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBic0CsTKlA.woff2) format('woff2'); unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Roboto'; font-style: italic; font-weight: 700; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v20/KFOjCnqEu92Fr1Mu51TzBic6CsQ.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Roboto'; font-style: normal; font-weight: 400; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu7GxKOzY.woff2) format('woff2'); unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Roboto'; font-style: normal; font-weight: 400; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Roboto'; font-style: normal; font-weight: 700; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfChc4EsA.woff2) format('woff2'); unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: 'Roboto'; font-style: normal; font-weight: 700; font-display: swap; src: url(https://fonts.gstatic.com/s/roboto/v20/KFOlCnqEu92Fr1MmWUlfBBc4.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* General definitions */
+
+body { font-family: 'Roboto', sans-serif; font-weight: 400; margin: 0 }
+a { text-decoration: none; font-weight: 700 }
+strong, h1, h2, h3, h4 { font-weight: 700 }
+/* Page widths in such away the header and footer can be full width {for lines} but
+   keep content constrained in the middle */
+footer > div, header > nav, header > div, main { margin: 0 auto; max-width: 1440px; padding: 0 10px; display: block }
+/* Set footer and headers and add "margin-busters" to the divs */
+footer { border-top: 1px solid #666; font-size: 0.8em; font-weight: 700 }
+header { border-bottom: 1px #666 solid }
+nav:after, footer:after, header:after { content: ""; clear: both; display: table; }
+header:before, footer:before { content: ""; display: table; }
+
+/* For highlighting text in headers */
+h3 strong, h1 strong { color: #c00; background-color: #fff }
+
+/* Configuring the header using a grid layout... */
+header>div { display: -ms-grid; display: grid; grid-template-columns: 8.5rem auto auto; -ms-grid-columns: 8.5rem 1fr 1fr;
+                                               grid-template-rows: 4rem 4rem; -ms-grid-columns: 4rem 4em }
+/* Logo */
+header div div {
+  grid-column-start: 1; grid-column-end: 1; grid-row-start: 1; grid-row-end: span 2; box-sizing: border-box; -ms-grid-row:1; -ms-grid-column:1
+}
+header a { color: black }
+/* Title */
+header h1  {  margin: 0; padding: 0.5rem; line-height: 1em; grid-column-start: 2; grid-column-end: 2; grid-row-start: 1; grid-row-end: 1; height: 4rem; box-sizing: border-box; font-size: 3em; -ms-grid-row:1; -ms-grid-column:2  }
+/* Navigation */
+#top  { grid-column-start: 3; grid-column-end: 3; grid-row-start: 1; grid-row-end: 1; -ms-grid-row:1; -ms-grid-column:3; text-align: right; font-size: 1.2em }
+#spec  { grid-column-start: 3; grid-column-end: 3; grid-row-start: 2; grid-row-end: 2; -ms-grid-row:2; -ms-grid-column:3; text-align: right; }
+
+#int  { display: flex; font-size: 150% }
+#int p { margin: 0.5em 0; font-weight: bold; flex: 1 1 50%; text-align: center }
+#int a { display: inline-block; background-color: #ccc; border-radius: 3px; padding: 3px; margin-left: 1em; padding: 2px 0.5em; }
+#int a.disabled { color: #999; cursor: not-allowed }
+#int a.active { color: #fff; background-color: #333; cursor: default }
+
+header h2 { margin: 0; padding: 0.5rem; line-height: 1em; grid-column-start: 2; grid-column-end: 2; grid-row-start: 2; grid-row-end: 2; box-sizing: border-box; font-size: 2em; -ms-grid-row:2; -ms-grid-column:2  }
+
+@media screen and (max-width: 960px) {
+  header nav  { grid-column-start: 2;  grid-column-end: 2; grid-row-start: 2; grid-row-end: 2; height: auto }
+  header>div { grid-template-columns: 8rem auto auto; grid-template-rows: 1fr 4rem 4rem }
+  header div div  { grid-row-start: 2; grid-row-end: 3 }
+  header h1 { grid-column-start: 2; grid-column-end: 2; grid-row-start: 2; grid-row-end: 2; font-size: 2em }
+  header #top { grid-column-start: 1; grid-column-end: 4; grid-row-start: 1; grid-row-end: 1 }
+  header #spec { grid-column-start: 2; grid-column-end: 4; grid-row-start: 3; grid-row-end: 3 }
+  header h2 { grid-column-start: 2; grid-column-end: 2; grid-row-start: 3; grid-row-end: 3 }
+}
+
