@@ -28,6 +28,7 @@
       default: '#cccccc',
       colours: [[68,1,84],[71,45,123],[59,82,139],[44,114,142],[33,144,140],[39,173,129],[93,200,99],[170,220,50],[253,231,37],[253,231,37]]
     },
+    knn: { default: '#cccccc', cluster: '#999999', gene: '#cc0000' },
     filters: {
       'cluster': [ ['X','#000000' ], ['Cluster 1','#267278'], ['Cluster 2','#65338d'], ['Cluster 3','#4770b3'], ['Cluster 4','#d21f75'],
                    ['Cluster 5','#3b3689'], ['Cluster 6','#50aed3'], ['Cluster 7','#48b24f'], ['Cluster 8','#e57438'],
@@ -90,7 +91,7 @@
     Object.getOwnPropertyNames(CONFIG.filters).forEach(function(k){
       var e = _.qs( '#filter-'+k+' li' );
       var ht = '';
-      if( e ) { console.log(e);
+      if( e ) {
         var c = 0;
         CONFIG.filters[k].forEach(a => ht+= '<label><input checked="checked" type="checkbox" name="'+k+'" value="'+(c++)+'"><span>'+a[0]+'</span></label>');
         e.innerHTML = ht;
@@ -124,12 +125,12 @@
       }
     }
   };
- 
+
   function has( k ) {
     var parts = k.split('-');
     var t = graph;
     while( parts.length ) {
-      if( ! t.hasOwnProperty( k[0] ) ) return false;
+      if( ! t.hasOwnProperty( parts[0] ) ) return false;
       t = t[parts[0]];
       parts.shift();
     }
@@ -204,7 +205,7 @@ Drawing cell graphs....
   (2) create_cell_graph
   (3) update_cell_by_gene
 
-##############################################################################*/  
+##############################################################################*/
 
   function process_cell_graph( t ) {
     var counter;
@@ -274,7 +275,7 @@ Drawing cell graphs....
       _.m('#'+gflag+' h3 a', function(a) {
         a.onclick = function(e) {
           e.preventDefault();
-          var r = a.hash.split('-');console.log(r);
+          var r = a.hash.split('-');
           var other = r[1] == 'umap' ? 'pca' : 'umap';
           _.act(a);
           _.dis('a[href="'+r[0]+'-'+other+'"]');
@@ -289,33 +290,45 @@ Drawing cell graphs....
   }
 
   function redraw_cell_by_gene( gene_id ) {
-    var expdata = graph.expression_cache[ current_type+'-'+current_gene ];
+    var expdata = expression_cache[ current_type+'-'+current_gene ];
     var max_exp = expdata.max;
+    _.qs('.gradient').style.display = 'flex';
+    _.act('.input');
     if( max_exp == 0 ) {
       current_data.colours.gene = expdata.data.map( a => current_data.expression_default );
-      _.m(nav,'.gradient span',         a => a.innerText = '-');
-      _.s(nav,'.gradient span.exp-ave', a => a.innerText = '' );
+      _.m('.gradient span',         a => a.innerText = '-');
+      _.s('.gradient span.exp-ave', a => a.innerText = '' );
     } else {
       current_data.colours.gene = expdata.data.map( a => exp_colour(a,max_exp) );
-      _.s(nav,'.gradient span:first-of-type',  a => a.innerText = '0.00');
-      _.s(nav,'.gradient span:nth-of-type(2)', a => a.innerText = Number.parseFloat(max_exp/2).toFixed(2) );
-      _.s(nav,'.gradient span:last-of-type',   a => a.innerText = Number.parseFloat(max_exp).toFixed(2) );
+      _.s('.gradient span:first-of-type',  a => a.innerText = '0.00');
+      _.s('.gradient span:nth-of-type(2)', a => a.innerText = Number.parseFloat(max_exp/2).toFixed(2) );
+      _.s('.gradient span:last-of-type',   a => a.innerText = Number.parseFloat(max_exp).toFixed(2) );
+      var t1=0; var t2=0;
+      if(current_type=='ch10x') {
+        graph.ch10x.cell.colours.gene = expdata.data.map( a => exp_colour(a,max_exp) );
+        t1 = { 'marker.color': [ graph.ch10x.cell.colours.gene ], 'hovertemplate': graph.ch10x.cell.hover_template_expr };
+      } else {
+        graph.ss2.cell.colours.gene = expdata.data.map( a => exp_colour(a,max_exp) );
+        t2 = { 'marker.color': [ graph.ss2.cell.colours.gene ], 'hovertemplate': graph.ch10x.cell.hover_template_expr };
+      }
+      update_graphs( t1, t2 );
     }
   }
 
   function update_cell_by_gene( gene_id ) {
+    console.log( gene_id );
     _.m('.gene-name', a => a.innerText = gene_id );
-    if( current_data.hasOwnProperty('gene') && current_data.gene.includes( gene_id) ) {
+    if( current_data.hasOwnProperty('genes') && current_data.genes.includes( gene_id ) ) {
       current_gene = gene_id;
-      if( graph.expression_cache.includes( current_type+'-'+gene_id ) ) {
+      if( expression_cache.hasOwnProperty( current_type+'-'+gene_id ) ) {
         redraw_cell_by_gene( gene_id );
       } else {
-        _.m('.loading', function(a) { a.innerText = 'LOADING DATA FOR '+new_gene; a.style.display = 'block';} );
+        _.m('.loading', function(a) { a.innerText = 'LOADING DATA FOR '+gene_id; a.style.display = 'block';} );
         Plotly.d3.json( '/mca/processed/' + (_.qs("#main").dataset.directory) + '/' + current_type +'/exp/'+gene_id+'.json', function(err,expdata) {
-          graph.expression_cache[ current_type+'-'+gene_id ] = expdata;
-          _.m('.loading', function(a) { a.style.display = 'block'; });
+          expression_cache[ current_type+'-'+gene_id ] = expdata;
+          _.m('.loading', function(a) { a.style.display = 'none'; });
           redraw_cell_by_gene( gene_id );
-        }
+        });
       }
     } else {
       // Set colours to default....
@@ -330,7 +343,7 @@ Drawing gene graphs....
   (2) create_gene_graph
   (3) update_gene_by_gene
 
-##############################################################################*/  
+##############################################################################*/
 
 
   function process_gene_graph( t ) {
@@ -358,8 +371,21 @@ Drawing gene graphs....
   }
 
   function update_gene_by_gene( gene_id ) {
+    console.log("PLURB");
+    _.m('.input', a => _.act(a));
+    _.m('.gradient', a => a.style.display = 'none' );
     _.m('.gene-name', a => a.innerText = gene_id );
-    // XXX!
+    if( gene_id == '' || ! current_data.genes.includes( gene_id ) ) {
+      current_data.colours.gene = current_data.customdata.map( a => CONFIG.knn.default );
+    } else {
+      var details;
+      current_data.customdata.forEach( function(a) { if( gene_id == a[1] ) details = a; } );
+      current_data.colours.gene = current_data.customdata.map( a => a[1]==gene_id ? CONFIG.knn.gene :
+                                                          (a[0]==details[0] ? CONFIG.knn.cluster : CONFIG.knn.default ) );
+      var table = current_data.table.replace(/\[\[(\d+)\]\]/g, function(match,p1) { return details[p1]; });
+      _.m('.gene-table', a => a.innerHTML = table );
+    }
+    Plotly.restyle( current_type+'-gene-knn-graph', { 'marker.color' : [current_data.colours.gene] } );
   }
 
 /*##############################################################################
@@ -370,7 +396,7 @@ Interaction functions
   (2) create_gene_graph
   (3) update_gene_by_gene
 
-##############################################################################*/  
+##############################################################################*/
 
   function changeFilter( n ) { n.onchange = function(e) {
     var nav = _.qs('main nav');
@@ -379,13 +405,11 @@ Interaction functions
     _.m(nav,'input[type="checkbox"]',a => filter_set[a.name+'-'+a.value] = a.checked ? 1: 0);
     var x1,x2;
     if( has('ch10x-cell') ) {
-      console.log(filter_set);
       x1=graph.ch10x.cell.visible = graph.ch10x.cell.data.map( function(x) {
         var res = CONFIG.marker_size, c=0;
         graph.ch10x.cell.columns.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
         return res;
       } );
-      console.log(x2);
     }
     if( has('ss2-cell') ) {
       x2=graph.ss2.cell.visible = graph.ss2.cell.data.map( function(x) {
@@ -393,7 +417,6 @@ Interaction functions
         graph.ss2.cell.columns.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
         return res;
       } );
-      console.log(x1);
     }
     update_graphs(
       { 'marker.size':[ x1 ] },
@@ -411,8 +434,17 @@ Interaction functions
       _.m('#legend-gene .gradient', function(a) { _.act(a); a.style.display = 'flex' } );
       update_graphs(
         { 'marker.color': [ has('ch10x-cell') ? graph.ch10x.cell.colours[current_colour] : [] ] },
-        { 'marker.color': [ has('ss2-cell'  ) ? graph.ss2.cell.colours[current_colour] : [] ] }
+        { 'marker.color': [ has('ss2-cell'  ) ? graph.ss2.cell.colours[current_colour]   : [] ] },
+        { 'marker.color': [ has('ch10x-gene') ? graph.ch10x.gene.colours[current_colour] : [] ] },
+        { 'marker.color': [ has('ss2-gene'  ) ? graph.ss2.gene.colours[current_colour]   : [] ] },
       );
+      if( current_colour == 'gene' ) {
+        if( current_view == 'gene' ) {
+          update_gene_by_gene( current_gene );
+        } else {
+          update_cell_by_gene( current_gene );
+        }
+      }
       return;
     };
   }
@@ -438,7 +470,7 @@ Interaction functions
   }
 
   function ddClick( n ) { n.onclick = function(e) {
-    _.s(nav,'input[type="text"]', function( a ) {
+    _.s('main nav input[type="text"]', function( a ) {
       a.value = e.target.innerText;
       _.s(navdd,'', b => b.innerHTML='');
       a.onkeyup();
@@ -446,7 +478,7 @@ Interaction functions
   };}
 
   function changeGene( n ) { n.onkeyup = function(e) {
-    var new_gene = _.qs( nav, '#new-gene' ).value;
+    var new_gene = _.qs( '#new-gene' ).value;
     if( ! ( current_data.genes.includes(new_gene) ) && new_gene !== '' ) {
       // We need to activate the dropdown...
       _.s(navdd,'', a => a.innerHTML = '');
@@ -467,26 +499,35 @@ Interaction functions
     if( new_gene === '' ) {
       _.m('.extra-title', a => _.innerText = '');
       current_gene = new_gene;
-      var t1 = '', t2 = '';
+      var t1 = '', t2 = '', t3 = '', t4 = '';
       if( graph.hasOwnProperty('ch10x') && graph.ch10x.hasOwnProperty('cell') ) {
         t1 = graph.ch10x.cell.colours.gene = graph.ch10x.cell.customdata.map( a => CONFIG.expression.default ); // reset colours
       }
       if( graph.hasOwnProperty('ss2') && graph.ss2.hasOwnProperty('cell') ) {
         t2 = graph.ss2.cell.colours.gene = graph.ss2.cell.customdata.map( a => CONFIG.expression.default ); // reset colours
       }
+      if( graph.hasOwnProperty('ch10x') && graph.ch10x.hasOwnProperty('gene') ) {
+        t3 = graph.ch10x.gene.colours.gene = graph.ch10x.gene.customdata.map( a => CONFIG.expression.default ); // reset colours
+      }
+      if( graph.hasOwnProperty('ss2') && graph.ss2.hasOwnProperty('gene') ) {
+        t4 = graph.ss2.gene.colours.gene = graph.ss2.gene.customdata.map( a => CONFIG.knn.default ); // reset colours
+      }
       _.m(nav,'.gradient span',a => a.innerText = '-');
       _.s(nav,'.gradient span.exp-ave', a => a.innerText = '' );
       update_graphs(
         { 'marker.color': [t1], 'hovertemplate': graph.hasOwnProperty('ch10x') && graph.ch10x.hasOwnProperty('cell') ? graph.ch10x.cell.hover_template : ''},
         { 'marker.color': [t2], 'hovertemplate': graph.hasOwnProperty('ss2')   && graph.ss2.hasOwnProperty('cell')   ? graph.ss2.cell.hover_template   : '' },
+        { 'marker.color': [t3] },
+        { 'marker.color': [t4] },
       );
       return;
     }
+    console.log("HERE!");
     // Here we now have to do another fetch this time of the expression data....
     if( current_view == 'gene' ) {
-      refresh_gene_chart( new_gene );
+      update_gene_by_gene( new_gene );
     } else {
-      refresh_cell_chart( new_gene );
+      update_cell_by_gene( new_gene );
     }
   };}
 
@@ -503,7 +544,6 @@ Interaction functions
       f = graph_set_up( f, 'ss2',   'cell' ); f = graph_set_up( f, 'ss2',   'gene' );
       f = graph_set_up( f, 'ch10x', 'cell' ); f = graph_set_up( f, 'ch10x', 'gene' );
       switch_panel( current_type+'-'+current_view );
-      console.log(graph);
       // Draw graphs....
       var rendered_time = Date.now() - time - fetched_time;
       var nav   = _.qs('main nav');
@@ -511,7 +551,7 @@ Interaction functions
       _.m(nav,'input[type="checkbox"]', changeFilter); // Now add actions on change filters....
       _.m(nav,'input[type="radio"]',    changeColour); // Now add actions on change colour set
       _.m(nav,'input[type="text"]',     changeGene);   // Now add actions on change gene...
-      //_.s( navdd, '', ddClick);
+      _.s( navdd, '', ddClick);
       // Finally remove "shim" over graph...
       _.m('.loading',_ => _.style.display = 'none');
       var post_time = Date.now() - time - fetched_time - rendered_time;

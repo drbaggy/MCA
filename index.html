@@ -27,13 +27,36 @@
   <body id="body">
     <header>
       <div>
-        <div><img height=128 width=128 alt="* Malaria Cell Atlas Logo" src="gfx/logo.png"></div>
+        <div><img height=128 width=128 alt="* Malaria Cell Atlas Logo" src="/mca/gfx/logo.png"></div>
         <h1><strong>M</strong>alaria <strong>C</strong>ell <strong>A</strong>tlas</h1>
+        <nav id="top"><a href="">Downloads</a> <a href="">Documentation</a> <a href="">Publications</a> <a href="">About</a> <a href="">Contact</a></nav>
+        <h2><i>Plasmodium falciparum</i></h2>
+        <nav id="int"><a href="#ss2-gene">SmartSeq2 Gene</a> <a href="#ss2-sample">SmartSeq2 Sample</a> <a href="#10k-gene">Chromium 10x Gene</a> <a href="#10-sample">Chromoium 10x sample</a></nav>
       </div>
     </header>
     <main>
       <section class="data active" id="main" date-directory="pf">
         <h2><i>Plasmodium falciparum</i></h2>
+        <!-- Graph panels -->
+        <section id="pf-new" data-directory="pf/new" class="active">
+          <!-- Graph 1 -->
+          <h3>New Chromium 10x data: <a href="#pf-new-pca">PCA</a> <a href="#pf-new-umap">UMAP</a></h3>
+          <div id="pf-new-pca"><h4>Principal Component Analysis<span class="pf-extra-title"></span></h4>
+            <p>Prinicipal Component Analysis view of single-cell transcriptomes based on highly variable genes</p>
+            <div class="graph-wrapper">
+              <div class="loading">LOADING CHROMIUM 10x DATA</div>
+              <div id="pf-new-pca-graph" class="graph" data-view="PCA" data-dimensions="3" data-filter="Strain" data-filter-values=""></div>
+            </div>
+          </div>
+          <!-- Graph 2 -->
+          <div id="pf-new-umap" class="active"><h4>UMAP clustering of cells<span class="pf-extra-title"></span></h4>
+            <p>UMAP visualisation of single-cell transcriptomes from across asexual and transmission stages of the parasite</p>
+            <div class="graph-wrapper">
+              <div class="loading">LOADING CHROMIUM 10x DATA</div>
+              <div id="pf-new-umap-graph" class="graph" data-view="UMAP" data-dimensions="3"></div>
+            </div>
+          </div>
+        </section>
         <nav>
           <div>
             <div>
@@ -117,26 +140,6 @@
             </div>
           </div>
         </nav>
-        <!-- Graph panels -->
-        <section id="pf-new" data-directory="pf/new" class="active">
-          <!-- Graph 1 -->
-          <h3>New Chromium 10x data: <a href="#pf-new-pca">PCA</a> <a href="#pf-new-umap">UMAP</a></h3>
-          <div id="pf-new-pca"><h4>Principal Component Analysis<span class="pf-extra-title"></span></h4>
-            <p>Prinicipal Component Analysis view of single-cell transcriptomes based on highly variable genes</p>
-            <div class="graph-wrapper">
-              <div class="loading">LOADING CHROMIUM 10x DATA</div>
-              <div id="pf-new-pca-graph" class="graph" data-view="PCA" data-dimensions="3" data-filter="Strain" data-filter-values=""></div>
-            </div>
-          </div>
-          <!-- Graph 2 -->
-          <div id="pf-new-umap" class="active"><h4>UMAP clustering of cells<span class="pf-extra-title"></span></h4>
-            <p>UMAP visualisation of single-cell transcriptomes from across asexual and transmission stages of the parasite</p>
-            <div class="graph-wrapper">
-              <div class="loading">LOADING CHROMIUM 10x DATA</div>
-              <div id="pf-new-umap-graph" class="graph" data-view="UMAP" data-dimensions="3"></div>
-            </div>
-          </div>
-        </section>
       </section>
     </main>
 
@@ -150,5 +153,6 @@
     <script src="js/mca-core.js"></script> <script src="js/mca-page.js"></script><script src="js/mca-graph.js"></script>
     <!-- script src="js/mca-gcc.js"></script -->
     <script src="js/cookies-gcc.js"></script>
+    <script src="piwik.js"></script>
   </body>
 </html>

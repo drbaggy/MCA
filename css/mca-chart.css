@@ -56,12 +56,17 @@ nav .legend li > span { display: inline-block; overflow: hidden; height:0.5em; w
 /* Colour gradient CSS */
 .gradient { display:flex;flex-flow: row wrap; justify-content: space-between; }
 .gradient span { flex: 0 0 2em; text-align: center }
-.gradient div { flex: 0 0 100%; padding: 0.25em 1em 0.25em; box-sizing: border-box; }
+.gradient > div { flex: 0 0 100%; padding: 0.25em 1em 0.25em; box-sizing: border-box; display: block }
 .gradient div p   { height: 0.2em; padding: 0; margin: 0; background-image: linear-gradient(to right, #000 1%, #fff 1%, #fff 49.5%, #000 49.5%, #000 50.5%, #fff 50.5%, #fff 99%, #000 99%) }
-.gradient div div { height: 1em; background-image: linear-gradient(to right, #440154, #472D7B 12.5%, #3B528B 25%, #2C728E 37.5%, #21908C 50%, #27AD81 62.5%, #5DC863 75%, #AADC32 87.5%, #FDE725); }
+.gradient div div { display: block; height: 1em; background-image: linear-gradient(to right, #440154, #472D7B 12.5%, #3B528B 25%, #2C728E 37.5%, #21908C 50%, #27AD81 62.5%, #5DC863 75%, #AADC32 87.5%, #FDE725); }
 
 /*
 .points { display: flex }
 .data .points label { flex: 0 0 10% }
 .data .points label span { background-color:#000; height: 0; width: 0; display: block; border: 1px solid red; padding: 0 }
 */
+
+body .gene-table { display: block }
+.gene-table dl { display: flex; flex-flow: row wrap; align-items: flex-start; font-size: 0.8em; justify-content: space-between }
+.gene-table dl dt { flex: 0 0 25%; margin: 0 0 0.5em 0; font-weight: bold }
+.gene-table dl dd { flex: 0 0 60%; margin: 0 0 0.5em 0 }

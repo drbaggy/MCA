@@ -56,7 +56,7 @@ sub print_file {
       <section>
 <!-- Graph panels... -->
         <section id="ch10x-cell"><!-- chromium 10x graphs... -->
-          <h3>Chromium 10x cell view: <span name="gene-name"></span> <a href="#ch10x-cell-pca">PCA</a> <a href="#ch10x-cell-umap" class="active">UMAP</a></h3>
+          <h3>Chromium 10x cell view: <span class="gene-name"></span> <a href="#ch10x-cell-pca">PCA</a> <a href="#ch10x-cell-umap" class="active">UMAP</a></h3>
           <div id="ch10x-cell-pca"><h4>Principal Component Analysis<span class="extra-title"></span></h4>
             <p>Prinicipal Component Analysis view of single-cell transcriptomes based on highly variable genes</p>
           </div>
@@ -65,12 +65,12 @@ sub print_file {
           </div>
         </section>
         <section id="ch10x-gene">
-          <h3>Chromium 10x gene view: <span name="gene-name"></span></h3>
+          <h3>Chromium 10x gene view: <span class="gene-name"></span></h3>
           <div id="ch10x-gene-knn"><h4>KNN gene graph</h4><p>k-nearest neighbors (kNN) force-directed graph of highly variable features across cell types</p>
           </div>
         </section>
         <section id="ss2-cell"><!-- smartseq2 graphs... -->
-          <h3>SmartSeq2 cell view: <span name="gene-name"></span> <a href="#ss2-pca">PCA</a> <a href="#ss2-umap">UMAP</a></h3>
+          <h3>SmartSeq2 cell view: <span class="gene-name"></span> <a href="#ss2-pca">PCA</a> <a href="#ss2-umap">UMAP</a></h3>
           <div id="ss2-cell-pca"><h4>Principal Component Analysis<span class="extra-title"></span></h4>
             <p>Prinicipal Component Analysis view of single-cell transcriptomes based on highly variable genes</p>
           </div>
@@ -79,7 +79,7 @@ sub print_file {
           </div>
         </section>
         <section id="ss2-gene">
-          <h3>SmartSeq2 gene view: <span name="gene-name"></span></h3>
+          <h3>SmartSeq2 gene view: <span class="gene-name"></span></h3>
           <div id="ss2-gene-knn" class="active"><h4>KNN gene graph</h4>
             <p>k-nearest neighbors (kNN) force-directed graph of highly variable features across cell types</p>
           </div>
@@ -112,6 +112,8 @@ sub print_file {
               <div class="expression"><label>Expression:</label></div>
             </div>
             <div class="gradient"><span class="exp-min">-</span><span class="exp-ave"></span><span class="exp-max">-</span><div><p></p><div></div><p></p></div></div>
+          </div>
+          <div class="gene-table">
           </div>
         </div>
       </nav>
