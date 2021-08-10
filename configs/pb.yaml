@@ -1,0 +1,38 @@
+---
+  default_gene: PBANKA_1212600
+  ch10x:
+    cell:
+      columns: [stage]
+      data: []
+      genes: []
+      pca: 2
+      popup: 'Stage: [[0]]'
+  ss2:
+    cell:
+      columns: [stage, host ]
+      data: []
+      genes: []
+      pca: 3
+      popup: 'Stage: [[0]]<br />Host: [[1]]'
+      umap: 2
+    gene:
+      data: []
+      knn: 2
+      popup: 'Gene ID: [[1]]<br />Gene name: [[3]]<br />Cluster: [[0]]'
+      table: |-2
+
+                  <h3>[[1]]</h3>
+                  <dl>
+                    <dt>Product description</dt> <dd>[[2]]</dd>
+                    <dt>Gene name</dt> <dd>[[3]]</dd>
+                    <dt>Unique core</dt> <dd>[[4]]</dd>
+                    <dt>Asexual phenotype</dt> <dd>[[6]]</dd>
+                    <dt>Asexual relative growth rate</dt> <dd>[[5]]</dd>
+                    <dt>Marker</dt> <dd>[[7]]</dd>
+                    <dt>Highly variable</dt> <dd>[[8]]</dd>
+                    <dt>Cluster</dt> <dd>[[0]]</dd>
+                    <dt>Top cited gene in cluster</dt> <dd>[[9]]</dd>
+                    <dt>Notable GO BP</dt> <dd>[[10]]</dd>
+                    <dt class="go">GO BP</dt> <dd class="go">[[11]]</dd>
+                  </dl>
+
