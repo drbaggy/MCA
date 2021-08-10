@@ -1,56 +1,49 @@
 use strict;
+use warnings;
+
+use File::Basename qw(dirname);
+use Cwd qw(abs_path);
+
 use Data::Dumper qw(Dumper);
 use POSIX qw(floor ceil);
 use JSON qw(encode_json);
 use Text::CSV qw(csv);
 use YAML qw(Dump LoadFile);
-
+my $root          = dirname(abs_path($0));
+my $doc_root      = $root.'/htdocs/';
+my $source        = $root.'/input/';
 $Data::Dumper::Indent = 2;
 $Data::Dumper::SortKeys = 1;
 $Data::Dumper::Terse = 1;
 
-my %stage_map = (
- 'liver',                        0,
- 'merozoite',                    1,
- 'ring',                         2,
- 'trophozoite',                  3,
- 'schizont',                     4,
- 'gametocyte (developing)',      5,
- 'gametocyte (male)',            6,
- 'gametocyte (female)',          7,
- 'ookinete',                     8,
- 'oocyst',                       9,
- 'sporozoite (oocyst)',          10,
- 'sporozoite (hemolymph)',       11,
- 'sporozoite (salivary gland)',  12,
- 'sporozoite (injected)',        13,
- 'sporozoite (activated)',       14,
-);
-my %day_map = ('D1',   0,         'D2',   1,
-         'D3',   2,         'D4',   3,
-         'D6',   4,         'D8',   5,
-         'D10',  6,      );
-my %host_map = ('mosquito', 0,'human',    1,   'mouse',    2);
+my %stage_map = rev_hash( 'liver', 'merozoite', 'ring', 'trophozoite', 'schizont',
+  'gametocyte (developing)', 'gametocyte (male)', 'gametocyte (female)',
+  'ookinete', 'oocyst', 'sporozoite (oocyst)', 'sporozoite (hemolymph)',
+  'sporozoite (salivary gland)', 'sporozoite (injected)', 'sporozoite (activated)',);
+my %day_map  = rev_hash( qw(D1 D2 D3 D4 D6 D8 D10) );
+my %host_map = rev_hash( qw(mosquito human mouse)  );
 
 foreach my $key (@ARGV) {
-  my $struct = LoadFile( 'configs/'.$key.'.yaml' );
-  mkdir 'processed'       unless -d 'processed';
-  mkdir 'processed/'.$key unless -d 'processed/'.$key;
+  my $struct = LoadFile( $root.'/configs/'.$key.'.yaml' );
+  mkdir $doc_root.'processed'       unless -d 'processed';
+  mkdir $doc_root.'processed/'.$key unless -d 'processed/'.$key;
   foreach my $md ( qw(ss2 ch10x) ) {
-    next unless -e "input/$key/$md/data.csv";
-    mkdir 'processed/'.$key.'/'.$md        unless -d 'processed/'.$key.'/'.$md;
-    mkdir 'processed/'.$key.'/'.$md.'/exp' unless -d 'processed/'.$key.'/'.$md.'/exp';
+    next unless -e "source$key/$md/data.csv";
+    mkdir $doc_root.'processed/'.$key.'/'.$md        unless -d 'processed/'.$key.'/'.$md;
+    mkdir $doc_root.'processed/'.$key.'/'.$md.'/exp' unless -d 'processed/'.$key.'/'.$md.'/exp';
     parse( "input/$key/$md/data.csv", $struct->{$md}{'cell'} );
-    $struct->{$md}{'cell'}{'genes'} = parse_mol( "input/$key/$md/exp.csv",'processed/'.$key.'/'.$md.'/exp' );
+    $struct->{$md}{'cell'}{'genes'} = parse_mol( "$source$key/$md/exp.csv",$doc_root.'processed/'.$key.'/'.$md.'/exp' );
   }
   foreach my $md (qw(ss2 10x)) {
     next unless -e "input/$key/$md/knn.csv";
     parse_knn( "input/$key/$md/knn.csv", $struct->{$md}{'gene'} )        if -e "input/$key/$md/knn.csv";
   }
-  open my $fh, '>', "processed/$key/data.perl"; print {$fh} Dumper($struct);     close $fh;
-  open    $fh, '>', "processed/$key/data.yaml"; print {$fh} Dump($struct);       close $fh;
-  open    $fh, '>', "processed/$key/data.json"; print {$fh} encode_json($struct);close$fh;
+  #open my $fh, '>', $doc_root."processed/$key/data.perl"; print {$fh} Dumper($struct);     close $fh;
+  #open    $fh, '>', $doc_root."processed/$key/data.yaml"; print {$fh} Dump($struct);       close $fh;
+  open    $fh, '>', $doc_root."processed/$key/data.json"; print {$fh} encode_json($struct);close$fh;
 }
+
+sub revhash { my $c = 0; return map { $_ => $c++ } @_; }
 
 sub parse_mol {
   my( $fn, $key ) = @_;
@@ -64,7 +57,6 @@ sub parse_mol {
     my $n = shift @V;
     @V = map { 1*sprintf '%0.5f',$_ } @V;
     $m = $m < $_ ? $_ : $m foreach @V;
-    #say $m;
     $n=~s{"}{}g;
     $n=~s{-}{_}g;
     push @genes,$n;
