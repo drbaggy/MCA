@@ -86,7 +86,7 @@
   function insert_legend_and_filters() {
     _.m('main section div', function(a) {
       var id = a.getAttribute('id');
-      a.insertAdjacentHTML('beforeend','<div class="graph-wrapper"><div class="loading">LOADING DATA</div><div id="'+id+'-graph" class="graph"></div></div>');
+      if( id ) a.insertAdjacentHTML('beforeend','<div class="graph-wrapper"><div class="loading">LOADING DATA</div><div id="'+id+'-graph" class="graph"></div></div>');
     });
     Object.getOwnPropertyNames(CONFIG.filters).forEach(function(k){
       var e = _.qs( '#filter-'+k+' li' );
@@ -112,7 +112,7 @@
         if( graph.ch10x.cell.hasOwnProperty('pca')  ) Plotly.restyle( 'ch10x-cell-pca-graph',  new_ch10x_cell );
       }
       if( new_ch10x_gene && graph.ch10x.hasOwnProperty('gene') ) {
-         if( graph.ch10x.cell.hasOwnProperty('knn') ) Plotly.restyle( 'ch10x-cell-knn-graph', new_ch10x_gene );
+         if( graph.ch10x.gene.hasOwnProperty('knn') ) Plotly.restyle( 'ch10x-gene-knn-graph', new_ch10x_gene );
       }
     }
     if( graph.hasOwnProperty('ss2') ) {
@@ -120,8 +120,8 @@
         if( graph.ss2.cell.hasOwnProperty('umap') ) Plotly.restyle( 'ss2-cell-umap-graph', new_ss2_cell );
         if( graph.ss2.cell.hasOwnProperty('pca')  ) Plotly.restyle( 'ss2-cell-pca-graph',  new_ss2_cell );
       }
-      if( new_ch10x_gene && graph.ch10x.hasOwnProperty('gene') ) {
-         if( graph.ss2.cell.hasOwnProperty('knn') ) Plotly.restyle( 'ss2-cell-knn-graph', new_ss2_gene );
+      if( new_ss2_gene && graph.ss2.hasOwnProperty('gene') ) {console.log("FRED");
+         if( graph.ss2.gene.hasOwnProperty('knn') ) Plotly.restyle( 'ss2-gene-knn-graph', new_ss2_gene );
       }
     }
   };
@@ -306,10 +306,14 @@ Drawing cell graphs....
       var t1=0; var t2=0;
       if(current_type=='ch10x') {
         graph.ch10x.cell.colours.gene = expdata.data.map( a => exp_colour(a,max_exp) );
-        t1 = { 'marker.color': [ graph.ch10x.cell.colours.gene ], 'hovertemplate': graph.ch10x.cell.hover_template_expr };
+        t1 = { 'marker.color': [ graph.ch10x.cell.colours.gene ],
+               'text'  : [expdata.data],
+               'hovertemplate': graph.ch10x.cell.hover_template_expr };
       } else {
         graph.ss2.cell.colours.gene = expdata.data.map( a => exp_colour(a,max_exp) );
-        t2 = { 'marker.color': [ graph.ss2.cell.colours.gene ], 'hovertemplate': graph.ch10x.cell.hover_template_expr };
+        t2 = { 'marker.color': [ graph.ss2.cell.colours.gene ],
+               'text': [expdata.data],
+               'hovertemplate': graph.ch10x.cell.hover_template_expr };
       }
       update_graphs( t1, t2 );
     }
@@ -377,6 +381,7 @@ Drawing gene graphs....
     _.m('.gene-name', a => a.innerText = gene_id );
     if( gene_id == '' || ! current_data.genes.includes( gene_id ) ) {
       current_data.colours.gene = current_data.customdata.map( a => CONFIG.knn.default );
+      _.m('.gene-table', a => a.innerHTML = '' );
     } else {
       var details;
       current_data.customdata.forEach( function(a) { if( gene_id == a[1] ) details = a; } );
@@ -428,7 +433,9 @@ Interaction functions
     var nav = _.qs('main nav');
     n.onchange = function(e) {
       _.m(nav,'.legend', a => a.style.display = 'none' );
+console.log('<'+current_colour);
       _.s(nav, 'input[type="radio"]:checked', a => current_colour = a.value );
+console.log('>'+current_colour);
       _.s(nav,'#legend-'+current_colour, a => a.style.display = 'block' );
       _.m('#legend-gene .input', a => _.act(a) );
       _.m('#legend-gene .gradient', function(a) { _.act(a); a.style.display = 'flex' } );
@@ -444,6 +451,8 @@ Interaction functions
         } else {
           update_cell_by_gene( current_gene );
         }
+      } else {
+        _.m('.gene-table', a => a.innerHTML = '');
       }
       return;
     };
@@ -451,7 +460,7 @@ Interaction functions
 
 
   // Wrapper to check for data for graph & to activate graph & to update links....
-  function graph_set_up( f, k1, k2 ) {
+  function graph_set_up( f, k1, k2 ) {console.log("X");
     if(graph.hasOwnProperty(k1)) {
       if( graph[k1].hasOwnProperty(k2) ) {
         _.qs('a[href="#'+k1+'-'+k2+'"]').classList.remove('disabled');
@@ -531,12 +540,13 @@ Interaction functions
     }
   };}
 
-  function load_data(  ) {
+  function load_data(  ) {console.log("L");
     _.m('.loading', a => a.style.display = 'block');
     var counter, current_gene, time = Date.now();
     Plotly.d3.json( '/mca/processed/' + (_.qs("#main").dataset.directory) + '/' + CONFIG.filename, function(err, t) {
 // Create the hover templates...
-      graph = t;
+      console.log(  '/mca/processed/' + (_.qs("#main").dataset.directory) + '/' + CONFIG.filename );
+      graph = t; console.log("X1"); console.log(t);
       var fetched_time = Date.now() - time;
       // Part 1 processes the cell graph data....
       _.m('#int a', x => x.classList.add('disabled') );

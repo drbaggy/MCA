@@ -84,6 +84,7 @@ sub print_file {
             <p>k-nearest neighbors (kNN) force-directed graph of highly variable features across cell types</p>
           </div>
         </section>
+        <div class="gene-table"></div>
       </section>
 <!-- Filters & legends... -->
       <nav>
@@ -113,8 +114,7 @@ sub print_file {
             </div>
             <div class="gradient"><span class="exp-min">-</span><span class="exp-ave"></span><span class="exp-max">-</span><div><p></p><div></div><p></p></div></div>
           </div>
-          <div class="gene-table">
-          </div>
+          <div class="gene-table"></div>
         </div>
       </nav>
 <!-- -->

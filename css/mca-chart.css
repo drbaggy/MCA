@@ -68,5 +68,9 @@ nav .legend li > span { display: inline-block; overflow: hidden; height:0.5em; w
 
 body .gene-table { display: block }
 .gene-table dl { display: flex; flex-flow: row wrap; align-items: flex-start; font-size: 0.8em; justify-content: space-between }
-.gene-table dl dt { flex: 0 0 25%; margin: 0 0 0.5em 0; font-weight: bold }
-.gene-table dl dd { flex: 0 0 60%; margin: 0 0 0.5em 0 }
+nav .gene-table dl dt { flex: 0 0 45%; margin: 0 0 0.5em 0; font-weight: bold }
+nav .gene-table dl dd { flex: 0 0 50%; margin: 0 0 0.5em 0 }
+nav .gene-table dl dt.go { flex: 0 0 100% }
+nav .gene-table dl dd.go { flex: 0 0 100% }
+section .gene-table dl dt { flex: 0 0 18%; margin: 0 0 0.5em 0; font-weight: bold }
+section .gene-table dl dd { flex: 0 0 80%; margin: 0 0 0.5em 0 }
