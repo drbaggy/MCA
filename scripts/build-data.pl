@@ -1,20 +1,20 @@
 use strict;
 use warnings;
-
+use feature qw(say);
 use File::Basename qw(dirname);
 use Cwd qw(abs_path);
 
-use Data::Dumper qw(Dumper);
+#use Data::Dumper qw(Dumper);
 use POSIX qw(floor ceil);
 use JSON qw(encode_json);
 use Text::CSV qw(csv);
 use YAML qw(Dump LoadFile);
-my $root          = dirname(abs_path($0));
+my $root          = dirname(dirname(abs_path($0)));
 my $doc_root      = $root.'/htdocs/';
 my $source        = $root.'/input/';
-$Data::Dumper::Indent = 2;
-$Data::Dumper::SortKeys = 1;
-$Data::Dumper::Terse = 1;
+#$Data::Dumper::Indent = 2;
+#$Data::Dumper::SortKeys = 1;
+#$Data::Dumper::Terse = 1;
 
 my %stage_map = rev_hash( 'liver', 'merozoite', 'ring', 'trophozoite', 'schizont',
   'gametocyte (developing)', 'gametocyte (male)', 'gametocyte (female)',
@@ -28,22 +28,22 @@ foreach my $key (@ARGV) {
   mkdir $doc_root.'processed'       unless -d 'processed';
   mkdir $doc_root.'processed/'.$key unless -d 'processed/'.$key;
   foreach my $md ( qw(ss2 ch10x) ) {
-    next unless -e "source$key/$md/data.csv";
+    next unless -e "$source$key/$md/data.csv";
     mkdir $doc_root.'processed/'.$key.'/'.$md        unless -d 'processed/'.$key.'/'.$md;
     mkdir $doc_root.'processed/'.$key.'/'.$md.'/exp' unless -d 'processed/'.$key.'/'.$md.'/exp';
-    parse( "input/$key/$md/data.csv", $struct->{$md}{'cell'} );
+    parse( "$source$key/$md/data.csv", $struct->{$md}{'cell'} );
     $struct->{$md}{'cell'}{'genes'} = parse_mol( "$source$key/$md/exp.csv",$doc_root.'processed/'.$key.'/'.$md.'/exp' );
   }
   foreach my $md (qw(ss2 10x)) {
-    next unless -e "input/$key/$md/knn.csv";
-    parse_knn( "input/$key/$md/knn.csv", $struct->{$md}{'gene'} )        if -e "input/$key/$md/knn.csv";
+    next unless -e "$source$key/$md/knn.csv";
+    parse_knn( "$source$key/$md/knn.csv", $struct->{$md}{'gene'} )        if -e "input/$key/$md/knn.csv";
   }
-  #open my $fh, '>', $doc_root."processed/$key/data.perl"; print {$fh} Dumper($struct);     close $fh;
-  #open    $fh, '>', $doc_root."processed/$key/data.yaml"; print {$fh} Dump($struct);       close $fh;
-  open    $fh, '>', $doc_root."processed/$key/data.json"; print {$fh} encode_json($struct);close$fh;
+  open my $fh, '>', $doc_root."processed/$key/data.json"; print {$fh} encode_json($struct);close$fh;
+  #open $fh, '>', $doc_root."processed/$key/data.perl"; print {$fh} Dumper($struct);     close $fh;
+  #open $fh, '>', $doc_root."processed/$key/data.yaml"; print {$fh} Dump($struct);       close $fh;
 }
 
-sub revhash { my $c = 0; return map { $_ => $c++ } @_; }
+sub rev_hash { my $c = 0; return map { $_ => $c++ } @_; }
 
 sub parse_mol {
   my( $fn, $key ) = @_;
@@ -112,6 +112,7 @@ sub parse {
   chomp $header;
   my %cols;
   my @data;
+  no warnings qw(uninitialized);
   while(<$fh>) {
     chomp;
     s/\s+$//;
@@ -149,6 +150,7 @@ sub parse {
     };
     push @data, \@row;
   }
+  use warnings;
   close $fh;
   if( exists $res->{'pca'} ) {
     $res->{'ranges'}{'pca'} =  [ [ floor( $r{'p1'}[0]), ceil( $r{'p1'}[1]) ],
