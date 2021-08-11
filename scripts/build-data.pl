@@ -80,7 +80,7 @@ sub parse_knn {
   my $x_col = $key_map{ 'KNN_GRAPH_X' };
   my $y_col = $key_map{ 'KNN_GRAPH_Y' };
   my $c_col = $key_map{ 'CLUSTER' };
-  my @indexes = map { $key_map{ $_ } } grep { ! /(KNN_GRAPH_|CLUSTER)/ } @KEYS;
+  my @indexes = map { $key_map{ $_ } } grep { ! /(KNN_GRAPH_|CLUSTER)/ && $_ ne 'GO BP'} @KEYS;
   my %clusters;
   my($x0,$y0,$x1,$y1);
   foreach( @{$data} ) {
