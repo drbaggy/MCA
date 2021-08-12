@@ -3,6 +3,7 @@
   ch10x:
     cell:
       columns: [ stage, day ]
+      filters: [stage]
       data: []
       genes: []
       pca: 3
@@ -11,6 +12,7 @@
   ss2:
     cell:
       columns: [ stage, host ]
+      filters: [stage]
       data: []
       genes: []
       popup: 'Stage: [[0]]<br />Host: [[1]]'
