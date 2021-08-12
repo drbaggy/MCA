@@ -8,9 +8,9 @@ my $template_file = $root.'/src/species-template.html';
 my $template      = q();
 
 my $CONFIG = [
-  { 'code' => 'pb', 'name' => 'P. briggsae'    },
-  { 'code' => 'pf', 'name' => 'P. falciparum' },
-  { 'code' => 'pk', 'name' => 'P. knowlesi'    },
+  { 'code' => 'pb', 'name' => 'P. briggsae',   'dir' => 'p.briggsae'   },
+  { 'code' => 'pf', 'name' => 'P. falciparum', 'dir' => 'p.falciparum' },
+  { 'code' => 'pk', 'name' => 'P. knowlesi',   'dir' => 'p.knowlesi'  },
 ];
 
 open my $fh, q(<), $template_file;
@@ -19,8 +19,8 @@ $template = <$fh>;
 close $fh;
 
 foreach ( @{$CONFIG} ) {
-  mkdir $doc_root.$_->{'code'} unless -e $doc_root.$_->{'code'};
-  print_file( $_->{'code'}, $_->{'name'} );
+  mkdir $doc_root.$_->{'dir'} unless -e $doc_root.$_->{'dir'};
+  print_file( $_->{'code'}, $_->{'name'}, $_->{'dir'} );
 }
 
 sub expand_template {
@@ -29,13 +29,13 @@ sub expand_template {
 }
 
 sub print_file {
-  my( $code, $name ) = @_;
+  my( $code, $name, $dir ) = @_;
   my $links = join q( | ),
-              map  { sprintf '<a href="/%s/">%s</a>', $_->{'code'}, $_->{'name'} }
+              map  { sprintf '<a href="/%s/">%s</a>', $_->{'dir'}, $_->{'name'} }
               grep { $_->{'code'} ne $code }
               @{$CONFIG};
 
-  open my $fh, q(>), "$doc_root$code/index.html";
-  print {$fh} expand_template( { 'code' => $code, 'name' => $name, 'links' => $links }, $template );
+  open my $fh, q(>), "$doc_root$dir/index.html";
+  print {$fh} expand_template( { 'code' => $code, 'dir' => $dir, 'name' => $name, 'links' => $links }, $template );
   close $fh;
 }
