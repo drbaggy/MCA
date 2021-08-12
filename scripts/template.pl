@@ -37,6 +37,6 @@ sub print_file {
               @{$CONFIG};
 
   open my $fh, q(>), "$doc_root$dir/index.html";
-  print {$fh} expand_template( { 'code' => $code, 'dir' => $dir, 'name' => $name, 'links' => $links, 'debug' => $debug?'-min':'', }, $template );
+  print {$fh} expand_template( { 'code' => $code, 'dir' => $dir, 'name' => $name, 'links' => $links, 'debug' => $debug?'':'-min', }, $template );
   close $fh;
 }
