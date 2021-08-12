@@ -172,5 +172,5 @@ sub parse {
     $res->{'umap'} = $res->{'umap'} == 3 ? [ $cols{'u1'},$cols{'u2'},$cols{'u3'} ] : [ $cols{'u1'},$cols{'u2'}];
   }
   $res->{'data'} = \@data;
-  $res->{'values'}{$_} = [ sort keys %{$v{$col}} ] foreach @{$res->{'columns'}};
+  $res->{'values'}{$_} = [ sort keys %{$v{$_}} ] foreach @{$res->{'columns'}};
 }
