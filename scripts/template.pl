@@ -7,8 +7,9 @@ my $doc_root      = $root.'/htdocs/';
 my $template_file = $root.'/src/species-template.html';
 my $template      = q();
 
+my $debug = @ARGV ? $ARGV[0] : 1;
 my $CONFIG = [
-  { 'code' => 'pb', 'name' => 'P. briggsae',   'dir' => 'p.briggsae'   },
+  { 'code' => 'pb', 'name' => 'P. berghei',    'dir' => 'p.berghei'   },
   { 'code' => 'pf', 'name' => 'P. falciparum', 'dir' => 'p.falciparum' },
   { 'code' => 'pk', 'name' => 'P. knowlesi',   'dir' => 'p.knowlesi'  },
 ];
@@ -36,6 +37,6 @@ sub print_file {
               @{$CONFIG};
 
   open my $fh, q(>), "$doc_root$dir/index.html";
-  print {$fh} expand_template( { 'code' => $code, 'dir' => $dir, 'name' => $name, 'links' => $links }, $template );
+  print {$fh} expand_template( { 'code' => $code, 'dir' => $dir, 'name' => $name, 'links' => $links, 'debug' => $debug?'-min':'', }, $template );
   close $fh;
 }

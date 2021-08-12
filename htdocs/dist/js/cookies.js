@@ -91,8 +91,7 @@
     },
     parse_meta: function() {
       var x = d.getElementsByTagName("meta"), met = {}, i = x.length;
-      for( i; i; i ) {
-        i--;
+      for( i=x.length-1; i>=0; --i ) {
         if( x[i].content && x[i].name ) {
           met[x[i].name] = x[i].content;
         }

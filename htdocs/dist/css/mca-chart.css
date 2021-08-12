@@ -1,7 +1,7 @@
 footer > div, header > nav, header > div, main { margin: 0 auto; max-width: 1800px; padding: 0 10px; display: block }
 header > div { display: grid }
 /* Layout of chart space */
-main { display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; }
+main { display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; position: relative; min-height: 20em }
 main section { flex: 0 1 70% }
 main nav { flex: 0 1 28% }
 
@@ -28,6 +28,7 @@ main .input div { display: flex; flex-flow: row wrap; white-space: nowrap}
 main .input div label { text-align: left; flex: 1 1 20%; font-weight: bold }
 main .input div div { flex: 1 1 70%; position: relative }
 main nav label input { display: none }
+main section { position: relative }
 main section > div { display: none }
 main section > div.active { display: block }
 h3 a { float: right; display: block; margin-left: 1em; padding: 5px 1em; background-color: #ccc; border-radius: 3px; font-size: 80% }
@@ -48,8 +49,7 @@ header nav li a:hover, #species div > p:last-of-type a:hover { color: #666 }
 #species div > p:last-of-type a:after { content: ' >' }
 .graph-wrapper { width: 100%; height: 0; padding-bottom: 60%; position: relative }
 .loading, .graph { position:absolute; height: 100%; width: 100%; }
-.loading { opacity: 0.2; z-index: 20; background-color: #999; padding-top: 35%; font-weight: bold; font-size: 2em; text-align: center; color: #000; box-sizing: border-box; overflow: hidden }
-
+.loading { opacity: 0.2; z-index: 20; background-color: #999; padding-top: 8rem; font-weight: bold; font-size: 2em; text-align: center; color: #000; box-sizing: border-box; overflow: hidden; }
 
 .graph > * > *, .graph > * { position: absolute; width:100%;height:100%; top:0; left: 0 }
 
