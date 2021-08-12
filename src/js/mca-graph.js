@@ -461,14 +461,14 @@ Interaction functions
     if( has('ch10x-cell') ) {
       x1=graph.ch10x.cell.visible = graph.ch10x.cell.data.map( function(x) {
         var res = CONFIG.marker_size, c=0;
-        graph.ch10x.cell.columns.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
+        graph.ch10x.cell.filters.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
         return res;
       } );
     }
     if( has('ss2-cell') ) {
       x2=graph.ss2.cell.visible = graph.ss2.cell.data.map( function(x) {
         var res = CONFIG.marker_size, c=0;
-        graph.ss2.cell.columns.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
+        graph.ss2.cell.filters.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
         return res;
       } );
     }
