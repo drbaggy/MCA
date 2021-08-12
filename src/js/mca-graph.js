@@ -19,7 +19,14 @@
     m:   function( el, s, f ) { if( 'string' === typeof el ) { f = s; s = el; el = d; } this.qm(el,s).forEach( f ); },
     s:   function( el, s, f ) { if( 'string' === typeof el ) { f = s; s = el; el = d; } var z = this.qs(el,s); if( z ) f( z ); },
     dis: function( n )        { if( 'string' === typeof n ) { n = d.querySelector(n); } if(n) n.classList.remove('active');           },
-    act: function( n )        { if( 'string' === typeof n ) { n = d.querySelector(n); } if(n) n.classList.add('active');              }
+    act: function( n )        { if( 'string' === typeof n ) { n = d.querySelector(n); } if(n) n.classList.add('active');              },
+    json:   function(url,callback){
+      var h=new XMLHttpRequest();
+      h.overrideMimeType('application/json');
+      h.open('GET',url);
+      h.onreadystatechange=function(){ if(h.readyState==4&&h.status=='200'){callback(JSON.parse(h.responseText));} };
+      h.send(null);
+   }
   };
 
 /*######################################################################
@@ -371,7 +378,7 @@ Drawing cell graphs....
         redraw_cell_by_gene( gene_id );
       } else {
         _.m('.loading', function(a) { a.innerText = 'LOADING DATA FOR '+gene_id; a.style.display = 'block';} );
-        Plotly.d3.json( '/processed/' + (_.qs("#main").dataset.directory) + '/' + current_type +'/exp/'+gene_id+'.json', function(err,expdata) {
+        _.json( '/processed/' + (_.qs("#main").dataset.directory) + '/' + current_type +'/exp/'+gene_id+'.json', function(expdata) {
           expression_cache[ current_type+'-'+gene_id ] = expdata;
           _.m('.loading', function(a) { a.style.display = 'none'; });
           redraw_cell_by_gene( gene_id );
@@ -583,7 +590,7 @@ Interaction functions
   function load_data(  ) {
     _.m('.loading', function(a) { a.innerText = 'LOADING DATA'; a.style.display = 'block';} );
     var time = Date.now();
-    Plotly.d3.json( '/processed/' + (_.qs("#main").dataset.directory) + '/' + CONFIG.filename, function(err, t) {
+    _.json( '/processed/' + (_.qs("#main").dataset.directory) + '/' + CONFIG.filename, function( t) {
 // Create the hover templates...
       graph = t;
       current_gene = t.default_gene;
@@ -606,7 +613,6 @@ Interaction functions
       // Finally remove "shim" over graph...
       _.m('.loading', function(a) { a.style.display = 'none'; } );
       var post_time = Date.now() - time - fetched_time - rendered_time;
-console.log( "X");
       _.m('#colour-by-caption', function(a) { a.style.display = 'block'; } );
       _.m( '#int a', function( n ) { n.onclick = function( e ) {
         e.preventDefault();

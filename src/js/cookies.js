@@ -66,9 +66,9 @@
 # Maintainer     : js5
 # Created        : 2019-01-04
 # Last commit by : $Author: js5 $
-# Last modified  : $Date: 2020-11-23 21:25:12 +0000 (Mon, 23 Nov 2020) $
-# Revision       : $Revision: 2972 $
-# Repository URL : $HeadURL: svn+psssh://frontend-config@web-wwwsvn/repos/svn/other/frontend-config/trunk/files/zxtm/cookies.js $
+# Last modified  : $Date: 2019-01-06 09:49:24 +0000 (Sun, 06 Jan 2019) $
+# Revision       : $Revision: 3962 $
+# Repository URL : $HeadURL: svn+psssh://pagesmith-core@web-wwwsvn/repos/svn/pagesmith/pagesmith-core/trunk/htdocs/core/js/cookies-vanilla.js $
 */
 
 // Main cookie policy object
@@ -91,7 +91,8 @@
     },
     parse_meta: function() {
       var x = d.getElementsByTagName("meta"), met = {}, i = x.length;
-      for( i=x.length-1; i>=0; --i ) {
+      for( i; i; i ) {
+        i--;
         if( x[i].content && x[i].name ) {
           met[x[i].name] = x[i].content;
         }
@@ -127,12 +128,20 @@
       fi: {
         caption: 'Our cookies',
         cookies: {
-          f1: {
-            title:  'Functional',
-            text:   'Allows functions of the website to work (<em>e.g.</em> remembering cookie' +
-                    ' preferences, capabilities of your browser, security cookies - CSRF/user/session)',
+          e1: {
+            title:  'Essential',
+            text:   'These allow functions of the website to work (<em>e.g.</em> remembering cookie' +
+                    ' preferences, security cookies - CSRF/user/session) and are required for the site to' +
+                    ' function correctly',
             req:    true,
             used:   true
+          },
+          f1: {
+            title:  'Functional',
+            text:   'Allows other (optional) functions of the website to work (<em>e.g.</em> preferences,' +
+                    ' bookmarking etc) - disabling these may reduce the usability or functioning of the website',
+            req:    false,
+            used:   false
           },
           t1: {
             title:  'Tracking',
@@ -141,17 +150,32 @@
                     ' with third-party organisations but held on our own servers',
             req:    false,
             used:   true
+          },
+          m1: {
+            title:  'Marketing',
+            text:   'To enable customisation of adverts and marketing embeded in the page' +
+                    ' based on your previous activities and demographics',
+            req:    false,
+            used:   false
           }
         }
       },
       th: {
         caption: 'Third party cookies',
         cookies: {
+          e3: {
+            title:  'Essential (3rd party)',
+            text:   'These allow functions of the website to work (<em>e.g.</em> reCAPCHA, fonts, maps,' +
+                    ' embedded videos etc, cookie prefernces, security cookies - CSRF/user/session)'     +
+                    ' and a required for the site to function correctly',
+            req:    true,
+            used:   false
+          },
           f3: {
             title:  'Functional (3rd party)',
-            text:   'Allows functions of the website to work (reCAPCHA, fonts, maps,' +
-                    ' embedded videos etc)',
-            req:    true,
+            text:   'Allows other (optional) functions of the website to work (e.g. preferences,' +
+                    ' bookmarking etc) - disabling these may reduce the usability or functioning of the website',
+            req:    false,
             used:   false
           },
           t3: {
@@ -255,11 +279,12 @@
         if( hop.call( conf.cookies, k ) ) {
           cn = conf.cookies[k];
           if( cn.used ) {
-            markup += '<tr id="cookie-' + k + '"' +
+            markup += '<tr id="cookie-' + k + '"><td><label for="cookie-input-' + k +
+                      '"><strong>' + cn.title + '</strong><br />' +
+                      cn.text +
                       ( ( k === 't1' || k === 't3' ) && this.track === false ?
-                        ' class="disabled" title="You will not be tracked as you have "Do Not Track" enabled in your browser"' : '' ) +
-                      '><td><label for="cookie-input-' + k + '"><strong>' + cn.title + '</strong><br />' +
-                      cn.text + '</label></td><td>' +
+                       '<br><em>You will not be tracked as you have "Do Not Track" enabled in your browser</em>' : '' )+
+                      '</label></td><td>' +
                       ( cn.req ? 'Required <input type="hidden" />' :
                         '<input id="cookie-input-' + k + '" type="checkbox" '+(this.is_set(k)?' checked="checked"':'' )+' />' ) +
                       '</td></tr>';

@@ -44,17 +44,14 @@ header h1  {  margin: 0; padding: 0.5rem; line-height: 1em; grid-column-start: 2
 #homepage header>div { grid-template-columns: 16.5rem auto;  -ms-grid-columns: 16.5rem 1fr; grid-template-rows: 125px 125px; -ms-grid-columns: 8rem 8em }
 
 #homepage h1 { height: 8rem; font-size: 6em }
-#homepage #top { grid-column-start: 2; grid-column-end: 2 ; grid-row-start: 2; grid-row-end: 2; -ms-grid-row:2; -ms-grid-column:2; text-align: right;
- font-size: 2em; align-self: end }
+#homepage #top { grid-column-start: 2; grid-column-end: 2 ; grid-row-start: 2; grid-row-end: 2; -ms-grid-row:2; -ms-grid-column:2; text-align: right; font-size: 2em; align-self: end }
 
 #int  { display: flex; font-size: 150% }
 #int p { margin: 0.5em 0; font-weight: bold; flex: 1 1 50%; text-align: center }
 #int a { display: inline-block; background-color: #ccc; border-radius: 3px; padding: 3px; margin-left: 1em; padding: 2px 0.5em; }
 #int a:hover { background-color: #eee }
-#int a.disabled,
-#int a.disabled:hover { color: #999; background-color: #ccc; cursor: not-allowed }
-#int a.active,
-#int a.active:hover { color: #fff; background-color: #333; cursor: default }
+#int a.disabled, #int a.disabled:hover { color: #999; background-color: #ccc; cursor: not-allowed }
+#int a.active, #int a.active:hover { color: #fff; background-color: #333; cursor: default }
 
 header h2 { margin: 0; padding: 0.5rem; line-height: 1em; grid-column-start: 2; grid-column-end: 2; grid-row-start: 2; grid-row-end: 2; box-sizing: border-box; font-size: 2em; -ms-grid-row:2; -ms-grid-column:2  }
 

@@ -58,6 +58,10 @@
 #cookie-options button { font-size: 1.2em; padding: 4px 1em; }
 button#cookie-close   { display: block; float: right; background-color: #666; font-size: 1em }
 
+@media print {
+ div#cookie-policy { display: none }
+}
+
 @media (max-width: 1280px) {
   #cookie-options { width: 40% }
 }
@@ -72,3 +76,4 @@ button#cookie-close   { display: block; float: right; background-color: #666; fo
 /* #cookie-options, #cookie-policy { left: 0; right: auto }  /* Policy link and panel on left... */
 /* #cookie-policy { top: 0; bottom: auto }                   /* Policy link at top of page rather than bottom! */
 /* #cookie-policy.full { top: 0; bottom: auto; border-top: 0; border-bottom: 1px solid #999 } /* Put the initial banner at the top of the page*/
+

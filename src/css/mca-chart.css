@@ -65,11 +65,8 @@ nav .legend li > span { display: inline-block; overflow: hidden; height:0.5em; w
 .gradient div p   { height: 0.2em; padding: 0; margin: 0; background-image: linear-gradient(to right, #000 1%, #fff 1%, #fff 49.5%, #000 49.5%, #000 50.5%, #fff 50.5%, #fff 99%, #000 99%) }
 .gradient div div { display: block; height: 1em; background-image: linear-gradient(to right, #440154, #472D7B 12.5%, #3B528B 25%, #2C728E 37.5%, #21908C 50%, #27AD81 62.5%, #5DC863 75%, #AADC32 87.5%, #FDE725); }
 
+/* Information about genes on KNN view */
 body .gene-table { display: block }
 .gene-table dl { display: flex; flex-flow: row wrap; align-items: flex-start; font-size: 0.8em; justify-content: space-between }
 .gene-table dl dt { flex: 0 0 45%; margin: 0 0 0.5em 0; font-weight: bold }
 .gene-table dl dd { flex: 0 0 50%; margin: 0 0 0.5em 0 }
-.gene-table dl dt.go { flex: 0 0 100% }
-.gene-table dl dd.go { flex: 0 0 100% }
-
-
