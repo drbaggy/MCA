@@ -29,7 +29,15 @@ htdocs/processed/pf/ss2/exp/{GENE_ID}.json
 
 ## Building HTML files for displays
 
+The species display files can be updated from a common template file when you build the site the script:
+
+ * `scripts/push.bash`
+
+Rebuilds the species HTML pages from the template and pushes the latest CSS/JS to the main htdocs directory.
+
 ## Compiling JS/CSS bundles
+
+By default (for development) the JS/CSS do not get compiled but just copied across from the src/js & src/css directories. For a live production environment a compressed/obfuscated version is also produced and used by the live server. (This uses google_closure_compiler for Javascript and yuicompressor for CSS)
 
 ## Future development
 
