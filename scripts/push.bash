@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DEV=0
+DEV=1
 PLOTLY=2.3.1
 #PLOTLY=1.58.4
 
