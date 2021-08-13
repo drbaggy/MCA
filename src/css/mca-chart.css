@@ -70,3 +70,18 @@ body .gene-table { display: block }
 .gene-table dl { display: flex; flex-flow: row wrap; align-items: flex-start; font-size: 0.8em; justify-content: space-between }
 .gene-table dl dt { flex: 0 0 45%; margin: 0 0 0.5em 0; font-weight: bold }
 .gene-table dl dd { flex: 0 0 50%; margin: 0 0 0.5em 0 }
+
+@media only screen and (max-width: 800px) {
+  main { display: block }
+}
+
+#int  { display: flex; font-size: 150% }
+#int p { margin: 0.5em 0; font-weight: bold; flex: 1 1 50%; text-align: center; line-height: 1.5em }
+#int a { display: inline-block; background-color: #ccc; border-radius: 3px; padding: 3px; margin-left: 1em; padding: 2px 0.5em; line-height: 1.2em }
+#int a:hover { background-color: #eee }
+#int a.disabled, #int a.disabled:hover { color: #999; background-color: #ccc; cursor: not-allowed }
+#int a.active, #int a.active:hover { color: #fff; background-color: #333; cursor: default }
+
+@media screen and (max-width: 960px) { #int { font-size: 110% } }
+@media screen and (max-width: 800px) { #int p { line-height: 2em } }
+

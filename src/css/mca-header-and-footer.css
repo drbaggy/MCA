@@ -40,29 +40,30 @@ header h1  {  margin: 0; padding: 0.5rem; line-height: 1em; grid-column-start: 2
 #top  { grid-column-start: 3; grid-column-end: 3; grid-row-start: 1; grid-row-end: 1; -ms-grid-row:1; -ms-grid-column:3; text-align: right; font-size: 1.2em }
 #spec  { grid-column-start: 3; grid-column-end: 3; grid-row-start: 2; grid-row-end: 2; -ms-grid-row:2; -ms-grid-column:3; text-align: right; }
 
-#homepage header img { width: 240px; height: 240px }
-#homepage header>div { grid-template-columns: 16.5rem auto;  -ms-grid-columns: 16.5rem 1fr; grid-template-rows: 125px 125px; -ms-grid-columns: 8rem 8em }
+@media screen and (min-width: 961px) {
+  #homepage header img { width: 240px; height: 240px }
+  #homepage header>div { grid-template-columns: 16.5rem auto;  -ms-grid-columns: 16.5rem 1fr; grid-template-rows: 125px 125px; -ms-grid-columns: 8rem 8em }
 
-#homepage h1 { height: 8rem; font-size: 6em }
-#homepage #top { grid-column-start: 2; grid-column-end: 2 ; grid-row-start: 2; grid-row-end: 2; -ms-grid-row:2; -ms-grid-column:2; text-align: right; font-size: 2em; align-self: end }
+  #homepage h1 { height: 8rem; font-size: 6em }
+  #homepage #top { grid-column-start: 2; grid-column-end: 2 ; grid-row-start: 2; grid-row-end: 2; -ms-grid-row:2; -ms-grid-column:2; text-align: right; font-size: 2em; align-self: end }
+}
 
-#int  { display: flex; font-size: 150% }
-#int p { margin: 0.5em 0; font-weight: bold; flex: 1 1 50%; text-align: center }
-#int a { display: inline-block; background-color: #ccc; border-radius: 3px; padding: 3px; margin-left: 1em; padding: 2px 0.5em; }
-#int a:hover { background-color: #eee }
-#int a.disabled, #int a.disabled:hover { color: #999; background-color: #ccc; cursor: not-allowed }
-#int a.active, #int a.active:hover { color: #fff; background-color: #333; cursor: default }
-
-header h2 { margin: 0; padding: 0.5rem; line-height: 1em; grid-column-start: 2; grid-column-end: 2; grid-row-start: 2; grid-row-end: 2; box-sizing: border-box; font-size: 2em; -ms-grid-row:2; -ms-grid-column:2  }
+header h2 { margin: 0; padding: 0.5rem; line-height: 1em; grid-column-start: 2; grid-column-end: 2; grid-row-start: 2; grid-row-end: 2; box-sizing: border-box; font-size: 2em; -ms-grid-row:2; -ms-grid-column:2; min-height: 2em  }
 
 @media screen and (max-width: 960px) {
   header nav  { grid-column-start: 2;  grid-column-end: 2; grid-row-start: 2; grid-row-end: 2; height: auto }
-  header>div { grid-template-columns: 8rem auto auto; grid-template-rows: 1fr 4rem 4rem }
-  header div div  { grid-row-start: 2; grid-row-end: 3 }
+  header>div { grid-template-columns: 8rem auto auto; grid-template-rows: auto 4rem auto }
+  header div div  { grid-row-start: 2; grid-row-end: 3; }
   header h1 { grid-column-start: 2; grid-column-end: 2; grid-row-start: 2; grid-row-end: 2; font-size: 2em }
   header #top { grid-column-start: 1; grid-column-end: 4; grid-row-start: 1; grid-row-end: 1 }
   header #spec { grid-column-start: 2; grid-column-end: 4; grid-row-start: 3; grid-row-end: 3 }
   header h2 { grid-column-start: 2; grid-column-end: 2; grid-row-start: 3; grid-row-end: 3 }
+}
+@media screen and (max-width: 400px) {
+  header h1, header h2 { font-size: 1.5em }
+  header img { width: 80px; height: 80px }
+  header>div { grid-template-rows: auto 3rem auto; grid-template-columns: 6rem auto auto }
+  #top { font-size: 1em }
 }
 
 #spec a { font-style: italic }
@@ -85,6 +86,14 @@ header h2 { margin: 0; padding: 0.5rem; line-height: 1em; grid-column-start: 2; 
 .atlas-links a:hover { background-color: #00C; color: #fff }
 .atlas-links div img { width: 80%; margin: 1em 10% }
 
+@media(max-width:800px) {
+  .atlas-links { display: block }
+  .atlas-links div:first-child { display: flex; flex-flow: row wrap; align-items: center; }
+  .atlas-links div:first-child span { display: none }
+  .atlas-links div:first-child a { flex: 1 1 30%; border: 0; padding: 0.25em; margin: 0.25em auto }
+  .atlas-links div:first-child a::after { content: '' }
+}
+
 /* Datasets table */
 .datasets table { border-collapse: collapse;}
 .datasets thead tr { color: #fff; background-color: #000; font-weight: bold; }
@@ -96,23 +105,33 @@ header h2 { margin: 0; padding: 0.5rem; line-height: 1em; grid-column-start: 2; 
 .datasets tr td:nth-child(3) { width: 20% }
 .datasets tr td:nth-child(4) { width: 60% }
 
+@media(max-width: 800px) {
+  .datasets table { display: block }
+  .datasets tr { display: flex; flex-flow: row wrap; justify-content: space-between }
+  .datasets th, .datasets td { flex: 0 0 25% }
+  .datasets th:nth-of-type(3), .datasets td:nth-of-type(3) { flex: 0 0 40% }
+  .datasets tr th:nth-of-type(4) { display: none }
+  .datasets tr td:nth-of-type(4) { flex: 0 0 100%; width:100; border-bottom: 1px solid #999; font-size: 80% }
+}
+
 /*footer div { display: flex;  justify-content: space-between; }
 footer p { flex: 1 1 50%; text-align: right }
 footer p:first-child { text-align: left }*/
 
 #cookie-policy { margin: 0 auto }
 
-.publications { display: flex; justify-content: space-between; flex-flow: row wrap }
-.publications div.img { flex: 1 0 12%;}
-.publications img { width: 100% }
-.publications div.pub { flex: 1 0 80%; padding-left: 5em }
+.pub { display: flex; justify-content: space-between; flex-flow: row wrap }
+.pub .img { flex: 0 1 20%}
+.pub img { width: 100% }
+.pub .info { flex: 0 1 76%; }
 
-.publications .title { font-style: italic }
-.publications .volume { font-weight: bold }
-.publications .abstract { font-size: 90% }
-.publications h4.article { font-size: 140% }
-.publications h4.article, .publications p.abstract, .publications p.authors, .publications p.publication, .publications .links { margin-top: 0.25em; margin-bottom: 0 }
+.pub .title { font-style: italic }
+.pub .volume { font-weight: bold }
+.pub .abstract { font-size: 90% }
+.pub h4.article { font-size: 140% }
+.pub h4.article, .pub p.abstract, .pub p.authors, .pub p.publication, .pub .links { margin-top: 0.25em; margin-bottom: 0 }
 
+@media(max-width: 640px) { .pub .img { display: none } .pub { display: block } }
 .cookies-table { width: 90%; margin: 0.5em auto; border-collapse: collapse }
 .cookies-table thead tr { color: #fff; background-color: #000; font-weight: bold; }
 .cookies-table th { padding: 0.5em }
