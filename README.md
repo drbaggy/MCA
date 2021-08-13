@@ -1,5 +1,7 @@
 # Malaria Cell Atlas web views
 
+Demo version: https://mca.curtissmith.me.uk/
+
 ## Dependencies
 
  * **Plotly/3d:** https://github.com/plotly/plotly.js/blob/master/dist/README.md#plotlyjs-gl3d
