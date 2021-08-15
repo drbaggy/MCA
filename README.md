@@ -74,24 +74,19 @@ The final file the script uses is a yaml file in the configs directory. This def
   ch10x:
     cell:
       columns: [ stage, day ]
-      filters: [stage]
-      data: []
-      genes: []
-      pca: 3
-      popup: 'Stage: [[0]]<br />Day: [[1]]'
-      umap: 3
+      filters: [ stage ]
+      pca:     3
+      umap:    3
+      popup:  'Stage: [[0]]<br />Day: [[1]]'
   ss2:
     cell:
       columns: [ stage, host ]
-      filters: [stage]
-      data: []
-      genes: []
-      popup: 'Stage: [[0]]<br />Host: [[1]]'
-      umap: 2
+      filters: [ stage ]
+      umap:    2
+      popup:  'Stage: [[0]]<br />Host: [[1]]'
     gene:
-      data: []
-      knn: 2
-      popup: 'Gene ID: [[1]]<br />Gene name: [[5]]<br />Cluster: [[0]]'
+      knn:    2
+      popup:  'Gene ID: [[1]]<br />Gene name: [[5]]<br />Cluster: [[0]]'
       table: |-2
 
                   <h3>[[1]]</h3>
@@ -113,14 +108,15 @@ The final file the script uses is a yaml file in the configs directory. This def
   * At the top level there is a key `default_gene` which is used to give a default view if colour by gene is selected - make sure that this gene is present in all (up to 4) datasets.
   * There are then are up to 4 separate configs for the 4 view sets SS2/Ch10x & gene/cell
   * Gene config
-    * `knn` - dimension of data (always 2)
+    * `knn`   - dimension of data (always 2)
     * `popup` - HTML template for on hover popup - the square brackets correspond to the relevant columns in the data set (note KNN columns are not included in the count)
     * `table` - HTML template for the gene info table - (see note above)
   * Cell config
-    * `pca`/`umap` - dimensions of view (optional) either 2 or 3.
-    * `popup` - see above
-    * `columns` - array of columns to be extracted - these are used in the popup/colouring
-    * `filters` - columns which are to used as filters (and currently to show those that are to be coloured)
+    * `columns`    - array of columns to be extracted from `data.csv` - these are used in the popup/colouring/filtering
+    * `filters`    - columns which are to used as filters (and currently to show those that are to be coloured)
+    * `pca`        - dimensions of the PCA graph (optional) either 2 or 3.
+    * `umap`       - dimensions of the UMAP graph (optional) either 2 or 3.
+    * `popup`      - see above
 
 ### Running the script
 
@@ -142,7 +138,7 @@ Rebuilds the species HTML pages from the template and pushes the latest CSS/JS t
 
 ## Compiling JS/CSS bundles
 
-By default (for development) the JS/CSS do not get compiled but just copied across from the src/js & src/css directories. For a live production environment a compressed/obfuscated version is also produced and used by the live server. (This uses google_closure_compiler for Javascript and yuicompressor for CSS)
+By default (for development) the JS/CSS do not get compiled but just copied across from the src/js & src/css directories. For a live production environment a compressed/obfuscated version is also produced and used by the live server. (This uses `google_closure_compiler` for Javascript and `yuicompressor` for CSS)
 
 ## Future development
 
