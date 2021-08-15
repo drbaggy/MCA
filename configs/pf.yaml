@@ -3,24 +3,19 @@
   ch10x:
     cell:
       columns: [ stage, day ]
-      filters: [stage]
-      data: []
-      genes: []
-      pca: 3
-      popup: 'Stage: [[0]]<br />Day: [[1]]'
-      umap: 3
+      filters: [ stage ]
+      pca:     3
+      umap:    3
+      popup :  'Stage: [[0]]<br />Day: [[1]]'
   ss2:
     cell:
       columns: [ stage, host ]
-      filters: [stage]
-      data: []
-      genes: []
-      popup: 'Stage: [[0]]<br />Host: [[1]]'
-      umap: 2
+      filters: [ stage ]
+      umap:    2
+      popup:   'Stage: [[0]]<br />Host: [[1]]'
     gene:
-      data: []
-      knn: 2
-      popup: 'Gene ID: [[1]]<br />Gene name: [[5]]<br />Cluster: [[0]]'
+      knn:     2
+      popup:   'Gene ID: [[1]]<br />Gene name: [[5]]<br />Cluster: [[0]]'
       table: |-2
 
                   <h3>[[1]]</h3>

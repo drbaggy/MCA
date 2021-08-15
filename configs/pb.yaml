@@ -2,25 +2,20 @@
   default_gene: PBANKA_1212600
   ch10x:
     cell:
-      columns: [stage]
-      filters: [stage]
-      data: []
-      genes: []
-      pca: 2
-      popup: 'Stage: [[0]]'
+      columns: [ stage ]
+      filters: [ stage ]
+      pca:     2
+      popup:   'Stage: [[0]]'
   ss2:
     cell:
-      columns: [stage, host ]
-      filters: [stage]
-      data: []
-      genes: []
-      pca: 3
-      popup: 'Stage: [[0]]<br />Host: [[1]]'
-      umap: 2
+      columns: [ stage, host ]
+      filters: [ stage ]
+      pca:     3
+      umap:    2
+      popup:   'Stage: [[0]]<br />Host: [[1]]'
     gene:
-      data: []
-      knn: 2
-      popup: 'Gene ID: [[1]]<br />Gene name: [[3]]<br />Cluster: [[0]]'
+      knn:     2
+      popup:   'Gene ID: [[1]]<br />Gene name: [[3]]<br />Cluster: [[0]]'
       table: |-2
 
                   <h3>[[1]]</h3>
@@ -36,4 +31,6 @@
                     <dt>Top cited gene in cluster</dt> <dd>[[9]]</dd>
                     <dt>Notable GO BP</dt> <dd>[[10]]</dd>
                   </dl>
+                  <p>The full <a href="#">KNN table</a> is available for download,
+                    it contains additional GO BP information.</p>
 
