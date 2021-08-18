@@ -421,6 +421,7 @@ Drawing gene graphs....
     Plotly.newPlot(gflag+'-knn-graph', t.points.knn, { autosize: true, margin: CONFIG.margins, hovermode:'closest',
       scene: { xaxis: { range: t.ranges.knn[0], title: 'KNNx' },
                yaxis: { range: t.ranges.knn[1], title: 'KNNy' }, }}, CONFIG.options2d );
+    _.qs('#'+gflag+'-knn-graph').on('plotly_click',function(d) { update_gene_by_gene( d.points[0].customdata[1] ) } );
     return;
   }
 
