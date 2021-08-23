@@ -22,6 +22,10 @@ my %stage_map = rev_hash( 'liver', 'merozoite', 'ring', 'trophozoite', 'schizont
   'sporozoite (salivary gland)', 'sporozoite (injected)', 'sporozoite (activated)',);
 my %day_map  = rev_hash( qw(D1 D2 D3 D4 D6 D8 D10) );
 my %host_map = rev_hash( qw(mosquito human mouse)  );
+my %tech_map = rev_hash( qw(10x Smart-seq2) );
+my %strain_map = rev_hash( qw(3D7 7G8 GB4 Sen-GB4 SenTh011 SenTh015 SenTh028) );
+my %sex_map  = rev_hash( qw(Asexual_Early Asexual_Late Bipotential Female Male) );
+my %cl2_map  = rev_hash( (map {"Asexual_$_"} 1..17),qw(Progenitor Female_1 Female_2 Female_3 Male_1 Male_2) );
 
 foreach my $key (@ARGV) {
   my $struct = LoadFile( $root.'/configs/'.$key.'.yaml' );
@@ -29,7 +33,7 @@ foreach my $key (@ARGV) {
   my $p_dir = $doc_root.'processed'; mkdir $p_dir  unless -d $p_dir; $p_dir.='/'.$key; mkdir $p_dir  unless -d $p_dir;
   my $d_dir = $root.'/dumps';        mkdir $d_dir  unless -d $d_dir; $d_dir.='/'.$key; mkdir $d_dir  unless -d $d_dir;
 ## Parse data, mol & knn files...
-  foreach my $md ( qw(ss2 ch10x) ) {
+  foreach my $md ( qw(ss2 ch10x extra) ) {
     my $s_dir = $source.$key.'/'.$md;
     parse_knn( $s_dir.'/knn.csv', $struct->{$md}{'gene'} ) if -e $s_dir.'/knn.csv';
     next unless -e $s_dir.'/data.csv';
@@ -118,7 +122,14 @@ sub parse {
     chomp;
     s/\s+$//;
     my @T = map { $_ eq 'NA' ? undef : $_ } split /,/;
-    my ($id,$p1,$p2,$p3,$u1,$u2,$u3,$cl,$st_lr,$st_hr,$str,$day,$host) = @T;
+    my ($id,$p1,$p2,$p3,$u1,$u2,$u3,$cl,$st_lr,$st_hr,$str,$day,$host,$pseudo,$cl2,$sex,$tech) = @T;
+    $v{'pseudo'}{$pseudo}++ if defined $pseudo;
+    $v{'cluster_2'}{$cl2_map{$cl2}}++ if defined $cl2;
+    $v{'cluster_1'}{$cl}++ if defined $cl;
+    $v{'sex'}{$sex_map{$sex}}++ if defined $sex;
+    $v{'technology'}{$tech_map{$tech}}++ if defined $tech;
+    $v{'strain'}{$strain_map{$str}}++ if defined $str;
+warn $str unless exists $strain_map{$str};
     ## Truncate x/y/z to 5 decimal places...
     push @{$cols{'p1'}}, 0 + sprintf '%0.5f', $p1;
     push @{$cols{'p2'}}, 0 + sprintf '%0.5f', $p2;
@@ -145,13 +156,18 @@ sub parse {
     $v{'str'   }{$str}++                 if defined $str;
     $v{'day'   }{$day_map{$day}}++       if defined $day;
     $v{'host'  }{$host_map{$host}}++     if defined $host;
-    $v{'st'}{$st_lr}{$st_hr}++ if defined $st_lr;
+    $v{'st'}{$st_lr}{$st_hr}++           if defined $st_lr;
     my @row=();
     ## Create custom data structure....
     foreach(@{$res->{'columns'}}) {
       push @row, $stage_map{$st_hr}                                if $_ eq 'stage';
       push @row, exists $day_map{$day} ? $day_map{  $day} : $day   if $_ eq 'day';
       push @row, $host_map{$host}                                  if $_ eq 'host';
+      push @row, ''.$cl                                               if $_ eq 'cluster_1';
+      push @row, ''.$cl2_map{$cl2}                                    if $_ eq 'cluster_2';
+      push @row, ''.$sex_map{$sex}                                    if $_ eq 'sex';
+      push @row, ''.$tech_map{$tech}                                  if $_ eq 'technology';
+      push @row, ''.$strain_map{$str}                                  if $_ eq 'strain';
     };
     push @data, \@row;
   }

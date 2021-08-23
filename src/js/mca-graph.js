@@ -59,7 +59,27 @@
                    ['Cluster 5','#3b3689'], ['Cluster 6','#50aed3'], ['Cluster 7','#48b24f'], ['Cluster 8','#e57438'],
                    ['Cluster 9','#569dd2'], ['Cluster 10','#569d79'], ['Cluster 11','#58595b'], ['Cluster 12','#e4b031'], ['Cluster 13','#84d2f4'],
                    ['Cluster 14','#cad93f'], ['Cluster 15','#f5c8af'], ['Cluster 16','#9ac483'], ['Cluster 17','#9e9ea2'],
-                   ['Cluster 18','#275218'], ['Cluster 19','#d07d80'], ['Cluster 20','#ea731a'] ],
+                   ['Cluster 18','#275218'], ['Cluster 19','#d07d80'], ['Cluster 20','#ea731a'],
+                   ['Cluster 21','#275218'], ['Cluster 22','#d07d80'], ['Cluster 23','#ea731a'] ],
+      'cluster_2': [ ['Asexual 1','#267278'], ['Asexual 2','#65338d'], ['Asexual 3','#4770b3'], ['Asexual 4','#d21f75'],
+                   ['Asexual 5','#3b3689'], ['Asexual 6','#50aed3'], ['Asexual 7','#48b24f'], ['Asexual 8','#e57438'],
+                   ['Asexual 9','#569dd2'], ['Asexual 10','#569d79'], ['Asexual 11','#58595b'], ['Asexual 12','#e4b031'], ['Asexual 13','#84d2    f4'],
+                   ['Asexual 14','#cad93f'], ['Asexual 15','#f5c8af'], ['Asexual 16','#9ac483'], ['Asexual 17','#9e9ea2'],
+                   ['Progenitor','#275218'], ['Female 1','#d07d80'], ['Female 2','#ea731a'],
+                   ['Female 3','#275218'], ['Male 1','#d07d80'], ['Male 2','#ea731a'] ],
+      'technology':      [ [ 'Chromium 10x','#ffa600' ], [ 'SmartSeq2', '#003f5c' ] ],
+      'sex' :      [ [ 'Asexual_Early', '#267278' ],
+                     [ 'Asexual_Late',  '#569d79' ],
+                     [ 'Bipotential',   '#ea731a' ],
+                     [ 'Female',        '#CC4125' ],
+                     [ 'Male',          '#F46D43' ] ],
+      'strain' :   [ [ '3D7', '#267278' ],
+                     [ '7G8',  '#569d79' ],
+                     [ 'GB4',   '#ea731a' ],
+                     [ 'Sen-GB4',        '#CC4125' ],
+                     [ 'SenTho011',          '#F46D43' ],
+                     [ 'SenTho015',          '#ea731a' ],
+                     [ 'SenTho028',          '#cad93f' ] ],
       'stage':   [ [ 'liver',                        '#B6D7A8' ], [ 'merozoite',                    '#D0E0E3' ],
                    [ 'ring',                         '#A2C4C9' ], [ 'trophozoite',                  '#45818E' ],
                    [ 'schizont',                     '#134F5C' ], [ 'gametocyte (developing)',      '#D8C0D8' ],
@@ -79,7 +99,7 @@
     options2d: {responsive: true,displayModeBar: true,displaylogo: false, modeBarButtonsToRemove: ['select2d', 'lasso2d', 'hoverClosestCartesian', 'hoverCompareCartesian' ]},
     options3d: {responsive: true,displayModeBar: true,displaylogo: false, modeBarButtonsToRemove: ['resetCameraLastSave3d', 'hoverClosest3d']}
   };
-
+  CONFIG.filters.cluster_1 = CONFIG.filters.cluster;
 /*######################################################################
 
   The main script...
@@ -144,7 +164,7 @@
     });
   }
 
-  function update_graphs( new_ch10x_cell, new_ss2_cell, new_ch10x_gene, new_ss2_gene ) {
+  function update_graphs( new_ch10x_cell, new_ss2_cell, new_ch10x_gene, new_ss2_gene, new_extra_cell, new_extra_gene ) {
     if( graph.hasOwnProperty('ch10x') ) {
       if( new_ch10x_cell && graph.ch10x.hasOwnProperty('cell') ) {
         if( graph.ch10x.cell.hasOwnProperty('umap') ) Plotly.restyle( 'ch10x-cell-umap-graph', new_ch10x_cell );
@@ -161,6 +181,15 @@
       }
       if( new_ss2_gene && graph.ss2.hasOwnProperty('gene') ) {
          if( graph.ss2.gene.hasOwnProperty('knn') ) Plotly.restyle( 'ss2-gene-knn-graph', new_ss2_gene );
+      }
+    }
+    if( graph.hasOwnProperty('extra') ) {
+      if( new_extra_cell && graph.extra.hasOwnProperty('cell') ) {
+        if( graph.extra.cell.hasOwnProperty('umap') ) Plotly.restyle( 'extra-cell-umap-graph', new_extra_cell );
+        if( graph.extra.cell.hasOwnProperty('pca')  ) Plotly.restyle( 'extra-cell-pca-graph',  new_extra_cell );
+      }
+      if( new_extra_gene && graph.extra.hasOwnProperty('gene') ) {
+         if( graph.extra.gene.hasOwnProperty('knn') ) Plotly.restyle( 'extra-gene-knn-graph', new_extra_gene );
       }
     }
   }
@@ -359,11 +388,16 @@ Drawing cell graphs....
         t1 = { 'marker.color': [ graph.ch10x.cell.colours.gene ],
                'text'  : [expdata.data],
                'hovertemplate': graph.ch10x.cell.hover_template_expr };
-      } else {
+      } else if( current_type=='ss2' ) {
         graph.ss2.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp); } );
         t2 = { 'marker.color': [ graph.ss2.cell.colours.gene ],
                'text': [expdata.data],
-               'hovertemplate': graph.ch10x.cell.hover_template_expr };
+               'hovertemplate': graph.ss2.cell.hover_template_expr };
+      } else {
+        graph.extra.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp); } );
+        t2 = { 'marker.color': [ graph.extra.cell.colours.gene ],
+               'text': [expdata.data],
+               'hovertemplate': graph.extra.cell.hover_template_expr };
       }
       update_graphs( t1, t2 );
     }
@@ -473,9 +507,19 @@ Interaction functions
         return res;
       } );
     }
+    if( has('extra-cell') ) {
+      x2=graph.extra.cell.visible = graph.extra.cell.data.map( function(x) {
+        var res = CONFIG.marker_size, c=0;
+        graph.extra.cell.filters.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
+        return res;
+      } );
+    }
     update_graphs(
       { 'marker.size':[ x1 ] },
-      { 'marker.size':[ x2 ] }
+      { 'marker.size':[ x2 ] },
+      0,
+      0,
+      { 'marker.size':[ x3 ] }
     );
   }; }
 
@@ -491,7 +535,9 @@ Interaction functions
         { 'marker.color': [ has('ch10x-cell') ? graph.ch10x.cell.colours[current_colour] : [] ] },
         { 'marker.color': [ has('ss2-cell'  ) ? graph.ss2.cell.colours[current_colour]   : [] ] },
         { 'marker.color': [ has('ch10x-gene') ? graph.ch10x.gene.colours[current_colour] : [] ] },
-        { 'marker.color': [ has('ss2-gene'  ) ? graph.ss2.gene.colours[current_colour]   : [] ] }
+        { 'marker.color': [ has('ss2-gene'  ) ? graph.ss2.gene.colours[current_colour]   : [] ] },
+        { 'marker.color': [ has('extra-cell') ? graph.extra.cell.colours[current_colour] : [] ] },
+        { 'marker.color': [ has('extra-gene') ? graph.extra.gene.colours[current_colour] : [] ] }
       );
       if( current_colour == 'gene' ) {
         if( current_view == 'gene' ) {
@@ -509,6 +555,7 @@ Interaction functions
 
   // Wrapper to check for data for graph & to activate graph & to update links....
   function graph_set_up( f, k1, k2 ) {
+console.log( f, k1, k2 );
     if(graph.hasOwnProperty(k1)) {
       if( graph[k1].hasOwnProperty(k2) ) {
         _.qs('a[href="#'+k1+'-'+k2+'"]').classList.remove('disabled');
@@ -569,6 +616,12 @@ Interaction functions
       if( graph.hasOwnProperty('ss2') && graph.ss2.hasOwnProperty('gene') ) {
         t4 = graph.ss2.gene.colours.gene = graph.ss2.gene.customdata.map( function(a) { return CONFIG.knn.def; } ); // reset colours
       }
+      if( graph.hasOwnProperty('extra') && graph.extra.hasOwnProperty('cell') ) {
+        t5 = graph.extra.cell.colours.gene = graph.ss2.extra.customdata.map( function(a) { return CONFIG.expression.def; } ); // reset colours
+      }
+      if( graph.hasOwnProperty('extra') && graph.extra.hasOwnProperty('gene') ) {
+        t6 = graph.extra.gene.colours.gene = graph.extra.gene.customdata.map( function(a) { return CONFIG.expression.def; } ); // reset colours
+      }
       var nav   = _.qs('main nav');
       _.m(nav,'.gradient span',         function(a) { a.innerText = '-'; });
       _.s(nav,'.gradient span.exp-ave', function(a) { a.innerText = '';  });
@@ -576,7 +629,9 @@ Interaction functions
         { 'marker.color': [t1], 'hovertemplate': graph.hasOwnProperty('ch10x') && graph.ch10x.hasOwnProperty('cell') ? graph.ch10x.cell.hover_template : ''},
         { 'marker.color': [t2], 'hovertemplate': graph.hasOwnProperty('ss2')   && graph.ss2.hasOwnProperty('cell')   ? graph.ss2.cell.hover_template   : '' },
         { 'marker.color': [t3] },
-        { 'marker.color': [t4] }
+        { 'marker.color': [t4] },
+        { 'marker.color': [t5], 'hovertemplate': graph.hasOwnProperty('extra')   && graph.extra.hasOwnProperty('cell')   ? graph.extra.cell.hover_template   : '' },
+        { 'marker.color': [t6] }
       );
       return;
     }
@@ -602,6 +657,7 @@ Interaction functions
       var f=1;
       f = graph_set_up( f, 'ss2',   'cell' ); f = graph_set_up( f, 'ss2',   'gene' );
       f = graph_set_up( f, 'ch10x', 'cell' ); f = graph_set_up( f, 'ch10x', 'gene' );
+      f = graph_set_up( f, 'extra', 'cell' ); f = graph_set_up( f, 'extra', 'gene' );
       switch_panel( current_type+'-'+current_view );
       // Draw graphs....
       var rendered_time = Date.now() - time - fetched_time;

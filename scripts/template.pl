@@ -12,6 +12,13 @@ my $CONFIG = [
   { 'code' => 'pb', 'name' => 'P. berghei',    'dir' => 'p.berghei'   },
   { 'code' => 'pf', 'name' => 'P. falciparum', 'dir' => 'p.falciparum' },
   { 'code' => 'pk', 'name' => 'P. knowlesi',   'dir' => 'p.knowlesi'  },
+  { 'code' => 'pb-ch10x-set1', 'name' => 'P. berghei ch10x set1', 'dir' => 'pb-ch10x-set1' },
+  { 'code' => 'pb-ch10x-set2', 'name' => 'P. berghei ch10x set2', 'dir' => 'pb-ch10x-set2' },
+  { 'code' => 'pb-ss2-set1',   'name' => 'P. berghei ss2 set1', 'dir' => 'pb-ss2-set1' },
+  { 'code' => 'pf-ch10x-set1', 'name' => 'P. falciparum ch10x set1', 'dir' => 'pf-ch10x-set1' },
+  { 'code' => 'pf-ch10x-set2', 'name' => 'P. falciparum ch10x set2', 'dir' => 'pf-ch10x-set2' },
+  { 'code' => 'pf-ss2-set1',   'name' => 'P. falciparum ss2 set1', 'dir' => 'pf-ss2-set1' },
+  { 'code' => 'pk-ch10x-set1', 'name' => 'P. knowlesi ch10x', 'dir' => 'pk-ch10x-set1' },
 ];
 
 open my $fh, q(<), $template_file;
@@ -34,8 +41,8 @@ sub print_file {
   my $links = join q( | ),
               map  { sprintf '<a href="/%s/">%s</a>', $_->{'dir'}, $_->{'name'} }
               grep { $_->{'code'} ne $code }
+              grep { 2 == length $_->{'code'} }
               @{$CONFIG};
-
   open my $fh, q(>), "$doc_root$dir/index.html";
   print {$fh} expand_template( { 'code' => $code, 'dir' => $dir, 'name' => $name, 'links' => $links, 'debug' => $debug?'':'-min', }, $template );
   close $fh;

@@ -22,7 +22,7 @@ main nav .input ul { position: absolute; margin-top: 0; left: 0; right: 0; top: 
 main nav .input ul li { padding: 2px; background-color: #ccc; border: 2px solid #fff; border-top: 0px; display: block }
 main nav .input ul li:first-of-type { border-top: 2px solid #fff;}
 main nav .input input { display: block; box-sizing: border-box; width:100%; padding: 2px; font-weight: bold; font-size: 1rem; }
-main nav .narrow label { flex: 1 1 15%; }
+main nav .narrow label { flex: 1 1 12%; }
 main nav .half label { flex: 1 1 45%; }
 main .input div { display: flex; flex-flow: row wrap; white-space: nowrap}
 main .input div label { text-align: left; flex: 1 1 20%; font-weight: bold }

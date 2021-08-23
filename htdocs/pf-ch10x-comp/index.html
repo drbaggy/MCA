@@ -6,20 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="shortcut icon" type="image/png" href="/dist/gfx/mca-ico.png"/>
-    <title>Malaria Cell Atlas - P. knowlesi</title>
-    <meta name="description"          content="Malaria Cell Atlas views for P. knowlesi - The Malaria Cell Atlas is an active project led by the Lawniczak lab to provide an interactive data resource of single cell transcriptomic data across the full lifecycle of malaria parasites.">
+    <title>Malaria Cell Atlas - P. falciparum Chromium10x comp</title>
+    <meta name="description"          content="Malaria Cell Atlas views for P. falciparum Chromium10x comp - The Malaria Cell Atlas is an active project led by the Lawniczak lab to provide an interactive data resource of single cell transcriptomic data across the full lifecycle of malaria parasites.">
 
     <meta name="twitter:card"         content="summary_large_image">
     <meta name="twitter:site"         content="@sangerinstitute">
     <meta name="twitter:creator"      content="www-core (Sanger webteam)">
-    <meta name="twitter:title"        content="Malaria Cell Atlas - P. knowlesi">
-    <meta name="twitter:description"  content="Malaria Cell Atlas views for P. knowlesi - The Malaria Cell Atlas is an active project led by the Lawniczak lab to provide an interactive data resource of single cell transcriptomic data across the full lifecycle of malaria parasites.">
+    <meta name="twitter:title"        content="Malaria Cell Atlas - P. falciparum Chromium10x comp">
+    <meta name="twitter:description"  content="Malaria Cell Atlas views for P. falciparum Chromium10x comp - The Malaria Cell Atlas is an active project led by the Lawniczak lab to provide an interactive data resource of single cell transcriptomic data across the full lifecycle of malaria parasites.">
     <meta name="twitter:image"        content="https://www.malariacellatlas.org/dist/gfx/mca-og.png">
 
-    <meta property="og:url"           content="https://www.malariacellatlas.org/p.knowlesi/">
+    <meta property="og:url"           content="https://www.malariacellatlas.org/pf-ch10x-comp/">
     <meta property="og:type"          content="article" />
-    <meta property="og:title"         content="Malaria Cell Atlas - P. knowlesi" />
-    <meta property="og:description"   content="Malaria Cell Atlas views for P. knowlesi - The Malaria Cell Atlas is an active project led by the Lawniczak lab to provide an interactive data resource of single cell transcriptomic data across the full lifecycle of malaria parasites. ">
+    <meta property="og:title"         content="Malaria Cell Atlas - P. falciparum Chromium10x comp" />
+    <meta property="og:description"   content="Malaria Cell Atlas views for P. falciparum Chromium10x comp - The Malaria Cell Atlas is an active project led by the Lawniczak lab to provide an interactive data resource of single cell transcriptomic data across the full lifecycle of malaria parasites. ">
     <meta property="og:image"         content="https://www.malariacellatlas.org/dist/gfx/mca-og.png">
     <meta property="og:locale"        content="en_GB" />
     <meta property="og:profile_id"    content="sangerinstitute" />
@@ -34,19 +34,18 @@
       <div><a href="/"><img height=128 width=128 alt="* Malaria Cell Atlas Logo" src="/dist/gfx/logo-600.png"></a></div>
       <h1><a href="/"><strong>M</strong>alaria <strong>C</strong>ell <strong>A</strong>tlas</a></h1>
       <nav id="top"><a href="/downloads/">Downloads</a> | <a href="/documentation/">Documentation</a> | <a href="/publications/">Publications</a> | <a href="/about/">About</a></nav>
-      <h2><i>P. knowlesi</i></h2>
-      <nav id="spec">Change species: <a href="/p.berghei/">P. berghei</a> | <a href="/p.falciparum/">P. falciparum</a></nav>
+      <h2><i>P. falciparum Chromium10x comp</i></h2>
+      <nav id="spec">Change species: <a href="/p.berghei/">P. berghei</a> | <a href="/p.falciparum/">P. falciparum</a> | <a href="/p.knowlesi/">P. knowlesi</a></nav>
     </div></header>
 
     <header><nav id="int">
-      <p>Chromium 10x <a href="#ch10x-cell">Cell view</a> <a href="#ch10x-gene">Gene view</a></p>
-      <p>SmartSeq2    <a href="#ss2-cell">Cell view</a>   <a href="#ss2-gene">Gene view</a></p>
+      <p>Chromium 10x <a href="#ch10x-cell">Comp</a> <a href="#ss2-cell">Non comp</a>   <a href="#extra-cell">Integrated</a></p>
     </nav></header>
 
-    <main id="main" data-directory="pk">
+    <main id="main" data-directory="pf-ch10x-comp">
 <div class="loading">LOADING DATA</div>
       <section>
-        <section id="ch10x-cell"><h3>Chromium 10x cell view (<span class="view-type"></span>): <span class="gene-name"></span> <a href="#ch10x-pca">PCA</a> <a href="#ch10x-umap" class="active">UMAP</a></h3>
+        <section id="ch10x-cell"><h3>Comp cell view (<span class="view-type"></span>): <span class="gene-name"></span> <a href="#ch10x-pca">PCA</a> <a href="#ch10x-umap" class="active">UMAP</a></h3>
           <div id="ch10x-cell-pca">
             <p>Prinicipal Component Analysis view of single-cell transcriptomes based on highly variable genes</p></div>
           <div id="ch10x-cell-umap" class="active">
@@ -56,14 +55,25 @@
           <div id="ch10x-gene-knn">
             <p>k-nearest neighbors (kNN) force-directed graph of highly variable features across cell types</p></div>
         </section>
-        <section id="ss2-cell"><h3>SmartSeq2 cell view (<span class="view-type"></span>): <span class="gene-name"></span> <a href="#ss2-pca">PCA</a> <a href="#ss2-umap">UMAP</a></h3>
+        <section id="ss2-cell"><h3>Non comp cell view (<span class="view-type"></span>): <span class="gene-name"></span> <a href="#ss2-pca">PCA</a> <a href="#ss2-umap">UMAP</a></h3>
           <div id="ss2-cell-pca">
             <p>Prinicipal Component Analysis view of single-cell transcriptomes based on highly variable genes</p></div>
           <div id="ss2-cell-umap" class="active">
             <p>UMAP visualisation of single-cell transcriptomes from across asexual and transmission stages of the parasite</p></div>
         </section>
-        <section id="ss2-gene"><h3>SmartSeq2 gene view: <span class="gene-name"></span></h3>
+        <section id="ss2-gene"><h3>Non comp gene view: <span class="gene-name"></span></h3>
           <div id="ss2-gene-knn" class="active">
+            <p>k-nearest neighbors (kNN) force-directed graph of highly variable features across cell types</p>
+          </div>
+        </section>
+        <section id="extra-cell"><h3>Integrated cell view (<span class="view-type"></span>): <span class="gene-name"></span> <a href="#extra-pca">PCA</a> <a href="#extra-umap">UMAP</a></h3>
+          <div id="extra-cell-pca">
+            <p>Prinicipal Component Analysis view of single-cell transcriptomes based on highly variable genes</p></div>
+          <div id="extra-cell-umap" class="active">
+            <p>UMAP visualisation of single-cell transcriptomes from across asexual and transmission stages of the parasite</p></div>
+        </section>
+        <section id="extra-gene"><h3>SmartSeq2 gene view: <span class="gene-name"></span></h3>
+          <div id="extra-gene-knn" class="active">
             <p>k-nearest neighbors (kNN) force-directed graph of highly variable features across cell types</p>
           </div>
         </section>
@@ -101,17 +111,30 @@
               <label><input checked="checked" type="checkbox" name="stage" value="14"><span>activated</span></label>
             </li>
           </ul></div>
+          <div id="filter-strain"><h3>Filter by strain:</h3><ul>
+            <li>
+              <label><input checked="checked" type="checkbox" name="strain" value="0"><span>3D7</span></label>
+              <label><input checked="checked" type="checkbox" name="strain" value="1"><span>7G8</span></label>
+              <label><input checked="checked" type="checkbox" name="strain" value="2"><span>GB4</span></label>
+              <label><input checked="checked" type="checkbox" name="strain" value="3"><span>Sen-GB4</span></label>
+              <label><input checked="checked" type="checkbox" name="strain" value="4"><span>SenTh011</span></label>
+              <label><input checked="checked" type="checkbox" name="strain" value="5"><span>SenTh015</span></label>
+              <label><input checked="checked" type="checkbox" name="strain" value="6"><span>SenTh028</span></label>
+            </li>
+          </div>
         </div>
         <div>
           <h3 id="colour-by-caption" style="display:none">Colour by:</h3>
           <ul id="colour-by"><li>
             <label id="colour-by-stage"  ><input checked="checked" type="radio" value="stage"   name="filter"><span>Stage</span></label>
+            <label id="colour-by-strain" ><input                   type="radio" value="strain"   name="filter"><span>Strain</span></label>
             <label id="colour-by-day"    ><input                   type="radio" value="day"     name="filter"><span>Day</span></label>
             <label id="colour-by-host"   ><input                   type="radio" value="host"    name="filter"><span>Host</span></label>
             <label id="colour-by-cluster"><input                   type="radio" value="cluster" name="filter"><span>Cluster</span></label>
             <label id="colour-by-gene"   ><input                   type="radio" value="gene"    name="filter"><span>Gene</span></label>
           </li></ul>
           <div class="legend" id="legend-stage"><ul></ul></div>
+          <div class="legend" id="legend-strain"><ul></ul></div>
           <div class="legend" id="legend-day"><ul></ul></div>
           <div class="legend" id="legend-host"><ul></ul></div>
           <div class="legend" id="legend-cluster" style="display:none"></div>
