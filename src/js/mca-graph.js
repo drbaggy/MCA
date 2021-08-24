@@ -58,7 +58,7 @@
   var current_colour = 'stage';
   var current_gene   = '';
   // ....
-  var navdd = _.qs('#legend-gene ul');
+  var gene_dropdown  = _.qs('#legend-gene ul');
   var CONFIG = {
     expression: { // Configuration for expression colours....
       def: '#cccccc',
@@ -66,46 +66,38 @@
     },
     knn: { def: '#cccccc', cluster: '#999999', gene: '#cc0000' },
     filters: {
-      'cluster': [ ['X','#000000' ], ['Cluster 1',pal[0]], ['Cluster 2',pal[1]], ['Cluster 3',pal[2]], ['Cluster 4',pal[3]],
-                   ['Cluster 5',pal[4]], ['Cluster 6',pal[5]], ['Cluster 7',pal[6]], ['Cluster 8',pal[7]],
-                   ['Cluster 9',pal[8]], ['Cluster 10',pal[9]], ['Cluster 11',pal[10]], ['Cluster 12',pal[11]], ['Cluster 13',pal[12]],
-                   ['Cluster 14',pal[13]], ['Cluster 15',pal[14]], ['Cluster 16',pal[15]], ['Cluster 17',pal[16]],
-                   ['Cluster 18',pal[17]], ['Cluster 19',pal[18]], ['Cluster 20',pal[19]],
-                   ['Cluster 21',pal[20]], ['Cluster 22',pal[21]], ['Cluster 23',pal[22]] ],
-      'cluster_2': [ ['Asexual 1',pal[0]], ['Asexual 2',pal[1]], ['Asexual 3',pal[2]], ['Asexual 4',pal[3]],
-                   ['Asexual 5',pal[4]], ['Asexual 6',pal[5]], ['Asexual 7',pal[6]], ['Asexual 8',pal[7]],
-                   ['Asexual 9',pal[8]], ['Asexual 10',pal[9]], ['Asexual 11',pal[10]], ['Asexual 12',pal[11]], ['Asexual 13',pal[12]],
-                   ['Asexual 14',pal[13]], ['Asexual 15',pal[14]], ['Asexual 16',pal[15]], ['Asexual 17',pal[16]],
-                   ['Progenitor',pal[17]], ['Female 1',pal[18]], ['Female 2',pal[19]],
-                   ['Female 3',pal[20]], ['Male 1',pal[21]], ['Male 2',pal[22]] ],
-      'technology':      [ [ 'Chromium 10x', pal[0] ], [ 'SmartSeq2', pal[1] ] ],
-      'sex' :      [ [ 'Asexual_Early', pal[0] ],
-                     [ 'Asexual_Late',  pal[1] ],
-                     [ 'Bipotential',   pal[2] ],
-                     [ 'Female',        pal[3] ],
-                     [ 'Male',          pal[4] ] ],
-      'strain' :   [ [ '3D7',           pal[0] ],
-                     [ '7G8',           pal[1] ],
-                     [ 'GB4',           pal[2] ],
-                     [ 'Sen-GB4',       pal[3] ],
-                     [ 'SenTho011',     pal[4] ],
-                     [ 'SenTho015',     pal[5] ],
-                     [ 'SenTho028',     pal[6] ] ],
-      'stage':   [ [ 'liver',                        '#B6D7A8' ], [ 'merozoite',                    '#D0E0E3' ],
-                   [ 'ring',                         '#A2C4C9' ], [ 'trophozoite',                  '#45818E' ],
-                   [ 'schizont',                     '#134F5C' ], [ 'gametocyte (developing)',      '#D8C0D8' ],
-                   [ 'gametocyte (male)',            '#9370DB' ], [ 'gametocyte (female)',          '#551A8B' ],
-                   [ 'ookinete',                     '#A61C00' ], [ 'oocyst',                       '#CC4125' ],
-                   [ 'sporozoite (oocyst)',          '#E69138' ], [ 'sporozoite (hemolymph)',       '#FFF2CC' ],
-                   [ 'sporozoite (salivary gland)',  '#FFE599' ], [ 'sporozoite (injected)',        '#F1C232' ],
-                   [ 'sporozoite (activated)',       '#BF9000' ] ],
-      'day':     [ [ 'D1', '#D73027' ], [ 'D2', '#F46D43' ], [ 'D3',   '#FDAE61' ], [ 'D4', '#FEE090' ],
-                   [ 'D6', '#E0F3F8' ], [ 'D8', '#ABD9E9' ], [ 'D10',  '#74ADD1' ] ],
-      'host':    [ [ 'mosquito', '#ffa600' ], [ 'human',    '#bc5090' ], [ 'mouse',    '#003f5c' ] ]
+      'cluster':      [ ['X','#000000' ],       ['Cluster 1', pal[0] ], ['Cluster 2', pal[1] ], ['Cluster 3', pal[2] ],
+                        ['Cluster 4', pal[3] ], ['Cluster 5', pal[4] ], ['Cluster 6', pal[5] ], ['Cluster 7', pal[6] ],
+                        ['Cluster 8', pal[7] ], ['Cluster 9', pal[8] ], ['Cluster 10',pal[9] ], ['Cluster 11',pal[10]],
+                        ['Cluster 12',pal[11]], ['Cluster 13',pal[12]], ['Cluster 14',pal[13]], ['Cluster 15',pal[14]],
+                        ['Cluster 16',pal[15]], ['Cluster 17',pal[16]], ['Cluster 18',pal[17]], ['Cluster 19',pal[18]],
+                        ['Cluster 20',pal[19]], ['Cluster 21',pal[20]], ['Cluster 22',pal[21]], ['Cluster 23',pal[22]]  ],
+      'cluster_2':    [ ['Asexual 1', pal[0] ], ['Asexual 2', pal[1] ], ['Asexual 3' ,pal[2] ], ['Asexual 4', pal[3] ],
+                        ['Asexual 5', pal[4] ], ['Asexual 6', pal[5] ], ['Asexual 7' ,pal[6] ], ['Asexual 8', pal[7] ],
+                        ['Asexual 9', pal[8] ], ['Asexual 10',pal[9] ], ['Asexual 11',pal[10]], ['Asexual 12',pal[11]],
+                        ['Asexual 13',pal[12]], ['Asexual 14',pal[13]], ['Asexual 15',pal[14]], ['Asexual 16',pal[15]],
+                        ['Asexual 17',pal[16]], ['Progenitor',pal[17]], ['Female 1',  pal[18]], ['Female 2',  pal[19]],
+                        ['Female 3',  pal[20]], ['Male 1',    pal[21]], ['Male 2',    pal[22]]                          ],
+      'strain' :      [ [ '3D7',      pal[0] ], [ '7G8',      pal[1] ], [ 'GB4',      pal[2] ], ['Sen-GB4',   pal[3] ],
+                        [ 'SenTho011',pal[4] ], [ 'SenTho015',pal[5] ], [ 'SenTho028',pal[6] ]                          ],
+      'day':          [ [ 'D1', '#D73027' ],    [ 'D2', '#F46D43' ],    [ 'D3',   '#FDAE61' ],  [ 'D4', '#FEE090' ],
+                        [ 'D6', '#E0F3F8' ],    [ 'D8', '#ABD9E9' ],    [ 'D10',  '#74ADD1' ]                           ],
+      'technology':   [ [ 'Chromium 10x',  pal[0] ], [ 'SmartSeq2',     pal[1] ]                                        ],
+      'sex' :         [ [ 'Asexual_Early', pal[0] ], [ 'Asexual_Late',  pal[1] ], [ 'Bipotential',   pal[2] ],
+                        [ 'Female',        pal[3] ], [ 'Male',          pal[4] ]                                        ],
+      'host':         [ [ 'mosquito', '#ffa600'   ], [ 'human',    '#bc5090'   ], [ 'mouse',    '#003f5c'   ]           ],
+      'stage':        [ [ 'liver',                        '#B6D7A8' ],  [ 'merozoite',                    '#D0E0E3' ],
+                        [ 'ring',                         '#A2C4C9' ],  [ 'trophozoite',                  '#45818E' ],
+                        [ 'schizont',                     '#134F5C' ],  [ 'gametocyte (developing)',      '#D8C0D8' ],
+                        [ 'gametocyte (male)',            '#9370DB' ],  [ 'gametocyte (female)',          '#551A8B' ],
+                        [ 'ookinete',                     '#A61C00' ],  [ 'oocyst',                       '#CC4125' ],
+                        [ 'sporozoite (oocyst)',          '#E69138' ],  [ 'sporozoite (hemolymph)',       '#FFF2CC' ],
+                        [ 'sporozoite (salivary gland)',  '#FFE599' ],  [ 'sporozoite (injected)',        '#F1C232' ],
+                        [ 'sporozoite (activated)',       '#BF9000' ]                                                   ]
     },
     filename: 'data.json',
     marker_size: 5,
-    margins3d: { l: 5, r: 5, b: 5, t: 5 },
+    margins3d: { l:  5, r: 5, b:  5, t: 5 },
     margins2d: { l: 35, r: 5, b: 35, t: 5 },
     options2d: {responsive: true,displayModeBar: true,displaylogo: false, modeBarButtonsToRemove: ['select2d', 'lasso2d', 'hoverClosestCartesian', 'hoverCompareCartesian' ]},
     options3d: {responsive: true,displayModeBar: true,displaylogo: false, modeBarButtonsToRemove: ['resetCameraLastSave3d', 'hoverClosest3d']}
@@ -120,11 +112,6 @@
 
   insert_legend_and_filters();                       // Add additional HTML to the page!
   load_data();                                       // Load data and trigger rendering of graphs
-  // Add click handler to the view navigation bar...
-  //_.m( '#int a', n => n.onclick = function( e ) {
-  //  e.preventDefault();
-  //  switch_panel( this.getAttribute('href').replace('#','') );
-  //} );
 
 /*######################################################################
 
@@ -164,12 +151,6 @@
     });
     Object.getOwnPropertyNames(CONFIG.filters).forEach(function(k){
       var ht = '';
-      //var e = _.qs( '#filter-'+k+' li' );    // We have removed the generate filter code as needed to override too many stylish bits
-      //if( e ) {                              // these now need to be in the template...
-      //  var c = 0;
-      //  CONFIG.filters[k].forEach(a => ht+= '<label><input checked="checked" type="checkbox" name="'+k+'" value="'+(c++)+'"><span>'+a[0]+'</span></label>');
-      //  e.innerHTML = ht;
-      //}
       var e = _.qs( '#legend-'+k+' ul' );
       if( e ) { CONFIG.filters[k].forEach( function(a) { ht+= '<li><span style="background-color:'+a[1]+'">&nbsp;</span>'+a[0]+'</label>'; e.innerHTML = ht; }  ); }
     });
@@ -425,7 +406,6 @@ Drawing cell graphs....
         redraw_cell_by_gene( gene_id );
       } else {
         _.m('.loading', function(a) { a.innerText = 'LOADING DATA FOR '+gene_id; a.style.display = 'block';} );
-console.log( '/processed/' + (_.qs("#main").dataset.directory) + '/' + current_type +'/exp/'+gene_id+'.json' );
         _.json( '/processed/' + (_.qs("#main").dataset.directory) + '/' + current_type +'/exp/'+gene_id+'.json', function(expdata) {
           expression_cache[ current_type+'-'+gene_id ] = expdata;
           _.m('.loading', function(a) { a.style.display = 'none'; });
@@ -586,10 +566,10 @@ Interaction functions
     return f;
   }
 
-  function ddClick( n ) { n.onclick = function(e) {
+  function geneDropDownClick( n ) { n.onclick = function(e) {
     _.s('main nav input[type="text"]', function( a ) {
       a.value = e.target.innerText;
-      _.s(navdd,'', function( b ) { b.innerHTML=''; } );
+      _.s(gene_dropdown,'', function( b ) { b.innerHTML=''; } );
       a.onkeyup();
     } );
   };}
@@ -598,7 +578,7 @@ Interaction functions
     var new_gene = _.qs( '#new-gene' ).value;
     if( ! ( current_data.genes.includes(new_gene) ) && new_gene !== '' ) {
       // We need to activate the dropdown...
-      _.s(navdd,'', function(a) { a.innerHTML = ''; } );
+      _.s(gene_dropdown,'', function(a) { a.innerHTML = ''; } );
       var html = '';
       var count = 0;
       for(var i=0; i< current_data.genes_length && count < 10; i++ ) {
@@ -607,7 +587,7 @@ Interaction functions
           count++;
         }
       }
-      _.s(navdd,'', function(a) { a.innerHTML = html; } );
+      _.s(gene_dropdown,'', function(a) { a.innerHTML = html; } );
       return;
     }
     if( new_gene == current_gene ) {
@@ -639,11 +619,11 @@ Interaction functions
       _.m(nav,'.gradient span',         function(a) { a.innerText = '-'; });
       _.s(nav,'.gradient span.exp-ave', function(a) { a.innerText = '';  });
       update_graphs(
-        { 'marker.color': [t1], 'hovertemplate': graph.hasOwnProperty('ch10x') && graph.ch10x.hasOwnProperty('cell') ? graph.ch10x.cell.hover_template : ''},
+        { 'marker.color': [t1], 'hovertemplate': graph.hasOwnProperty('ch10x') && graph.ch10x.hasOwnProperty('cell') ? graph.ch10x.cell.hover_template : '' },
         { 'marker.color': [t2], 'hovertemplate': graph.hasOwnProperty('ss2')   && graph.ss2.hasOwnProperty('cell')   ? graph.ss2.cell.hover_template   : '' },
         { 'marker.color': [t3] },
         { 'marker.color': [t4] },
-        { 'marker.color': [t5], 'hovertemplate': graph.hasOwnProperty('extra')   && graph.extra.hasOwnProperty('cell')   ? graph.extra.cell.hover_template   : '' },
+        { 'marker.color': [t5], 'hovertemplate': graph.hasOwnProperty('extra') && graph.extra.hasOwnProperty('cell') ? graph.extra.cell.hover_template : '' },
         { 'marker.color': [t6] }
       );
       return;
@@ -658,38 +638,43 @@ Interaction functions
 
   function load_data(  ) {
     _.m('.loading', function(a) { a.innerText = 'LOADING DATA'; a.style.display = 'block';} );
-    var time = Date.now();
-    _.json( '/processed/' + (_.qs("#main").dataset.directory) + '/' + CONFIG.filename, function( t) {
-// Create the hover templates...
-      graph = t;
-      current_gene = t.default_gene;
-      _.s('#new-gene', function(a) { a.value = current_gene; } );
-      var fetched_time = Date.now() - time;
-      // Part 1 processes the cell graph data....
-      _.m('#int a', function(a) { a.classList.add('disabled'); } );
+    var time = Date.now();                                            // Performance logger
+    _.json( '/processed/' + (_.qs("#main").dataset.directory) + '/' + CONFIG.filename, function( t ) {
+      graph        = t;                                               // Store in global variable.
+      current_gene = t.default_gene;                                  // Store in global variable.
+      _.s('#new-gene', function(a) { a.value = current_gene; } );     // Update the gene dropdown with default value...
+      var fetched_time = Date.now() - time;                           // Record time for log report below
+      _.m('#int a', function(a) { a.classList.add('disabled'); } );   // Disable all graph buttons....
       var f=0;
-      f = graph_set_up( f, 'ss2',   'cell' ); f = graph_set_up( f, 'ss2',   'gene' );
-      f = graph_set_up( f, 'ch10x', 'cell' ); f = graph_set_up( f, 'ch10x', 'gene' );
-      f = graph_set_up( f, 'extra', 'cell' ); f = graph_set_up( f, 'extra', 'gene' );
-      if(f==1) { _.s('#int',function(a) { a.parentElement.style.display = 'none'; } ); }
-      switch_panel( current_type+'-'+current_view );
+      f = graph_set_up( f, 'ss2',   'cell' ); f = graph_set_up( f, 'ss2',   'gene' ); // Set up graphs for SmartSeq2
+      f = graph_set_up( f, 'ch10x', 'cell' ); f = graph_set_up( f, 'ch10x', 'gene' ); // Set up graphs for chromium 10x
+      f = graph_set_up( f, 'extra', 'cell' ); f = graph_set_up( f, 'extra', 'gene' ); // Set up graphs for 3rd set (hacky)
+      if(f==1) {                                                                      // If only 1 graph hide navigation bar
+        _.s('#int',function(a) { a.parentElement.style.display = 'none'; } );
+      } 
+      switch_panel( current_type+'-'+current_view );                  // Display current view
       // Draw graphs....
-      var rendered_time = Date.now() - time - fetched_time;
-      var nav   = _.qs('main nav');
-      // We need to indicate which graphs we have....
-      _.m(nav,'input[type="checkbox"]', changeFilter); // Now add actions on change filters....
-      _.m(nav,'input[type="radio"]',    changeColour); // Now add actions on change colour set
-      _.m(nav,'input[type="text"]',     changeGene);   // Now add actions on change gene...
-      _.s( navdd, '', ddClick);
+      var rendered_time = Date.now() - time - fetched_time;           // Record time for log report below
+      var nav   = _.qs('main nav');                                   // Get the "options panel" and actions
+                                                                      // to various control elements
+      _.m(nav,'input[type="checkbox"]', changeFilter);                //  * add actions on change filters....
+      _.m(nav,'input[type="radio"]',    changeColour);                //  * add actions on change colour set
+      _.m(nav,'input[type="text"]',     changeGene);                  //  * add actions on change gene...
+      // Add 
+      _.s( gene_dropdown, '', geneDropDown );                         // "Auto completer" action on gene drop down.
       // Finally remove "shim" over graph...
-      _.m('.loading', function(a) { a.style.display = 'none'; } );
-      var post_time = Date.now() - time - fetched_time - rendered_time;
-      _.m('#colour-by-caption', function(a) { a.style.display = 'block'; } );
-      _.m( '#int a', function( n ) { n.onclick = function( e ) {
-        e.preventDefault();
-        switch_panel( this.getAttribute('href').replace('#','') );
-      }; } );
-      console.log( 'Fetch: '+(fetched_time/1000)+' sec; Render: '+(rendered_time/1000)+' sec; Post: '+(post_time/1000)+' sec; Total: '+((Date.now()-time)/1000)+' sec.' );
+      _.m('.loading', function(a) { a.style.display = 'none'; } );            // Clear the "loading data" mask
+      _.m('#colour-by-caption', function(a) { a.style.display = 'block'; } ); // Show colour by caption which we hid while loading
+
+      _.m( '#int a', function( n ) {
+        n.onclick = function( e ) {                                   // Add panel switching function to top navigation
+          e.preventDefault();
+          switch_panel( this.getAttribute('href').replace('#','') );
+        };
+      } );
+      var post_time = Date.now() - time - fetched_time - rendered_time; // Report times to console ...
+      console.log( 'Fetch: '+(fetched_time/1000)+' sec; Render: '+(rendered_time/1000)+
+              ' sec; Post: '+(post_time/1000)+' sec; Total: '+((Date.now()-time)/1000)+' sec.' );
     });
   }
 }(document));
