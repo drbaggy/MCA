@@ -294,11 +294,11 @@ Drawing cell graphs....
     t.current_gene        = '';
     t.default_text        = t.data.map( function(a) { return '-'; } );
     t.visible             = t.data.map( function(a) { return CONFIG.marker_size; } );
-    t.customdata          = t.data.map( function(a) { counter = 0; return a.map( function( b ) { return CONFIG.filters[ t.columns[counter++] ][b][0];} ); } );
+    t.customdata          = t.data.map( function(a) { counter = 0; return a.map( function( b ) { return b.match(/^\d+$/) ? CONFIG.filters[ t.columns[counter++] ][b][0] : b;} ); } );
     t.colours             = { gene: t.customdata.map( function(a) { return CONFIG.expression.def; } ) };
     counter=0;
     t.columns.forEach( function(a) {
-      t.colours[ a ] = t.data.map( function(b) { return CONFIG.filters[ a ][b[counter]][1];} );
+      t.colours[ a ] = t.data.map( function(b) { return b.match(/^\d+$/) ? CONFIG.filters[ a ][b[counter]][1] : b[counter];} );
       counter++;
     });
   }
@@ -379,10 +379,10 @@ Drawing cell graphs....
       _.s('.gradient span.exp-ave', function(a) { a.innerText = '';  } );
     } else {
       current_data.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp); } );
-      _.s('.gradient span:first-of-type',  function(a) { a.innerText = '0.00'; });
-      _.s('.gradient span:nth-of-type(2)', function(a) { a.innerText = Number.parseFloat(max_exp/2).toFixed(2); } );
-      _.s('.gradient span:last-of-type',   function(a) { a.innerText = Number.parseFloat(max_exp).toFixed(2); } );
-      var t1=0; var t2=0;
+      _.s('.gradient span:first-of-type',  function(a) { a.innerText = '0.00';                                  });
+      _.s('.gradient span:nth-of-type(2)', function(a) { a.innerText = Number.parseFloat(max_exp/2).toFixed(2); });
+      _.s('.gradient span:last-of-type',   function(a) { a.innerText = Number.parseFloat(max_exp).toFixed(2);   });
+      var t1=0; var t2=0; var t3=0;
       if(current_type=='ch10x') {
         graph.ch10x.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp); } );
         t1 = { 'marker.color': [ graph.ch10x.cell.colours.gene ],
@@ -393,13 +393,14 @@ Drawing cell graphs....
         t2 = { 'marker.color': [ graph.ss2.cell.colours.gene ],
                'text': [expdata.data],
                'hovertemplate': graph.ss2.cell.hover_template_expr };
-      } else {
+      } else { // Additional graph added for pf-ch10x-comp - at some point we may need
+               // to make this an arbitrary number of datasets
         graph.extra.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp); } );
-        t2 = { 'marker.color': [ graph.extra.cell.colours.gene ],
+        t3 = { 'marker.color': [ graph.extra.cell.colours.gene ],
                'text': [expdata.data],
                'hovertemplate': graph.extra.cell.hover_template_expr };
       }
-      update_graphs( t1, t2 );
+      update_graphs( t1, t2, t3 );
     }
   }
 
@@ -533,9 +534,9 @@ Interaction functions
       _.m('#legend-gene .gradient', function(a) { _.act(a); a.style.display = 'flex'; } );
       update_graphs(
         { 'marker.color': [ has('ch10x-cell') ? graph.ch10x.cell.colours[current_colour] : [] ] },
-        { 'marker.color': [ has('ss2-cell'  ) ? graph.ss2.cell.colours[current_colour]   : [] ] },
+        { 'marker.color': [ has('ss2-cell'  ) ? graph.ss2.cell.colours[  current_colour] : [] ] },
         { 'marker.color': [ has('ch10x-gene') ? graph.ch10x.gene.colours[current_colour] : [] ] },
-        { 'marker.color': [ has('ss2-gene'  ) ? graph.ss2.gene.colours[current_colour]   : [] ] },
+        { 'marker.color': [ has('ss2-gene'  ) ? graph.ss2.gene.colours[  current_colour] : [] ] },
         { 'marker.color': [ has('extra-cell') ? graph.extra.cell.colours[current_colour] : [] ] },
         { 'marker.color': [ has('extra-gene') ? graph.extra.gene.colours[current_colour] : [] ] }
       );
@@ -555,7 +556,6 @@ Interaction functions
 
   // Wrapper to check for data for graph & to activate graph & to update links....
   function graph_set_up( f, k1, k2 ) {
-console.log( f, k1, k2 );
     if(graph.hasOwnProperty(k1)) {
       if( graph[k1].hasOwnProperty(k2) ) {
         _.qs('a[href="#'+k1+'-'+k2+'"]').classList.remove('disabled');
