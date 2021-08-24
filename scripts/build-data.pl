@@ -129,7 +129,7 @@ sub parse {
     $v{'sex'}{$sex_map{$sex}}++ if defined $sex;
     $v{'technology'}{$tech_map{$tech}}++ if defined $tech;
     $v{'strain'}{$strain_map{$str}}++ if defined $str;
-warn $str unless exists $strain_map{$str};
+#warn $str unless exists $strain_map{$str};
     ## Truncate x/y/z to 5 decimal places...
     push @{$cols{'p1'}}, 0 + sprintf '%0.5f', $p1;
     push @{$cols{'p2'}}, 0 + sprintf '%0.5f', $p2;
@@ -163,11 +163,12 @@ warn $str unless exists $strain_map{$str};
       push @row, $stage_map{$st_hr}                                if $_ eq 'stage';
       push @row, exists $day_map{$day} ? $day_map{  $day} : $day   if $_ eq 'day';
       push @row, $host_map{$host}                                  if $_ eq 'host';
-      push @row, ''.$cl                                               if $_ eq 'cluster_1';
-      push @row, ''.$cl2_map{$cl2}                                    if $_ eq 'cluster_2';
-      push @row, ''.$sex_map{$sex}                                    if $_ eq 'sex';
-      push @row, ''.$tech_map{$tech}                                  if $_ eq 'technology';
-      push @row, ''.$strain_map{$str}                                  if $_ eq 'strain';
+      push @row, ''.$cl                                            if $_ eq 'cluster_1';
+      push @row, ''.$cl2_map{$cl2}                                 if $_ eq 'cluster_2';
+      push @row, ''.$sex_map{$sex}                                 if $_ eq 'sex';
+      push @row, ''.$tech_map{$tech}                               if $_ eq 'technology';
+      push @row, ''.$strain_map{$str}                              if $_ eq 'strain';
+      push @row, $pseudo                                           if $_ eq 'pseudo';
     };
     push @data, \@row;
   }
