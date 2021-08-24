@@ -134,10 +134,10 @@
 ######################################################################*/
 
 
-  function exp_colour( a, mx ) {
-    var i = Math.floor(a/mx*8);
-    var o = a/mx - i/8;
-    var p = 1 - o; console.log(a,mx,i);
+  function exp_colour( a, mx, mn ) {
+    var i = Math.floor((a-mn)/(mx-mn)*8);
+    var o = (a-mn)/(mx-mn) - i/8;
+    var p = 1 - o; console.log(a,mx,mn,i);
     return 'rgb('+ ( CONFIG.expression.colours[i][0]*p+CONFIG.expression.colours[i+1][0]*o ) +','+
                    ( CONFIG.expression.colours[i][1]*p+CONFIG.expression.colours[i+1][1]*o ) +','+
                    ( CONFIG.expression.colours[i][2]*p+CONFIG.expression.colours[i+1][2]*o ) +')';
@@ -242,9 +242,13 @@
             var q = _.qm(x,'label.active').length;
             if(q) { x.style.display = 'flex'; } else { x.style.display = 'none'; }
           });
-          _.act('#colour-by-'+a);
+        }
+        var col = _.qs('#colour-by-'+a);
+        if(col) {
+          _.act( col );
           var c=0;
-          _.m(_.qs('#legend-'+a),'li',function(x) { if( vals.includes(c.toString()) ) { _.act(x); } else { _.dis(x); } c++; });
+          var vals = current_data.values[a];
+          _.m('#legend-'+a+' li',function(x) { if( vals.includes(c.toString()) ) { _.act(x); } else { _.dis(x); } c++; });
         }
         //_.act('#legend-'+a);
         _.act('#legend-'+current_colour);
@@ -364,6 +368,7 @@ Drawing cell graphs....
   function redraw_cell_by_gene( gene_id ) {
     var expdata = expression_cache[ current_type+'-'+current_gene ]; console.log(expdata);
     var max_exp = expdata.max;
+    var min_exp = expdata.min;
     _.qs('.gradient').style.display = 'flex';
     _.act('.input');
     if( max_exp == 0 ) {
@@ -371,24 +376,24 @@ Drawing cell graphs....
       _.m('.gradient span',         function(a) { a.innerText = '-'; } );
       _.s('.gradient span.exp-ave', function(a) { a.innerText = '';  } );
     } else {
-      current_data.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp); } );
-      _.s('.gradient span:first-of-type',  function(a) { a.innerText = '0.00';                                  });
-      _.s('.gradient span:nth-of-type(2)', function(a) { a.innerText = Number.parseFloat(max_exp/2).toFixed(2); });
-      _.s('.gradient span:last-of-type',   function(a) { a.innerText = Number.parseFloat(max_exp).toFixed(2);   });
+      current_data.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp,min_exp); } );
+      _.s('.gradient span:first-of-type',  function(a) { a.innerText = Number.parseFloat( min_exp           ).toFixed(2); });
+      _.s('.gradient span:nth-of-type(2)', function(a) { a.innerText = Number.parseFloat((min_exp+max_exp)/2).toFixed(2); });
+      _.s('.gradient span:last-of-type',   function(a) { a.innerText = Number.parseFloat( max_exp           ).toFixed(2); });
       var t1=0; var t2=0; var t3=0;
       if(current_type=='ch10x') {
-        graph.ch10x.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp); } );
+        graph.ch10x.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp,min_exp); } );
         t1 = { 'marker.color': [ graph.ch10x.cell.colours.gene ],
                'text'  : [expdata.data],
                'hovertemplate': graph.ch10x.cell.hover_template_expr };
       } else if( current_type=='ss2' ) {
-        graph.ss2.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp); } );
+        graph.ss2.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp,min_exp); } );
         t2 = { 'marker.color': [ graph.ss2.cell.colours.gene ],
                'text': [expdata.data],
                'hovertemplate': graph.ss2.cell.hover_template_expr };
       } else { // Additional graph added for pf-ch10x-comp - at some point we may need
                // to make this an arbitrary number of datasets
-        graph.extra.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp); } );
+        graph.extra.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp,min_exp); } );
         t3 = { 'marker.color': [ graph.extra.cell.colours.gene ],
                'text': [expdata.data],
                'hovertemplate': graph.extra.cell.hover_template_expr };
@@ -596,7 +601,7 @@ Interaction functions
     if( new_gene === '' ) {
       _.m('.extra-title', function(a) { a.innerHTML = ''; } );
       current_gene = new_gene;
-      var t1 = '', t2 = '', t3 = '', t4 = '';
+      var t1 = '', t2 = '', t3 = '', t4 = '', t5 = '', t6 = '';
       if( graph.hasOwnProperty('ch10x') && graph.ch10x.hasOwnProperty('cell') ) {
         t1 = graph.ch10x.cell.colours.gene = graph.ch10x.cell.customdata.map( function(a) { return CONFIG.expression.def;}  ); // reset colours
       }
@@ -651,7 +656,7 @@ Interaction functions
       f = graph_set_up( f, 'extra', 'cell' ); f = graph_set_up( f, 'extra', 'gene' ); // Set up graphs for 3rd set (hacky)
       if(f==1) {                                                                      // If only 1 graph hide navigation bar
         _.s('#int',function(a) { a.parentElement.style.display = 'none'; } );
-      } 
+      }
       switch_panel( current_type+'-'+current_view );                  // Display current view
       // Draw graphs....
       var rendered_time = Date.now() - time - fetched_time;           // Record time for log report below
@@ -660,8 +665,8 @@ Interaction functions
       _.m(nav,'input[type="checkbox"]', changeFilter);                //  * add actions on change filters....
       _.m(nav,'input[type="radio"]',    changeColour);                //  * add actions on change colour set
       _.m(nav,'input[type="text"]',     changeGene);                  //  * add actions on change gene...
-      // Add 
-      _.s( gene_dropdown, '', geneDropDown );                         // "Auto completer" action on gene drop down.
+      // Add
+      _.s( gene_dropdown, '', geneDropDownClick );                         // "Auto completer" action on gene drop down.
       // Finally remove "shim" over graph...
       _.m('.loading', function(a) { a.style.display = 'none'; } );            // Clear the "loading data" mask
       _.m('#colour-by-caption', function(a) { a.style.display = 'block'; } ); // Show colour by caption which we hid while loading
