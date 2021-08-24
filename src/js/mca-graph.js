@@ -35,6 +35,17 @@
   =====================================
 
 ######################################################################*/
+  var pal = [ '#ff0029', '#377eb8', '#66a61e', '#984ea3', '#00d2d5', '#ff7f00', '#af8d00',
+    '#7f80cd', '#b3e900', '#c42e60', '#a65628', '#f781bf', '#8dd3c7', '#bebada',
+    '#fb8072', '#80b1d3', '#fdb462', '#fccde5', '#bc80bd', '#ffed6f', '#c4eaff',
+    '#cf8c00', '#1b9e77', '#d95f02', '#e7298a', '#e6ab02', '#a6761d', '#0097ff',
+    '#00d067', '#000000', '#252525', '#525252', '#737373', '#969696', '#bdbdbd',
+    '#f43600', '#4ba93b', '#5779bb', '#927acc', '#97ee3f', '#bf3947', '#9f5b00',
+    '#f48758', '#8caed6', '#f2b94f', '#eff26e', '#e43872', '#d9b100', '#9d7a00',
+    '#698cff', '#d9d9d9', '#00d27e', '#d06800', '#009f82', '#c49200', '#cbe8ff',
+    '#fecddf', '#c27eb6', '#8cd2ce', '#c4b8d9', '#f883b0', '#a49100', '#f48800',
+    '#27d0df', '#a04a9b' ];
+
 
   // Whole graph data....
   var graph;
@@ -55,31 +66,31 @@
     },
     knn: { def: '#cccccc', cluster: '#999999', gene: '#cc0000' },
     filters: {
-      'cluster': [ ['X','#000000' ], ['Cluster 1','#267278'], ['Cluster 2','#65338d'], ['Cluster 3','#4770b3'], ['Cluster 4','#d21f75'],
-                   ['Cluster 5','#3b3689'], ['Cluster 6','#50aed3'], ['Cluster 7','#48b24f'], ['Cluster 8','#e57438'],
-                   ['Cluster 9','#569dd2'], ['Cluster 10','#569d79'], ['Cluster 11','#58595b'], ['Cluster 12','#e4b031'], ['Cluster 13','#84d2f4'],
-                   ['Cluster 14','#cad93f'], ['Cluster 15','#f5c8af'], ['Cluster 16','#9ac483'], ['Cluster 17','#9e9ea2'],
-                   ['Cluster 18','#275218'], ['Cluster 19','#d07d80'], ['Cluster 20','#ea731a'],
-                   ['Cluster 21','#275218'], ['Cluster 22','#d07d80'], ['Cluster 23','#ea731a'] ],
-      'cluster_2': [ ['Asexual 1','#267278'], ['Asexual 2','#65338d'], ['Asexual 3','#4770b3'], ['Asexual 4','#d21f75'],
-                   ['Asexual 5','#3b3689'], ['Asexual 6','#50aed3'], ['Asexual 7','#48b24f'], ['Asexual 8','#e57438'],
-                   ['Asexual 9','#569dd2'], ['Asexual 10','#569d79'], ['Asexual 11','#58595b'], ['Asexual 12','#e4b031'], ['Asexual 13','#84d2    f4'],
-                   ['Asexual 14','#cad93f'], ['Asexual 15','#f5c8af'], ['Asexual 16','#9ac483'], ['Asexual 17','#9e9ea2'],
-                   ['Progenitor','#275218'], ['Female 1','#d07d80'], ['Female 2','#ea731a'],
-                   ['Female 3','#275218'], ['Male 1','#d07d80'], ['Male 2','#ea731a'] ],
-      'technology':      [ [ 'Chromium 10x','#ffa600' ], [ 'SmartSeq2', '#003f5c' ] ],
-      'sex' :      [ [ 'Asexual_Early', '#267278' ],
-                     [ 'Asexual_Late',  '#569d79' ],
-                     [ 'Bipotential',   '#ea731a' ],
-                     [ 'Female',        '#CC4125' ],
-                     [ 'Male',          '#F46D43' ] ],
-      'strain' :   [ [ '3D7', '#267278' ],
-                     [ '7G8',  '#569d79' ],
-                     [ 'GB4',   '#ea731a' ],
-                     [ 'Sen-GB4',        '#CC4125' ],
-                     [ 'SenTho011',          '#F46D43' ],
-                     [ 'SenTho015',          '#ea731a' ],
-                     [ 'SenTho028',          '#cad93f' ] ],
+      'cluster': [ ['X','#000000' ], ['Cluster 1',pal[0]], ['Cluster 2',pal[1]], ['Cluster 3',pal[2]], ['Cluster 4',pal[3]],
+                   ['Cluster 5',pal[4]], ['Cluster 6',pal[5]], ['Cluster 7',pal[6]], ['Cluster 8',pal[7]],
+                   ['Cluster 9',pal[8]], ['Cluster 10',pal[9]], ['Cluster 11',pal[10]], ['Cluster 12',pal[11]], ['Cluster 13',pal[12]],
+                   ['Cluster 14',pal[13]], ['Cluster 15',pal[14]], ['Cluster 16',pal[15]], ['Cluster 17',pal[16]],
+                   ['Cluster 18',pal[17]], ['Cluster 19',pal[18]], ['Cluster 20',pal[19]],
+                   ['Cluster 21',pal[20]], ['Cluster 22',pal[21]], ['Cluster 23',pal[22]] ],
+      'cluster_2': [ ['Asexual 1',pal[0]], ['Asexual 2',pal[1]], ['Asexual 3',pal[2]], ['Asexual 4',pal[3]],
+                   ['Asexual 5',pal[4]], ['Asexual 6',pal[5]], ['Asexual 7',pal[6]], ['Asexual 8',pal[7]],
+                   ['Asexual 9',pal[8]], ['Asexual 10',pal[9]], ['Asexual 11',pal[10]], ['Asexual 12',pal[11]], ['Asexual 13',pal[12]],
+                   ['Asexual 14',pal[13]], ['Asexual 15',pal[14]], ['Asexual 16',pal[15]], ['Asexual 17',pal[16]],
+                   ['Progenitor',pal[17]], ['Female 1',pal[18]], ['Female 2',pal[19]],
+                   ['Female 3',pal[20]], ['Male 1',pal[21]], ['Male 2',pal[22]] ],
+      'technology':      [ [ 'Chromium 10x', pal[0] ], [ 'SmartSeq2', pal[1] ] ],
+      'sex' :      [ [ 'Asexual_Early', pal[0] ],
+                     [ 'Asexual_Late',  pal[1] ],
+                     [ 'Bipotential',   pal[2] ],
+                     [ 'Female',        pal[3] ],
+                     [ 'Male',          pal[4] ] ],
+      'strain' :   [ [ '3D7',           pal[0] ],
+                     [ '7G8',           pal[1] ],
+                     [ 'GB4',           pal[2] ],
+                     [ 'Sen-GB4',       pal[3] ],
+                     [ 'SenTho011',     pal[4] ],
+                     [ 'SenTho015',     pal[5] ],
+                     [ 'SenTho028',     pal[6] ] ],
       'stage':   [ [ 'liver',                        '#B6D7A8' ], [ 'merozoite',                    '#D0E0E3' ],
                    [ 'ring',                         '#A2C4C9' ], [ 'trophozoite',                  '#45818E' ],
                    [ 'schizont',                     '#134F5C' ], [ 'gametocyte (developing)',      '#D8C0D8' ],
@@ -139,7 +150,7 @@
   function exp_colour( a, mx ) {
     var i = Math.floor(a/mx*8);
     var o = a/mx - i/8;
-    var p = 1 - o;
+    var p = 1 - o; console.log(a,mx,i);
     return 'rgb('+ ( CONFIG.expression.colours[i][0]*p+CONFIG.expression.colours[i+1][0]*o ) +','+
                    ( CONFIG.expression.colours[i][1]*p+CONFIG.expression.colours[i+1][1]*o ) +','+
                    ( CONFIG.expression.colours[i][2]*p+CONFIG.expression.colours[i+1][2]*o ) +')';
@@ -234,6 +245,7 @@
       Plotly.Plots.resize(panel_name+'-'+__disp+'-graph');
     }
     _.m('main nav div div,.legend, #colour-by label', function(a) { _.dis(a); } ); // Hide all filter blocks...
+    _.act('#colour-by-pseudo');
     _.act('#colour-by-gene'); _.act('#legend-gene'); // Turn on gene colouring....
 
     if(current_data.hasOwnProperty('columns')) {
@@ -298,7 +310,7 @@ Drawing cell graphs....
     t.colours             = { gene: t.customdata.map( function(a) { return CONFIG.expression.def; } ) };
     counter=0;
     t.columns.forEach( function(a) {
-      t.colours[ a ] = t.data.map( function(b) { return b.match(/^\d+$/) ? CONFIG.filters[ a ][b[counter]][1] : b[counter];} );
+      t.colours[ a ] = t.data.map( function(b) { return b[counter].match(/^\d+$/) ? CONFIG.filters[ a ][b[counter]][1] : b[counter];} );
       counter++;
     });
   }
@@ -369,7 +381,7 @@ Drawing cell graphs....
   }
 
   function redraw_cell_by_gene( gene_id ) {
-    var expdata = expression_cache[ current_type+'-'+current_gene ];
+    var expdata = expression_cache[ current_type+'-'+current_gene ]; console.log(expdata);
     var max_exp = expdata.max;
     _.qs('.gradient').style.display = 'flex';
     _.act('.input');
@@ -413,6 +425,7 @@ Drawing cell graphs....
         redraw_cell_by_gene( gene_id );
       } else {
         _.m('.loading', function(a) { a.innerText = 'LOADING DATA FOR '+gene_id; a.style.display = 'block';} );
+console.log( '/processed/' + (_.qs("#main").dataset.directory) + '/' + current_type +'/exp/'+gene_id+'.json' );
         _.json( '/processed/' + (_.qs("#main").dataset.directory) + '/' + current_type +'/exp/'+gene_id+'.json', function(expdata) {
           expression_cache[ current_type+'-'+gene_id ] = expdata;
           _.m('.loading', function(a) { a.style.display = 'none'; });
@@ -509,7 +522,7 @@ Interaction functions
       } );
     }
     if( has('extra-cell') ) {
-      x2=graph.extra.cell.visible = graph.extra.cell.data.map( function(x) {
+      x3=graph.extra.cell.visible = graph.extra.cell.data.map( function(x) {
         var res = CONFIG.marker_size, c=0;
         graph.extra.cell.filters.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
         return res;
@@ -558,8 +571,8 @@ Interaction functions
   function graph_set_up( f, k1, k2 ) {
     if(graph.hasOwnProperty(k1)) {
       if( graph[k1].hasOwnProperty(k2) ) {
-        _.qs('a[href="#'+k1+'-'+k2+'"]').classList.remove('disabled');
-        if(f) { _.qs('a[href="#'+k1+'-'+k2+'"]').classList.add('active'); f=0; current_type=k1; current_view=k2; }
+        _.s('a[href="#'+k1+'-'+k2+'"]', function(a) { a.classList.remove('disabled'); } );
+        if(!f) { _.qs('a[href="#'+k1+'-'+k2+'"]').classList.add('active'); current_type=k1; current_view=k2; }
         if(k2=='cell') {
           process_cell_graph( graph[k1][k2] );
           create_cell_chart( k1+'-'+k2, graph[k1][k2] );
@@ -567,7 +580,7 @@ Interaction functions
           process_gene_graph( graph[k1][k2] );
           create_gene_chart( k1+'-'+k2, graph[k1][k2] );
         }
-        return 1;
+        return f+1;
       }
     }
     return f;
@@ -654,10 +667,11 @@ Interaction functions
       var fetched_time = Date.now() - time;
       // Part 1 processes the cell graph data....
       _.m('#int a', function(a) { a.classList.add('disabled'); } );
-      var f=1;
+      var f=0;
       f = graph_set_up( f, 'ss2',   'cell' ); f = graph_set_up( f, 'ss2',   'gene' );
       f = graph_set_up( f, 'ch10x', 'cell' ); f = graph_set_up( f, 'ch10x', 'gene' );
       f = graph_set_up( f, 'extra', 'cell' ); f = graph_set_up( f, 'extra', 'gene' );
+      if(f==1) { _.s('#int',function(a) { a.parentElement.style.display = 'none'; } ); }
       switch_panel( current_type+'-'+current_view );
       // Draw graphs....
       var rendered_time = Date.now() - time - fetched_time;
