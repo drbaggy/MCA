@@ -17,7 +17,7 @@ ROOT="$( dirname "$BASE" )"
 
 ## Write out species template pages...
 echo BUILDING TEMPLATES
-perl $ROOT/scripts/template.pl $DEV
+#perl $ROOT/scripts/template.pl $DEV
 
 echo COPY EXTERNAL LIBRARIES
 cp $ROOT/src/js/plotly-gl3d-$PLOTLY.js $ROOT/htdocs/dist/js/plotly-gl3d.js

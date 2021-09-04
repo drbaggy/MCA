@@ -58,15 +58,17 @@ sub parse_mol {
   foreach(<$fh>) {
     chomp;
     my $m = 0;
+    my $z = 0;
     my @V = split m{,};
     my $n = shift @V;
     @V = map { 1*sprintf '%0.5f',$_ } @V;
     $m = $m < $_ ? $_ : $m foreach @V;
+    $z = $z > $_ ? $_ : $z foreach @V;
     $n=~s{"}{}g;
     $n=~s{-}{_}g;
     push @genes,$n;
     open my $ofh, q(>), $key.'/'.$n.'.json';
-    say {$ofh} '{"max":',$m,',"data":[',(join q(,),@V), ']}';
+    say {$ofh} '{"max":',$m,',"min":',$z,',"data":[',(join q(,),@V), ']}';
     close $ofh;
   }
   close $fh;
