@@ -440,7 +440,7 @@ Drawing gene graphs....
 
   function process_gene_graph( t ) {
     t.default_text        = t.data.map( function(a) { return '-'; } );
-    t.visible             = t.data.map( function(a) { current_size; } );
+    t.visible             = CONFIG.marker_size;
     t.hover_template      = t.popup.replaceAll('[[','%{customdata[').replaceAll(']]',']}');
     t.hover_template     += '<extra></extra>';
     t.customdata          = t.data;
@@ -563,7 +563,7 @@ Interaction functions
   function changeColour( n ) {
     n.onchange = update_colour;
   }
-  
+
   function update_colour( ) {
     var nav = _.qs('main nav');
     _.m( nav, '.legend',                            function( a ) { a.style.display = 'none'; } );
@@ -624,7 +624,7 @@ Interaction functions
   };}
 
   function changeGene( n ) { n.onkeyup = gene_key_up; }
-    
+
   function gene_key_up( ) {
     var new_gene = _.qs( '#new-gene' ).value;
     if( ! ( current_data.genes.includes(new_gene) ) && new_gene !== '' ) {
