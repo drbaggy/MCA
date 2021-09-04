@@ -388,22 +388,28 @@ Drawing cell graphs....
       var t1=0; var t2=0; var t3=0;
       if(current_type=='ch10x') {
         graph.ch10x.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp,min_exp); } );
-        t1 = { 'marker.color': [ graph.ch10x.cell.colours.gene ],
-               'text'  : [expdata.data],
-               'hovertemplate': graph.ch10x.cell.hover_template_expr };
+        t1 = {
+          'marker.color':  [ graph.ch10x.cell.colours.gene ],
+          'text'  :        [ expdata.data],
+          'hovertemplate':   graph.ch10x.cell.hover_template_expr
+        };
       } else if( current_type=='ss2' ) {
         graph.ss2.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp,min_exp); } );
-        t2 = { 'marker.color': [ graph.ss2.cell.colours.gene ],
-               'text': [expdata.data],
-               'hovertemplate': graph.ss2.cell.hover_template_expr };
+        t2 = {
+          'marker.color':  [ graph.ss2.cell.colours.gene ],
+          'text':          [ expdata.data],
+          'hovertemplate':   graph.ss2.cell.hover_template_expr
+        };
       } else { // Additional graph added for pf-ch10x-comp - at some point we may need
                // to make this an arbitrary number of datasets
         graph.extra.cell.colours.gene = expdata.data.map( function(a) { return exp_colour(a,max_exp,min_exp); } );
-        t3 = { 'marker.color': [ graph.extra.cell.colours.gene ],
-               'text': [expdata.data],
-               'hovertemplate': graph.extra.cell.hover_template_expr };
+        t3 = {
+          'marker.color':  [ graph.extra.cell.colours.gene ],
+          'text':          [ expdata.data],
+          'hovertemplate':   graph.extra.cell.hover_template_expr
+        };
       }
-      update_graphs( t1, t2, t3 );
+      update_graphs( t1, t2, 0, 0, t3 );
     }
   }
 
@@ -415,7 +421,9 @@ Drawing cell graphs....
       if( expression_cache.hasOwnProperty( current_type+'-'+gene_id ) ) {
         redraw_cell_by_gene( gene_id );
       } else {
-        _.m('.loading', function(a) { a.innerText = 'LOADING DATA FOR '+gene_id; a.style.display = 'block';} );
+        _.m('.loading', function(a) {
+          a.innerText = 'LOADING DATA FOR '+gene_id; a.style.display = 'block';
+        } );
         _.json( '/processed/' + (_.qs("#main").dataset.directory) + '/' + current_type +'/exp/'+gene_id+'.json', function(expdata) {
           expression_cache[ current_type+'-'+gene_id ] = expdata;
           _.m('.loading', function(a) { a.style.display = 'none'; });
@@ -450,6 +458,7 @@ Drawing gene graphs....
     t.colours             = { gene: t.customdata.map( function(a) { return CONFIG.expression.def; } ),
                               cluster: t.data.map( function(a) { return CONFIG.filters.cluster[ a[0] ][1]; } ) };
   }
+
   function create_gene_chart( gflag, t ) {
     t.points = {};
     t.points.knn = [{ x: t.knn[0], y: t.knn[1], mode: 'markers', text: t.default_text,
