@@ -103,6 +103,7 @@
     options3d: {responsive: true,displayModeBar: true,displaylogo: false, modeBarButtonsToRemove: ['resetCameraLastSave3d', 'hoverClosest3d']}
   };
   CONFIG.filters.cluster_1 = CONFIG.filters.cluster;
+  var current_size   = CONFIG.marker_size;
 /*######################################################################
 
   The main script...
@@ -290,7 +291,7 @@ Drawing cell graphs....
     t.genes_length        = t.genes.length;
     t.current_gene        = '';
     t.default_text        = t.data.map( function(a) { return '-'; } );
-    t.visible             = t.data.map( function(a) { return CONFIG.marker_size; } );
+    t.visible             = current_size;
     t.customdata          = t.data.map( function(a) { counter = 0; return a.map( function( b ) { return b.match(/^\d+$/) ? CONFIG.filters[ t.columns[counter++] ][b][0] : b;} ); } );
     t.colours             = { gene: t.customdata.map( function(a) { return CONFIG.expression.def; } ) };
     counter=0;
@@ -435,7 +436,7 @@ Drawing gene graphs....
 
   function process_gene_graph( t ) {
     t.default_text        = t.data.map( function(a) { return '-'; } );
-    t.visible             = t.data.map( function(a) { return CONFIG.marker_size; } );
+    t.visible             = t.data.map( function(a) { current_size; } );
     t.hover_template      = t.popup.replaceAll('[[','%{customdata[').replaceAll(']]',']}');
     t.hover_template     += '<extra></extra>';
     t.customdata          = t.data;
@@ -486,29 +487,31 @@ Interaction functions
 
 ##############################################################################*/
 
-  function changeFilter( n ) { n.onchange = function(e) {
+  function changeFilter( n ) { n.onchange = update_filter; }
+
+  function update_filter(e) {
     var nav = _.qs('main nav');
     var filter_set={};
     // Update filters...
     _.m(nav,'input[type="checkbox"]', function(a) { filter_set[a.name+'-'+a.value] = a.checked ? 1: 0; } );
-    var x1,x2;
+    var x1,x2,x3;
     if( has('ch10x-cell') ) {
       x1=graph.ch10x.cell.visible = graph.ch10x.cell.data.map( function(x) {
-        var res = CONFIG.marker_size, c=0;
+        var res = current_size, c=0;
         graph.ch10x.cell.filters.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
         return res;
       } );
     }
     if( has('ss2-cell') ) {
       x2=graph.ss2.cell.visible = graph.ss2.cell.data.map( function(x) {
-        var res = CONFIG.marker_size, c=0;
+        var res = current_size, c=0;
         graph.ss2.cell.filters.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
         return res;
       } );
     }
     if( has('extra-cell') ) {
       x3=graph.extra.cell.visible = graph.extra.cell.data.map( function(x) {
-        var res = CONFIG.marker_size, c=0;
+        var res = current_size, c=0;
         graph.extra.cell.filters.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
         return res;
       } );
@@ -520,13 +523,22 @@ Interaction functions
       0,
       { 'marker.size':[ x3 ] }
     );
-  }; }
+  }
 
+  function changeSize( n ) {
+    var nav = _.qs('main nav');
+    n.onchange = function(e) {
+      _.m(nav,'#point-size input[type="radio"]:checked', function( a ) { current_size = a.value; } );
+      update_filter(e);
+      var upd = { 'marker.size': current_size };
+      update_graphs( 0, 0, upd, upd, 0, upd );
+    }
+  }
   function changeColour( n ) {
     var nav = _.qs('main nav');
     n.onchange = function(e) {
       _.m(nav,'.legend', function( a ) { a.style.display = 'none'; } );
-      _.s(nav, 'input[type="radio"]:checked', function( a ) { current_colour = a.value; } );
+      _.s(nav, '#colour-by input[type="radio"]:checked', function( a ) { current_colour = a.value; } );
       _.s(nav,'#legend-'+current_colour, function( a ) { a.style.display = 'block'; } );
       _.m('#legend-gene .input', function( a ) { _.act(a); } );
       _.m('#legend-gene .gradient', function(a) { _.act(a); a.style.display = 'flex'; } );
@@ -642,45 +654,48 @@ Interaction functions
   };}
 
   function load_data(  ) {
-    _.m('.loading', function(a) { a.innerText = 'LOADING DATA'; a.style.display = 'block';} );
+    _.m('.loading', function(a) { a.innerText = 'DOWNLOADING DATA'; a.style.display = 'block';} );
     var time = Date.now();                                            // Performance logger
     _.json( '/processed/' + (_.qs("#main").dataset.directory) + '/' + CONFIG.filename, function( t ) {
       graph        = t;                                               // Store in global variable.
       current_gene = t.default_gene;                                  // Store in global variable.
       _.s('#new-gene', function(a) { a.value = current_gene; } );     // Update the gene dropdown with default value...
-      var fetched_time = Date.now() - time;                           // Record time for log report below
       _.m('#int a', function(a) { a.classList.add('disabled'); } );   // Disable all graph buttons....
-      var f=0;
-      f = graph_set_up( f, 'ss2',   'cell' ); f = graph_set_up( f, 'ss2',   'gene' ); // Set up graphs for SmartSeq2
-      f = graph_set_up( f, 'ch10x', 'cell' ); f = graph_set_up( f, 'ch10x', 'gene' ); // Set up graphs for chromium 10x
-      f = graph_set_up( f, 'extra', 'cell' ); f = graph_set_up( f, 'extra', 'gene' ); // Set up graphs for 3rd set (hacky)
-      if(f==1) {                                                                      // If only 1 graph hide navigation bar
-        _.s('#int',function(a) { a.parentElement.style.display = 'none'; } );
-      }
-      switch_panel( current_type+'-'+current_view );                  // Display current view
-      // Draw graphs....
-      var rendered_time = Date.now() - time - fetched_time;           // Record time for log report below
-      var nav   = _.qs('main nav');                                   // Get the "options panel" and actions
-                                                                      // to various control elements
-      _.m(nav,'input[type="checkbox"]', changeFilter);                //  * add actions on change filters....
-      _.m(nav,'input[type="radio"]',    changeColour);                //  * add actions on change colour set
-      _.m(nav,'input[type="text"]',     changeGene);                  //  * add actions on change gene...
-      // Add
-      _.s( gene_dropdown, '', geneDropDownClick );                         // "Auto completer" action on gene drop down.
-      // Finally remove "shim" over graph...
-      _.m('.loading', function(a) { a.style.display = 'none'; } );            // Clear the "loading data" mask
-      _.m('#colour-by-caption', function(a) { a.style.display = 'block'; } ); // Show colour by caption which we hid while loading
-
-      _.m( '#int a', function( n ) {
-        n.onclick = function( e ) {                                   // Add panel switching function to top navigation
-          e.preventDefault();
-          switch_panel( this.getAttribute('href').replace('#','') );
-        };
-      } );
-      var post_time = Date.now() - time - fetched_time - rendered_time; // Report times to console ...
-      console.log( 'Fetch: '+(fetched_time/1000)+' sec; Render: '+(rendered_time/1000)+
-              ' sec; Post: '+(post_time/1000)+' sec; Total: '+((Date.now()-time)/1000)+' sec.' );
+      _.m('.loading', function(a) { a.innerText = 'GENERATING DISPLAYS'; });
+      setTimeout( function() { render_charts(time); }, 0 );
     });
+  }
+  function render_charts(time) {
+    var fetched_time = Date.now() - time;                           // Record time for log report below
+    var f=0;
+    f = graph_set_up( f, 'ss2',   'cell' ); f = graph_set_up( f, 'ss2',   'gene' ); // Set up graphs for SmartSeq2
+    f = graph_set_up( f, 'ch10x', 'cell' ); f = graph_set_up( f, 'ch10x', 'gene' ); // Set up graphs for chromium 10x
+    f = graph_set_up( f, 'extra', 'cell' ); f = graph_set_up( f, 'extra', 'gene' ); // Set up graphs for 3rd set (hacky)
+    if(f>1) {                                                       // If more than 1 graph show navigation
+      _.s('#graph-nav',function(a) { a.style.display = 'block'; } );
+    }
+    switch_panel( current_type+'-'+current_view );                  // Display current view
+    // Draw graphs....
+    var rendered_time = Date.now() - time - fetched_time;           // Record time for log report below
+    var nav   = _.qs('main nav');                                   // Get the "options panel" and actions
+    _.m(nav,'input[type="checkbox"]', changeFilter);                //  * add actions on change filters....
+    _.m(nav,'#colour-by  input[type="radio"]', changeColour);       //  * add actions on change colour set
+    _.m(nav,'#point-size input[type="radio"]', changeSize);         //  * add actions on change colour set
+    _.m(nav,'input[type="text"]',     changeGene);                  //  * add actions on change gene...
+    // Add
+    _.s( gene_dropdown, '', geneDropDownClick );                         // "Auto completer" action on gene drop down.
+    // Finally remove "shim" over graph...
+    _.m('#colour-by-caption', function(a) { a.style.display = 'block'; } ); // Show colour by caption which we hid while loading
+    _.m('.loading', function(a) { a.style.display = 'none'; } );            // Clear the "loading data" mask
+    _.m( '#int a', function( n ) {
+      n.onclick = function( e ) {                                   // Add panel switching function to top navigation
+        e.preventDefault();
+        switch_panel( this.getAttribute('href').replace('#','') );
+      };
+    } );
+    var post_time = Date.now() - time - fetched_time - rendered_time; // Report times to console ...
+    console.log( 'Fetch: '+(fetched_time/1000)+' sec; Render: '+(rendered_time/1000)+
+            ' sec; Post: '+(post_time/1000)+' sec; Total: '+((Date.now()-time)/1000)+' sec.' );
   }
 }(document));
 

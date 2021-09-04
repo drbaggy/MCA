@@ -13,7 +13,7 @@ main section section.active { display: block }
 main nav ul { padding:0; list-style: none }
 main nav li { display: flex; flex-wrap: wrap; flex-direction: row; align-items: stretch }
 main nav li > span { display: block; text-align: center; font-weight:bold; flex: 0 0 100% }
-main nav label { text-align: center; flex: 1 1 30%; padding: 0.5em; display: none; cursor: pointer; }
+main nav label { text-align: center; flex: 1 1 30%; padding: 0.5em; display: none; cursor: pointer; box-sizing: border-box }
 main nav label.active { display: block }
 main nav label span { display: block; background-color: #eee; padding: 0.5em; font-size: 80% }
 main nav label input:checked + span { background-color: #ccc; color: #000; }
@@ -22,7 +22,7 @@ main nav .input ul { position: absolute; margin-top: 0; left: 0; right: 0; top: 
 main nav .input ul li { padding: 2px; background-color: #ccc; border: 2px solid #fff; border-top: 0px; display: block }
 main nav .input ul li:first-of-type { border-top: 2px solid #fff;}
 main nav .input input { display: block; box-sizing: border-box; width:100%; padding: 2px; font-weight: bold; font-size: 1rem; }
-main nav .narrow label { flex: 1 1 12%; }
+main nav .narrow label { flex: 1 1 10%; }
 main nav .half label { flex: 1 1 45%; }
 main .input div { display: flex; flex-flow: row wrap; white-space: nowrap}
 main .input div label { text-align: left; flex: 1 1 20%; font-weight: bold }
@@ -37,6 +37,7 @@ main section h3 a { color: #000; }
 main section h3 a:hover { background-color: #eee }
 main section h3 a.active:hover,
 main section h3 a.active { color: #fff; background-color: #000 }
+main nav #point-size label { display: block }
 
 main nav { margin-top: 3em }
 main nav div div { display: none }
@@ -75,6 +76,7 @@ body .gene-table { display: block }
   main { display: block }
 }
 
+#graph-nav { display: none }
 #int  { display: flex; font-size: 150% }
 #int p { margin: 0.5em 0; font-weight: bold; flex: 1 1 50%; text-align: center; line-height: 1.5em }
 #int a { display: inline-block; background-color: #ccc; border-radius: 3px; padding: 3px; margin-left: 1em; padding: 2px 0.5em; line-height: 1.2em }
