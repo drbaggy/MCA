@@ -1,0 +1,9 @@
+---
+  default_gene: PBANKA_1212600
+  ch10x:
+    cell:
+      columns: [ stage, cluster_2, sex, technology, pseudo ]
+      filters: [ stage, technology ]
+      pca:     2
+      popup:   'Stage: [[0]]<br /><br />Cluster: [[1]]<br />Asexual: [[2]]<br />Technology: [[3]]'
+

@@ -1,0 +1,10 @@
+---
+  default_gene: PBANKA_1212600
+  ss2:
+    cell:
+      columns: [ stage, host ]
+      filters: [ stage ]
+      pca:     3
+      umap:    2
+      popup:   'Stage: [[0]]<br />Host: [[1]]'
+

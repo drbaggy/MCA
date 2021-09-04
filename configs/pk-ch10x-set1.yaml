@@ -1,0 +1,9 @@
+---
+  default_gene: PKNH_0728900
+  ch10x:
+    cell:
+      columns: [ stage ]
+      filters: [ stage ]
+      pca:     2
+      popup:   'Stage: [[0]]'
+

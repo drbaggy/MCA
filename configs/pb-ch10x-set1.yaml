@@ -1,0 +1,8 @@
+---
+  default_gene: PBANKA_1212600
+  ch10x:
+    cell:
+      columns: [ stage ]
+      filters: [ stage ]
+      pca:     3
+      popup:   'Stage: [[0]]'

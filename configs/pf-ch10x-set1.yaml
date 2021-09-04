@@ -1,0 +1,9 @@
+---
+  default_gene: PF3D7_0304600
+  ch10x:
+    cell:
+      columns: [ stage ]
+      filters: [ stage ]
+      pca:     2
+      popup:   'Stage: [[0]]'
+

@@ -1,0 +1,9 @@
+---
+  default_gene: PF3D7_0304600
+  ss2:
+    cell:
+      columns: [ stage, host ]
+      filters: [ stage ]
+      umap:    2
+      popup:   'Stage: [[0]]<br />Host: [[1]]'
+

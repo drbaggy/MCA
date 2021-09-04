@@ -1,0 +1,23 @@
+---
+  default_gene: PF3D7_0304600
+  ch10x:
+    cell:
+      columns: [ stage, strain ]
+      filters: [ stage, strain ]
+      pca:     2
+      umap:    2
+      popup :  'Stage: [[0]]<br />Strain: [[1]]'
+  ss2:
+    cell:
+      columns: [ stage, strain ]
+      filters: [ stage, strain ]
+      pca:     2
+      umap:    2
+      popup:   'Stage: [[0]]<br />Strain: [[1]]'
+  extra:
+    cell:
+      columns: [ stage, strain ]
+      filters: [ stage, strain ]
+      pca:     2
+      umap:    2
+      popup:   'Stage: [[0]]<br />Strain: [[1]]'
