@@ -38,7 +38,7 @@
       <nav id="spec">Change species: <a href="/p.berghei/">P. berghei</a> | <a href="/p.falciparum/">P. falciparum</a></nav>
     </div></header>
 
-    <header><nav id="int">
+    <header id="graph-nav"><nav id="int">
       <p>Chromium 10x <a href="#ch10x-cell">Cell view</a> <a href="#ch10x-gene">Gene view</a></p>
       <p>SmartSeq2    <a href="#ss2-cell">Cell view</a>   <a href="#ss2-gene">Gene view</a></p>
     </nav></header>
@@ -101,6 +101,18 @@
               <label><input checked="checked" type="checkbox" name="stage" value="14"><span>activated</span></label>
             </li>
           </ul></div>
+        </div>
+        <div>
+          <h3>Point size:</h3>
+          <ul id="point-size"><li class="narrow">
+            <label><input type="radio" name="size" value="3"                  ><span>S</span></label>
+            <label><input type="radio" name="size" value="4"                  ><span>&nbsp;</span></label>
+            <label><input type="radio" name="size" value="5" checked="checked"><span>M</span></label>
+            <label><input type="radio" name="size" value="6"                  ><span>&nbsp;</span></label>
+            <label><input type="radio" name="size" value="7"                  ><span>L</span></label>
+            <label><input type="radio" name="size" value="8"                  ><span>&nbsp;</span></label>
+            <label><input type="radio" name="size" value="9"                  ><span>XL</span></label>
+          </li></ul>
         </div>
         <div>
           <h3 id="colour-by-caption" style="display:none">Colour by:</h3>
