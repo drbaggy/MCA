@@ -36,15 +36,15 @@
 
 ######################################################################*/
   var pal = [ '#ff0029', '#377eb8', '#66a61e', '#984ea3', '#00d2d5', '#ff7f00', '#af8d00',
-    '#7f80cd', '#b3e900', '#c42e60', '#a65628', '#f781bf', '#8dd3c7', '#bebada',
-    '#fb8072', '#80b1d3', '#fdb462', '#fccde5', '#bc80bd', '#ffed6f', '#c4eaff',
-    '#cf8c00', '#1b9e77', '#d95f02', '#e7298a', '#e6ab02', '#a6761d', '#0097ff',
-    '#00d067', '#000000', '#252525', '#525252', '#737373', '#969696', '#bdbdbd',
-    '#f43600', '#4ba93b', '#5779bb', '#927acc', '#97ee3f', '#bf3947', '#9f5b00',
-    '#f48758', '#8caed6', '#f2b94f', '#eff26e', '#e43872', '#d9b100', '#9d7a00',
-    '#698cff', '#d9d9d9', '#00d27e', '#d06800', '#009f82', '#c49200', '#cbe8ff',
-    '#fecddf', '#c27eb6', '#8cd2ce', '#c4b8d9', '#f883b0', '#a49100', '#f48800',
-    '#27d0df', '#a04a9b' ];
+              '#7f80cd', '#b3e900', '#c42e60', '#a65628', '#f781bf', '#8dd3c7', '#bebada',
+              '#fb8072', '#80b1d3', '#fdb462', '#fccde5', '#bc80bd', '#ffed6f', '#c4eaff',
+              '#cf8c00', '#1b9e77', '#d95f02', '#e7298a', '#e6ab02', '#a6761d', '#0097ff',
+              '#00d067', '#000000', '#252525', '#525252', '#737373', '#969696', '#bdbdbd',
+              '#f43600', '#4ba93b', '#5779bb', '#927acc', '#97ee3f', '#bf3947', '#9f5b00',
+              '#f48758', '#8caed6', '#f2b94f', '#eff26e', '#e43872', '#d9b100', '#9d7a00',
+              '#698cff', '#d9d9d9', '#00d27e', '#d06800', '#009f82', '#c49200', '#cbe8ff',
+              '#fecddf', '#c27eb6', '#8cd2ce', '#c4b8d9', '#f883b0', '#a49100', '#f48800',
+              '#27d0df', '#a04a9b' ];
 
 
   // Whole graph data....
@@ -153,7 +153,11 @@
     Object.getOwnPropertyNames(CONFIG.filters).forEach(function(k){
       var ht = '';
       var e = _.qs( '#legend-'+k+' ul' );
-      if( e ) { CONFIG.filters[k].forEach( function(a) { ht+= '<li><span style="background-color:'+a[1]+'">&nbsp;</span>'+a[0]+'</label>'; e.innerHTML = ht; }  ); }
+      if( e ) {
+        CONFIG.filters[k].forEach( function(a) {
+          ht+= '<li><span style="background-color:'+a[1]+'">&nbsp;</span>'+a[0]+'</label>'; e.innerHTML = ht;
+        } );
+      }
     });
   }
 
@@ -460,18 +464,31 @@ Drawing gene graphs....
   }
 
   function update_gene_by_gene( gene_id ) {
-    _.m('.input',     function( a ) { _.act(a); } );
-    _.m('.gradient',  function( a ) { a.style.display = 'none'; } );
-    _.m('.gene-name', function( a ) { a.innerText = gene_id; } );
+    _.m('.input',     function( a ) {
+      _.act(a);
+    } );
+    _.m('.gradient',  function( a ) {
+      a.style.display = 'none';
+    } );
+    _.m('.gene-name', function( a ) {
+      a.innerText = gene_id;
+    } );
     if( gene_id == '' || ! current_data.genes.includes( gene_id ) ) {
-      current_data.colours.gene = current_data.customdata.map( function(a) { return CONFIG.knn.def; } );
-      _.m('.gene-table', function( a ) { a.innerHTML = ''; } );
+      current_data.colours.gene = current_data.customdata.map( function(a) {
+        return CONFIG.knn.def;
+      } );
+      _.m('.gene-table', function( a ) {
+        a.innerHTML = '';
+      } );
     } else {
       var details;
       current_data.customdata.forEach( function(a) { if( gene_id == a[1] ) details = a; } );
       current_data.colours.gene = current_data.customdata.map( function( a ) {
-        return a[1]==gene_id ? CONFIG.knn.gene : (a[0]==details[0] ? CONFIG.knn.cluster : CONFIG.knn.def ); } );
-      var table = current_data.table.replace(/\[\[(\d+)\]\]/g, function(match,p1) { return details[p1]; });
+        return a[1]==gene_id ? CONFIG.knn.gene : (a[0]==details[0] ? CONFIG.knn.cluster : CONFIG.knn.def );
+      } );
+      var table = current_data.table.replace(/\[\[(\d+)\]\]/g, function(match,p1) {
+        return details[p1];
+      });
       _.m('.gene-table', function( a ) { a.innerHTML = table; } );
     }
     Plotly.restyle( current_type+'-gene-knn-graph', { 'marker.color' : [current_data.colours.gene] } );
@@ -493,26 +510,34 @@ Interaction functions
     var nav = _.qs('main nav');
     var filter_set={};
     // Update filters...
-    _.m(nav,'input[type="checkbox"]', function(a) { filter_set[a.name+'-'+a.value] = a.checked ? 1: 0; } );
+    _.m(nav,'input[type="checkbox"]', function(a) {
+      filter_set[a.name+'-'+a.value] = a.checked ? 1: 0;
+    } );
     var x1,x2,x3;
     if( has('ch10x-cell') ) {
-      x1=graph.ch10x.cell.visible = graph.ch10x.cell.data.map( function(x) {
+      x1 = graph.ch10x.cell.visible = graph.ch10x.cell.data.map( function(x) {
         var res = current_size, c=0;
-        graph.ch10x.cell.filters.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
+        graph.ch10x.cell.filters.forEach( function(a) {
+          return res *= filter_set[ a+'-'+x[c++] ];
+        } );
         return res;
       } );
     }
     if( has('ss2-cell') ) {
-      x2=graph.ss2.cell.visible = graph.ss2.cell.data.map( function(x) {
+      x2 = graph.ss2.cell.visible = graph.ss2.cell.data.map( function(x) {
         var res = current_size, c=0;
-        graph.ss2.cell.filters.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
+        graph.ss2.cell.filters.forEach( function(a) {
+          return res *= filter_set[ a+'-'+x[c++] ];
+        } );
         return res;
       } );
     }
     if( has('extra-cell') ) {
-      x3=graph.extra.cell.visible = graph.extra.cell.data.map( function(x) {
+      x3 = graph.extra.cell.visible = graph.extra.cell.data.map( function(x) {
         var res = current_size, c=0;
-        graph.extra.cell.filters.forEach( function(a) { return res *= filter_set[ a+'-'+x[c++] ]; } );
+        graph.extra.cell.filters.forEach( function(a) {
+          return res *= filter_set[ a+'-'+x[c++] ];
+        } );
         return res;
       } );
     }
@@ -529,38 +554,41 @@ Interaction functions
     var nav = _.qs('main nav');
     n.onchange = function(e) {
       _.m(nav,'#point-size input[type="radio"]:checked', function( a ) { current_size = a.value; } );
-      update_filter(e);
-      var upd = { 'marker.size': current_size };
+      update_filter(e); // We do this as we have to apply the filters in cell view - so we can call this
+      var upd = { 'marker.size': current_size };  // For geneviews the marker.size is constant so only have to assign scalar not array.
       update_graphs( 0, 0, upd, upd, 0, upd );
     }
   }
+
   function changeColour( n ) {
+    n.onchange = update_colour;
+  }
+  
+  function update_colour( ) {
     var nav = _.qs('main nav');
-    n.onchange = function(e) {
-      _.m(nav,'.legend', function( a ) { a.style.display = 'none'; } );
-      _.s(nav, '#colour-by input[type="radio"]:checked', function( a ) { current_colour = a.value; } );
-      _.s(nav,'#legend-'+current_colour, function( a ) { a.style.display = 'block'; } );
-      _.m('#legend-gene .input', function( a ) { _.act(a); } );
-      _.m('#legend-gene .gradient', function(a) { _.act(a); a.style.display = 'flex'; } );
-      update_graphs(
-        { 'marker.color': [ has('ch10x-cell') ? graph.ch10x.cell.colours[current_colour] : [] ] },
-        { 'marker.color': [ has('ss2-cell'  ) ? graph.ss2.cell.colours[  current_colour] : [] ] },
-        { 'marker.color': [ has('ch10x-gene') ? graph.ch10x.gene.colours[current_colour] : [] ] },
-        { 'marker.color': [ has('ss2-gene'  ) ? graph.ss2.gene.colours[  current_colour] : [] ] },
-        { 'marker.color': [ has('extra-cell') ? graph.extra.cell.colours[current_colour] : [] ] },
-        { 'marker.color': [ has('extra-gene') ? graph.extra.gene.colours[current_colour] : [] ] }
-      );
-      if( current_colour == 'gene' ) {
-        if( current_view == 'gene' ) {
-          update_gene_by_gene( current_gene );
-        } else {
-          update_cell_by_gene( current_gene );
-        }
+    _.m( nav, '.legend',                            function( a ) { a.style.display = 'none'; } );
+    _.s( '#colour-by input[type="radio"]:checked',  function( a ) { current_colour = a.value; } );
+    _.s( '#legend-'+current_colour,                 function( a ) { a.style.display = 'block'; } );
+    _.m( '#legend-gene .input',                     function( a ) { _.act(a); } );
+    _.m( '#legend-gene .gradient',                  function( a ) { _.act(a); a.style.display = 'flex'; } );
+    update_graphs(
+      { 'marker.color': [ has('ch10x-cell') ? graph.ch10x.cell.colours[current_colour] : [] ] },
+      { 'marker.color': [ has('ss2-cell'  ) ? graph.ss2.cell.colours[  current_colour] : [] ] },
+      { 'marker.color': [ has('ch10x-gene') ? graph.ch10x.gene.colours[current_colour] : [] ] },
+      { 'marker.color': [ has('ss2-gene'  ) ? graph.ss2.gene.colours[  current_colour] : [] ] },
+      { 'marker.color': [ has('extra-cell') ? graph.extra.cell.colours[current_colour] : [] ] },
+      { 'marker.color': [ has('extra-gene') ? graph.extra.gene.colours[current_colour] : [] ] }
+    );
+    if( current_colour == 'gene' ) {
+      if( current_view == 'gene' ) {
+        update_gene_by_gene( current_gene );
       } else {
-        _.m('.gene-table, .gene-name', function(a) { a.innerHTML = ''; } );
+        update_cell_by_gene( current_gene );
       }
-      return;
-    };
+    } else {
+      _.m('.gene-table, .gene-name', function(a) { a.innerHTML = ''; } );
+    }
+    return;
   }
 
 
@@ -568,7 +596,9 @@ Interaction functions
   function graph_set_up( f, k1, k2 ) {
     if(graph.hasOwnProperty(k1)) {
       if( graph[k1].hasOwnProperty(k2) ) {
-        _.s('a[href="#'+k1+'-'+k2+'"]', function(a) { a.classList.remove('disabled'); } );
+        _.s('a[href="#'+k1+'-'+k2+'"]', function(a) {
+          a.classList.remove('disabled');
+        } );
         if(!f) { _.qs('a[href="#'+k1+'-'+k2+'"]').classList.add('active'); current_type=k1; current_view=k2; }
         if(k2=='cell') {
           process_cell_graph( graph[k1][k2] );
@@ -586,12 +616,16 @@ Interaction functions
   function geneDropDownClick( n ) { n.onclick = function(e) {
     _.s('main nav input[type="text"]', function( a ) {
       a.value = e.target.innerText;
-      _.s(gene_dropdown,'', function( b ) { b.innerHTML=''; } );
+      _.s(gene_dropdown,'', function( b ) {
+        b.innerHTML='';
+      } );
       a.onkeyup();
     } );
   };}
 
-  function changeGene( n ) { n.onkeyup = function(e) {
+  function changeGene( n ) { n.onkeyup = gene_key_up; }
+    
+  function gene_key_up( ) {
     var new_gene = _.qs( '#new-gene' ).value;
     if( ! ( current_data.genes.includes(new_gene) ) && new_gene !== '' ) {
       // We need to activate the dropdown...
@@ -651,20 +685,23 @@ Interaction functions
     } else {
       update_cell_by_gene( new_gene );
     }
-  };}
+  }
 
   function load_data(  ) {
-    _.m('.loading', function(a) { a.innerText = 'DOWNLOADING DATA'; a.style.display = 'block';} );
+    _.m('.loading', function(a) {
+      a.innerText = 'DOWNLOADING DATA'; a.style.display = 'block';
+    } );
     var time = Date.now();                                            // Performance logger
     _.json( '/processed/' + (_.qs("#main").dataset.directory) + '/' + CONFIG.filename, function( t ) {
       graph        = t;                                               // Store in global variable.
       current_gene = t.default_gene;                                  // Store in global variable.
-      _.s('#new-gene', function(a) { a.value = current_gene; } );     // Update the gene dropdown with default value...
-      _.m('#int a', function(a) { a.classList.add('disabled'); } );   // Disable all graph buttons....
-      _.m('.loading', function(a) { a.innerText = 'GENERATING DISPLAYS'; });
-      setTimeout( function() { render_charts(time); }, 0 );
+      _.s('#new-gene',  function(a) { a.value = current_gene; } );     // Update the gene dropdown with default value...
+      _.m('#int a',     function(a) { a.classList.add('disabled'); } );   // Disable all graph buttons....
+      _.m('.loading',   function(a) { a.innerText = 'GENERATING DISPLAYS'; });
+      setTimeout(       function()  { render_charts(time); }, 0 );
     });
   }
+
   function render_charts(time) {
     var fetched_time = Date.now() - time;                           // Record time for log report below
     var f=0;
@@ -685,8 +722,12 @@ Interaction functions
     // Add
     _.s( gene_dropdown, '', geneDropDownClick );                         // "Auto completer" action on gene drop down.
     // Finally remove "shim" over graph...
-    _.m('#colour-by-caption, #point-size, #point-size-caption', function(a) { a.style.display = 'block'; } ); // Show colour by caption which we hid while loading
-    _.m('.loading', function(a) { a.style.display = 'none'; } );            // Clear the "loading data" mask
+    _.m('#colour-by-caption, #point-size, #point-size-caption', function(a) {
+      a.style.display = 'block';
+    } ); // Show colour by caption which we hid while loading
+    _.m('.loading', function(a) {
+      a.style.display = 'none';
+    } );                        // Clear the "loading data" mask
     _.m( '#int a', function( n ) {
       n.onclick = function( e ) {                                   // Add panel switching function to top navigation
         e.preventDefault();
