@@ -685,7 +685,7 @@ Interaction functions
     // Add
     _.s( gene_dropdown, '', geneDropDownClick );                         // "Auto completer" action on gene drop down.
     // Finally remove "shim" over graph...
-    _.m('#colour-by-caption', function(a) { a.style.display = 'block'; } ); // Show colour by caption which we hid while loading
+    _.m('#colour-by-caption, #point-size, #point-size-caption', function(a) { a.style.display = 'block'; } ); // Show colour by caption which we hid while loading
     _.m('.loading', function(a) { a.style.display = 'none'; } );            // Clear the "loading data" mask
     _.m( '#int a', function( n ) {
       n.onclick = function( e ) {                                   // Add panel switching function to top navigation
